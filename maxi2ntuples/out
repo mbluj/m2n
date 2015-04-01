@@ -1,0 +1,909 @@
+# Conditions read from  CMS_CONDITIONS  via FrontierProd 
+20-Feb-2015 18:26:13 CET  Initiating request to open file file:/afs/cern.ch/work/m/molszews/CMSSW/Data/SVFitProducer.root
+20-Feb-2015 18:26:13 CET  Successfully opened file file:/afs/cern.ch/work/m/molszews/CMSSW/Data/SVFitProducer.root
+Begin processing the 1st record. Run 1, Event 601, LumiSection 7 at 20-Feb-2015 18:26:14.523 CET
+svfit: 75.2024
+svfit: 79.0089
+svfit: 75.202
+Begin processing the 2nd record. Run 1, Event 607, LumiSection 7 at 20-Feb-2015 18:26:15.158 CET
+svfit: 69.9062
+svfit: 173.642
+svfit: 100.566
+Begin processing the 3rd record. Run 1, Event 618, LumiSection 7 at 20-Feb-2015 18:26:15.163 CET
+svfit: 197.092
+svfit: 155.247
+svfit: 98.2888
+svfit: 155.247
+svfit: 128.218
+svfit: 42.9806
+svfit: 128.217
+svfit: 83.7363
+svfit: 83.736
+Begin processing the 4th record. Run 1, Event 620, LumiSection 7 at 20-Feb-2015 18:26:15.166 CET
+svfit: 384.217
+Begin processing the 5th record. Run 1, Event 623, LumiSection 7 at 20-Feb-2015 18:26:15.167 CET
+svfit: 77.1331
+svfit: 89.4504
+Begin processing the 6th record. Run 1, Event 625, LumiSection 7 at 20-Feb-2015 18:26:15.169 CET
+svfit: 91.6124
+svfit: 103.65
+Begin processing the 7th record. Run 1, Event 630, LumiSection 7 at 20-Feb-2015 18:26:15.171 CET
+svfit: 101.612
+svfit: 109.424
+Begin processing the 8th record. Run 1, Event 635, LumiSection 7 at 20-Feb-2015 18:26:15.172 CET
+svfit: 132.202
+svfit: 112.983
+Begin processing the 9th record. Run 1, Event 636, LumiSection 7 at 20-Feb-2015 18:26:15.174 CET
+svfit: 194.537
+Begin processing the 10th record. Run 1, Event 638, LumiSection 7 at 20-Feb-2015 18:26:15.175 CET
+svfit: 95.6936
+svfit: 95.6934
+Begin processing the 11th record. Run 1, Event 642, LumiSection 7 at 20-Feb-2015 18:26:15.177 CET
+svfit: 360.786
+svfit: 113.474
+svfit: 103.307
+svfit: 116.311
+svfit: 216.832
+svfit: 120.17
+svfit: 216.832
+svfit: 93.6236
+svfit: 95.9641
+Begin processing the 12th record. Run 1, Event 645, LumiSection 7 at 20-Feb-2015 18:26:15.180 CET
+svfit: 214.775
+svfit: 145.781
+svfit: 115.71
+Begin processing the 13th record. Run 1, Event 647, LumiSection 7 at 20-Feb-2015 18:26:15.181 CET
+svfit: 192.25
+svfit: 192.249
+Begin processing the 14th record. Run 1, Event 650, LumiSection 7 at 20-Feb-2015 18:26:15.183 CET
+svfit: 142.084
+svfit: 142.084
+Begin processing the 15th record. Run 1, Event 651, LumiSection 7 at 20-Feb-2015 18:26:15.185 CET
+svfit: 124.894
+svfit: 124.893
+svfit: 131.216
+Begin processing the 16th record. Run 1, Event 652, LumiSection 7 at 20-Feb-2015 18:26:15.187 CET
+svfit: 82.8847
+svfit: 82.8847
+Begin processing the 17th record. Run 1, Event 664, LumiSection 7 at 20-Feb-2015 18:26:15.188 CET
+svfit: 109.882
+svfit: 109.881
+Begin processing the 18th record. Run 1, Event 668, LumiSection 7 at 20-Feb-2015 18:26:15.190 CET
+svfit: 190.226
+Begin processing the 19th record. Run 1, Event 669, LumiSection 7 at 20-Feb-2015 18:26:15.192 CET
+svfit: 191.194
+svfit: 200.872
+Begin processing the 20th record. Run 1, Event 670, LumiSection 7 at 20-Feb-2015 18:26:15.193 CET
+svfit: 30.3553
+Begin processing the 21st record. Run 1, Event 675, LumiSection 7 at 20-Feb-2015 18:26:15.195 CET
+svfit: 138
+svfit: 141.45
+Begin processing the 22nd record. Run 1, Event 676, LumiSection 7 at 20-Feb-2015 18:26:15.197 CET
+svfit: 105.026
+Begin processing the 23rd record. Run 1, Event 681, LumiSection 7 at 20-Feb-2015 18:26:15.198 CET
+svfit: 141.556
+svfit: 141.555
+Begin processing the 24th record. Run 1, Event 684, LumiSection 7 at 20-Feb-2015 18:26:15.200 CET
+svfit: 107.283
+svfit: 107.282
+Begin processing the 25th record. Run 1, Event 685, LumiSection 7 at 20-Feb-2015 18:26:15.201 CET
+svfit: 127.111
+svfit: 146.527
+Begin processing the 26th record. Run 1, Event 694, LumiSection 7 at 20-Feb-2015 18:26:15.202 CET
+svfit: 95.2518
+svfit: 97.6326
+svfit: 107.769
+Begin processing the 27th record. Run 1, Event 701, LumiSection 8 at 20-Feb-2015 18:26:15.204 CET
+svfit: 377.639
+svfit: 377.639
+Begin processing the 28th record. Run 1, Event 704, LumiSection 8 at 20-Feb-2015 18:26:15.206 CET
+svfit: 115.152
+Begin processing the 29th record. Run 1, Event 709, LumiSection 8 at 20-Feb-2015 18:26:15.207 CET
+svfit: 46.5608
+svfit: 111.045
+svfit: 103.08
+Begin processing the 30th record. Run 1, Event 710, LumiSection 8 at 20-Feb-2015 18:26:15.208 CET
+svfit: 90.2447
+svfit: 92.5003
+Begin processing the 31st record. Run 1, Event 717, LumiSection 8 at 20-Feb-2015 18:26:15.210 CET
+svfit: 226.501
+Begin processing the 32nd record. Run 1, Event 722, LumiSection 8 at 20-Feb-2015 18:26:15.211 CET
+svfit: 124.907
+svfit: 124.907
+Begin processing the 33rd record. Run 1, Event 726, LumiSection 8 at 20-Feb-2015 18:26:15.212 CET
+svfit: 113.188
+svfit: 98.5138
+svfit: 113.187
+Begin processing the 34th record. Run 1, Event 728, LumiSection 8 at 20-Feb-2015 18:26:15.214 CET
+svfit: 93.7685
+Begin processing the 35th record. Run 1, Event 729, LumiSection 8 at 20-Feb-2015 18:26:15.215 CET
+svfit: 169.212
+svfit: 173.443
+Begin processing the 36th record. Run 1, Event 731, LumiSection 8 at 20-Feb-2015 18:26:15.217 CET
+svfit: 107.303
+Begin processing the 37th record. Run 1, Event 736, LumiSection 8 at 20-Feb-2015 18:26:15.218 CET
+svfit: 86.576
+svfit: 90.9586
+Begin processing the 38th record. Run 1, Event 737, LumiSection 8 at 20-Feb-2015 18:26:15.219 CET
+svfit: 86.1764
+svfit: 90.5386
+Begin processing the 39th record. Run 1, Event 748, LumiSection 8 at 20-Feb-2015 18:26:15.220 CET
+svfit: 103.219
+Begin processing the 40th record. Run 1, Event 749, LumiSection 8 at 20-Feb-2015 18:26:15.221 CET
+svfit: 104.162
+svfit: 112.17
+Begin processing the 41st record. Run 1, Event 752, LumiSection 8 at 20-Feb-2015 18:26:15.223 CET
+svfit: 86.9436
+Begin processing the 42nd record. Run 1, Event 754, LumiSection 8 at 20-Feb-2015 18:26:15.224 CET
+svfit: 340.222
+svfit: 357.446
+Begin processing the 43rd record. Run 1, Event 755, LumiSection 8 at 20-Feb-2015 18:26:15.225 CET
+svfit: 211.825
+Begin processing the 44th record. Run 1, Event 756, LumiSection 8 at 20-Feb-2015 18:26:15.226 CET
+svfit: 135.589
+svfit: 142.453
+Begin processing the 45th record. Run 1, Event 762, LumiSection 8 at 20-Feb-2015 18:26:15.227 CET
+svfit: 108.891
+svfit: 111.612
+Begin processing the 46th record. Run 1, Event 766, LumiSection 8 at 20-Feb-2015 18:26:15.228 CET
+svfit: 103.296
+Begin processing the 47th record. Run 1, Event 767, LumiSection 8 at 20-Feb-2015 18:26:15.230 CET
+svfit: 366.833
+svfit: 366.833
+Begin processing the 48th record. Run 1, Event 774, LumiSection 8 at 20-Feb-2015 18:26:15.231 CET
+svfit: 103.123
+Begin processing the 49th record. Run 1, Event 775, LumiSection 8 at 20-Feb-2015 18:26:15.232 CET
+svfit: 215.763
+svfit: 189.227
+svfit: 189.226
+svfit: 91.9884
+svfit: 109.343
+Begin processing the 50th record. Run 1, Event 777, LumiSection 8 at 20-Feb-2015 18:26:15.233 CET
+svfit: 298.63
+Begin processing the 51st record. Run 1, Event 787, LumiSection 8 at 20-Feb-2015 18:26:15.235 CET
+svfit: 86.1684
+svfit: 86.1679
+Begin processing the 52nd record. Run 1, Event 789, LumiSection 8 at 20-Feb-2015 18:26:15.236 CET
+svfit: 106.695
+Begin processing the 53rd record. Run 1, Event 795, LumiSection 8 at 20-Feb-2015 18:26:15.237 CET
+svfit: 249.76
+Begin processing the 54th record. Run 1, Event 796, LumiSection 8 at 20-Feb-2015 18:26:15.238 CET
+svfit: 119.23
+Begin processing the 55th record. Run 1, Event 805, LumiSection 9 at 20-Feb-2015 18:26:15.240 CET
+svfit: 220.172
+svfit: 220.172
+Begin processing the 56th record. Run 1, Event 806, LumiSection 9 at 20-Feb-2015 18:26:15.241 CET
+svfit: 151.289
+Begin processing the 57th record. Run 1, Event 807, LumiSection 9 at 20-Feb-2015 18:26:15.242 CET
+svfit: 130.54
+Begin processing the 58th record. Run 1, Event 815, LumiSection 9 at 20-Feb-2015 18:26:15.243 CET
+svfit: 110.922
+svfit: 125.498
+Begin processing the 59th record. Run 1, Event 818, LumiSection 9 at 20-Feb-2015 18:26:15.244 CET
+svfit: 131.958
+Begin processing the 60th record. Run 1, Event 821, LumiSection 9 at 20-Feb-2015 18:26:15.245 CET
+svfit: 123.86
+svfit: 121.948
+svfit: 120.605
+Begin processing the 61st record. Run 1, Event 822, LumiSection 9 at 20-Feb-2015 18:26:15.247 CET
+svfit: 277.696
+svfit: 270.922
+Begin processing the 62nd record. Run 1, Event 824, LumiSection 9 at 20-Feb-2015 18:26:15.248 CET
+svfit: 143.527
+Begin processing the 63rd record. Run 1, Event 825, LumiSection 9 at 20-Feb-2015 18:26:15.249 CET
+svfit: 164.363
+svfit: 172.683
+Begin processing the 64th record. Run 1, Event 827, LumiSection 9 at 20-Feb-2015 18:26:15.250 CET
+svfit: 122.689
+svfit: 122.688
+Begin processing the 65th record. Run 1, Event 833, LumiSection 9 at 20-Feb-2015 18:26:15.252 CET
+svfit: 128.629
+Begin processing the 66th record. Run 1, Event 840, LumiSection 9 at 20-Feb-2015 18:26:15.253 CET
+svfit: 134.615
+Begin processing the 67th record. Run 1, Event 843, LumiSection 9 at 20-Feb-2015 18:26:15.254 CET
+svfit: 65.3177
+svfit: 70.3399
+Begin processing the 68th record. Run 1, Event 846, LumiSection 9 at 20-Feb-2015 18:26:15.256 CET
+svfit: 124.468
+Begin processing the 69th record. Run 1, Event 850, LumiSection 9 at 20-Feb-2015 18:26:15.257 CET
+svfit: 623.629
+svfit: 671.578
+Begin processing the 70th record. Run 1, Event 852, LumiSection 9 at 20-Feb-2015 18:26:15.258 CET
+svfit: 187.56
+svfit: 136.589
+svfit: 165.358
+svfit: 136.337
+svfit: 116.851
+Begin processing the 71st record. Run 1, Event 853, LumiSection 9 at 20-Feb-2015 18:26:15.260 CET
+svfit: 73.038
+Begin processing the 72nd record. Run 1, Event 856, LumiSection 9 at 20-Feb-2015 18:26:15.261 CET
+svfit: 92.6125
+svfit: 92.6125
+Begin processing the 73rd record. Run 1, Event 857, LumiSection 9 at 20-Feb-2015 18:26:15.262 CET
+svfit: 192.131
+svfit: 196.934
+Begin processing the 74th record. Run 1, Event 860, LumiSection 9 at 20-Feb-2015 18:26:15.264 CET
+svfit: 150.739
+Begin processing the 75th record. Run 1, Event 862, LumiSection 9 at 20-Feb-2015 18:26:15.265 CET
+svfit: 123.338
+Begin processing the 76th record. Run 1, Event 866, LumiSection 9 at 20-Feb-2015 18:26:15.266 CET
+svfit: 102.633
+svfit: 116.12
+Begin processing the 77th record. Run 1, Event 869, LumiSection 9 at 20-Feb-2015 18:26:15.267 CET
+svfit: 230.09
+svfit: 230.088
+Begin processing the 78th record. Run 1, Event 878, LumiSection 9 at 20-Feb-2015 18:26:15.268 CET
+svfit: 129.345
+svfit: 200.394
+svfit: 205.403
+svfit: 257.044
+svfit: 129.345
+svfit: 257.044
+svfit: 205.403
+Begin processing the 79th record. Run 1, Event 879, LumiSection 9 at 20-Feb-2015 18:26:15.270 CET
+svfit: 110.286
+Begin processing the 80th record. Run 1, Event 880, LumiSection 9 at 20-Feb-2015 18:26:15.272 CET
+svfit: 175.127
+svfit: 183.992
+Begin processing the 81st record. Run 1, Event 883, LumiSection 9 at 20-Feb-2015 18:26:15.273 CET
+svfit: 200.172
+svfit: 200.171
+svfit: 189.659
+Begin processing the 82nd record. Run 1, Event 887, LumiSection 9 at 20-Feb-2015 18:26:15.275 CET
+svfit: 73.857
+svfit: 73.8562
+svfit: 85.6512
+Begin processing the 83rd record. Run 1, Event 890, LumiSection 9 at 20-Feb-2015 18:26:15.276 CET
+svfit: 80.4528
+svfit: 80.4526
+Begin processing the 84th record. Run 1, Event 894, LumiSection 9 at 20-Feb-2015 18:26:15.277 CET
+svfit: 127.043
+Begin processing the 85th record. Run 1, Event 897, LumiSection 9 at 20-Feb-2015 18:26:15.278 CET
+svfit: 116.713
+Begin processing the 86th record. Run 1, Event 898, LumiSection 9 at 20-Feb-2015 18:26:15.279 CET
+svfit: 707.576
+Begin processing the 87th record. Run 1, Event 899, LumiSection 9 at 20-Feb-2015 18:26:15.280 CET
+svfit: 152.775
+svfit: 67.8202
+svfit: 152.773
+svfit: 146.765
+svfit: 152.775
+svfit: 69.5155
+svfit: 146.763
+Begin processing the 88th record. Run 1, Event 9603, LumiSection 97 at 20-Feb-2015 18:26:15.283 CET
+svfit: 136.397
+Begin processing the 89th record. Run 1, Event 9604, LumiSection 97 at 20-Feb-2015 18:26:15.284 CET
+svfit: 100.499
+Begin processing the 90th record. Run 1, Event 9606, LumiSection 97 at 20-Feb-2015 18:26:15.285 CET
+svfit: 121.105
+Begin processing the 91st record. Run 1, Event 9607, LumiSection 97 at 20-Feb-2015 18:26:15.286 CET
+svfit: 292.381
+svfit: 292.38
+Begin processing the 92nd record. Run 1, Event 9608, LumiSection 97 at 20-Feb-2015 18:26:15.288 CET
+svfit: 150.88
+Begin processing the 93rd record. Run 1, Event 9613, LumiSection 97 at 20-Feb-2015 18:26:15.289 CET
+svfit: 605.507
+svfit: 605.506
+svfit: 605.507
+Begin processing the 94th record. Run 1, Event 9614, LumiSection 97 at 20-Feb-2015 18:26:15.291 CET
+svfit: 74.1705
+svfit: 86.0146
+Begin processing the 95th record. Run 1, Event 9615, LumiSection 97 at 20-Feb-2015 18:26:15.292 CET
+svfit: 118.843
+svfit: 134.46
+Begin processing the 96th record. Run 1, Event 9621, LumiSection 97 at 20-Feb-2015 18:26:15.293 CET
+svfit: 305.812
+svfit: 255.904
+svfit: 81.754
+svfit: 217.272
+svfit: 187.415
+Begin processing the 97th record. Run 1, Event 9625, LumiSection 97 at 20-Feb-2015 18:26:15.295 CET
+svfit: 242.195
+svfit: 242.194
+Begin processing the 98th record. Run 1, Event 9626, LumiSection 97 at 20-Feb-2015 18:26:15.296 CET
+svfit: 107.101
+Begin processing the 99th record. Run 1, Event 9630, LumiSection 97 at 20-Feb-2015 18:26:15.297 CET
+svfit: 174.244
+Begin processing the 100th record. Run 1, Event 9634, LumiSection 97 at 20-Feb-2015 18:26:15.298 CET
+svfit: 132.892
+svfit: 102.282
+svfit: 15.272
+Begin processing the 101st record. Run 1, Event 9636, LumiSection 97 at 20-Feb-2015 18:26:15.300 CET
+svfit: 269.126
+svfit: 58.326
+svfit: 101.528
+Begin processing the 102nd record. Run 1, Event 9646, LumiSection 97 at 20-Feb-2015 18:26:15.301 CET
+svfit: 141.929
+Begin processing the 103rd record. Run 1, Event 9647, LumiSection 97 at 20-Feb-2015 18:26:15.302 CET
+svfit: 76.1813
+svfit: 118.597
+svfit: 88.4861
+Begin processing the 104th record. Run 1, Event 9648, LumiSection 97 at 20-Feb-2015 18:26:15.304 CET
+svfit: 41.5405
+Begin processing the 105th record. Run 1, Event 9650, LumiSection 97 at 20-Feb-2015 18:26:15.305 CET
+svfit: 100.401
+Begin processing the 106th record. Run 1, Event 9651, LumiSection 97 at 20-Feb-2015 18:26:15.306 CET
+svfit: 38.9109
+svfit: 107.8
+svfit: 107.799
+svfit: 125.166
+svfit: 125.165
+Begin processing the 107th record. Run 1, Event 9658, LumiSection 97 at 20-Feb-2015 18:26:15.308 CET
+svfit: 246.732
+svfit: 330.773
+svfit: 330.771
+svfit: 293.499
+svfit: 293.498
+Begin processing the 108th record. Run 1, Event 9667, LumiSection 97 at 20-Feb-2015 18:26:15.310 CET
+svfit: 112.275
+Begin processing the 109th record. Run 1, Event 9671, LumiSection 97 at 20-Feb-2015 18:26:15.310 CET
+svfit: 123.795
+svfit: 143.564
+Begin processing the 110th record. Run 1, Event 9672, LumiSection 97 at 20-Feb-2015 18:26:15.312 CET
+svfit: 66.0065
+Begin processing the 111th record. Run 1, Event 9677, LumiSection 97 at 20-Feb-2015 18:26:15.313 CET
+svfit: 298.76
+svfit: 306.228
+Begin processing the 112th record. Run 1, Event 9680, LumiSection 97 at 20-Feb-2015 18:26:15.314 CET
+svfit: 173.946
+Begin processing the 113th record. Run 1, Event 9682, LumiSection 97 at 20-Feb-2015 18:26:15.316 CET
+svfit: 247.848
+Begin processing the 114th record. Run 1, Event 9683, LumiSection 97 at 20-Feb-2015 18:26:15.317 CET
+svfit: 373.743
+svfit: 373.742
+Begin processing the 115th record. Run 1, Event 9689, LumiSection 97 at 20-Feb-2015 18:26:15.318 CET
+svfit: 53.0394
+Begin processing the 116th record. Run 1, Event 9690, LumiSection 97 at 20-Feb-2015 18:26:15.320 CET
+svfit: 186.457
+svfit: 129.211
+svfit: 166.547
+Begin processing the 117th record. Run 1, Event 9696, LumiSection 97 at 20-Feb-2015 18:26:15.321 CET
+svfit: 203.477
+svfit: 208.563
+Begin processing the 118th record. Run 1, Event 9697, LumiSection 97 at 20-Feb-2015 18:26:15.323 CET
+svfit: 98.684
+Begin processing the 119th record. Run 1, Event 9701, LumiSection 98 at 20-Feb-2015 18:26:15.325 CET
+svfit: 125.567
+svfit: 125.566
+Begin processing the 120th record. Run 1, Event 9702, LumiSection 98 at 20-Feb-2015 18:26:15.326 CET
+svfit: 97.8754
+svfit: 98.0137
+svfit: 100.322
+Begin processing the 121st record. Run 1, Event 9707, LumiSection 98 at 20-Feb-2015 18:26:15.327 CET
+svfit: 117.925
+Begin processing the 122nd record. Run 1, Event 9708, LumiSection 98 at 20-Feb-2015 18:26:15.328 CET
+svfit: 119.162
+Begin processing the 123rd record. Run 1, Event 9722, LumiSection 98 at 20-Feb-2015 18:26:15.330 CET
+svfit: 88.1979
+svfit: 88.1976
+svfit: 102.282
+Begin processing the 124th record. Run 1, Event 9723, LumiSection 98 at 20-Feb-2015 18:26:15.331 CET
+svfit: 113.412
+Begin processing the 125th record. Run 1, Event 9725, LumiSection 98 at 20-Feb-2015 18:26:15.332 CET
+svfit: 152.557
+Begin processing the 126th record. Run 1, Event 9735, LumiSection 98 at 20-Feb-2015 18:26:15.333 CET
+svfit: 255.402
+svfit: 77.6411
+svfit: 261.786
+svfit: 79.5808
+svfit: 143.605
+svfit: 143.603
+svfit: 143.604
+Begin processing the 127th record. Run 1, Event 9737, LumiSection 98 at 20-Feb-2015 18:26:15.335 CET
+svfit: 262.987
+Begin processing the 128th record. Run 1, Event 9740, LumiSection 98 at 20-Feb-2015 18:26:15.336 CET
+svfit: 120.381
+Begin processing the 129th record. Run 1, Event 9744, LumiSection 98 at 20-Feb-2015 18:26:15.337 CET
+svfit: 97.4522
+svfit: 97.4521
+svfit: 110.258
+Begin processing the 130th record. Run 1, Event 9746, LumiSection 98 at 20-Feb-2015 18:26:15.339 CET
+svfit: 160.096
+svfit: 172.406
+Begin processing the 131st record. Run 1, Event 9748, LumiSection 98 at 20-Feb-2015 18:26:15.340 CET
+svfit: 255.437
+svfit: 37.0322
+svfit: 416.676
+Begin processing the 132nd record. Run 1, Event 9751, LumiSection 98 at 20-Feb-2015 18:26:15.342 CET
+svfit: 95.2334
+svfit: 203.675
+svfit: 97.6138
+svfit: 111.64
+svfit: 114.43
+Begin processing the 133rd record. Run 1, Event 9752, LumiSection 98 at 20-Feb-2015 18:26:15.344 CET
+svfit: 207.396
+svfit: 217.895
+svfit: 223.343
+Begin processing the 134th record. Run 1, Event 9759, LumiSection 98 at 20-Feb-2015 18:26:15.345 CET
+svfit: 94.1807
+svfit: 98.9481
+Begin processing the 135th record. Run 1, Event 9766, LumiSection 98 at 20-Feb-2015 18:26:15.346 CET
+svfit: 97.1132
+Begin processing the 136th record. Run 1, Event 9769, LumiSection 98 at 20-Feb-2015 18:26:15.347 CET
+svfit: 204.955
+svfit: 120.246
+svfit: 62.3221
+svfit: 204.955
+svfit: 123.252
+Begin processing the 137th record. Run 1, Event 9773, LumiSection 98 at 20-Feb-2015 18:26:15.349 CET
+svfit: 392.398
+Begin processing the 138th record. Run 1, Event 9774, LumiSection 98 at 20-Feb-2015 18:26:15.350 CET
+svfit: 124.372
+svfit: 124.372
+svfit: 130.668
+Begin processing the 139th record. Run 1, Event 9778, LumiSection 98 at 20-Feb-2015 18:26:15.352 CET
+svfit: 246.769
+svfit: 252.938
+Begin processing the 140th record. Run 1, Event 9779, LumiSection 98 at 20-Feb-2015 18:26:15.353 CET
+svfit: 138.17
+svfit: 138.17
+Begin processing the 141st record. Run 1, Event 9786, LumiSection 98 at 20-Feb-2015 18:26:15.354 CET
+svfit: 61.9988
+Begin processing the 142nd record. Run 1, Event 9792, LumiSection 98 at 20-Feb-2015 18:26:15.355 CET
+svfit: 76.9915
+Begin processing the 143rd record. Run 1, Event 9796, LumiSection 98 at 20-Feb-2015 18:26:15.356 CET
+svfit: 579.919
+Begin processing the 144th record. Run 1, Event 9803, LumiSection 99 at 20-Feb-2015 18:26:15.358 CET
+svfit: 146.428
+svfit: 153.841
+Begin processing the 145th record. Run 1, Event 9806, LumiSection 99 at 20-Feb-2015 18:26:15.360 CET
+svfit: 120.842
+Begin processing the 146th record. Run 1, Event 9808, LumiSection 99 at 20-Feb-2015 18:26:15.361 CET
+svfit: 144.279
+Begin processing the 147th record. Run 1, Event 9810, LumiSection 99 at 20-Feb-2015 18:26:15.362 CET
+svfit: 111.186
+svfit: 111.185
+svfit: 128.941
+Begin processing the 148th record. Run 1, Event 9811, LumiSection 99 at 20-Feb-2015 18:26:15.364 CET
+svfit: 88.2738
+svfit: 84.0719
+svfit: 88.2733
+svfit: 41.0569
+svfit: 41.0561
+Begin processing the 149th record. Run 1, Event 9815, LumiSection 99 at 20-Feb-2015 18:26:15.365 CET
+svfit: 92.2834
+svfit: 92.2832
+Begin processing the 150th record. Run 1, Event 9829, LumiSection 99 at 20-Feb-2015 18:26:15.367 CET
+svfit: 69.8502
+svfit: 73.386
+Begin processing the 151st record. Run 1, Event 9830, LumiSection 99 at 20-Feb-2015 18:26:15.368 CET
+svfit: 145.626
+Begin processing the 152nd record. Run 1, Event 9832, LumiSection 99 at 20-Feb-2015 18:26:15.369 CET
+svfit: 58.2523
+Begin processing the 153rd record. Run 1, Event 9834, LumiSection 99 at 20-Feb-2015 18:26:15.370 CET
+svfit: 112.031
+svfit: 112.03
+Begin processing the 154th record. Run 1, Event 9836, LumiSection 99 at 20-Feb-2015 18:26:15.372 CET
+svfit: 192.189
+svfit: 145.307
+svfit: 207.879
+svfit: 119.813
+svfit: 63.389
+svfit: 27.2052
+svfit: 192.189
+svfit: 167.588
+svfit: 49.1795
+svfit: 145.307
+svfit: 234.66
+svfit: 213.076
+svfit: 119.242
+Begin processing the 155th record. Run 1, Event 9843, LumiSection 99 at 20-Feb-2015 18:26:15.375 CET
+svfit: 90.6516
+Begin processing the 156th record. Run 1, Event 9845, LumiSection 99 at 20-Feb-2015 18:26:15.376 CET
+svfit: 95.6662
+svfit: 98.0576
+Begin processing the 157th record. Run 1, Event 9846, LumiSection 99 at 20-Feb-2015 18:26:15.377 CET
+svfit: 320.475
+svfit: 320.474
+Begin processing the 158th record. Run 1, Event 9850, LumiSection 99 at 20-Feb-2015 18:26:15.378 CET
+svfit: 85.7637
+svfit: 90.36
+svfit: 85.7632
+svfit: 105.499
+svfit: 108.137
+Begin processing the 159th record. Run 1, Event 9857, LumiSection 99 at 20-Feb-2015 18:26:15.380 CET
+svfit: 232.081
+Begin processing the 160th record. Run 1, Event 9861, LumiSection 99 at 20-Feb-2015 18:26:15.381 CET
+svfit: 170.884
+Begin processing the 161st record. Run 1, Event 9862, LumiSection 99 at 20-Feb-2015 18:26:15.383 CET
+svfit: 130.149
+svfit: 130.149
+Begin processing the 162nd record. Run 1, Event 9863, LumiSection 99 at 20-Feb-2015 18:26:15.384 CET
+svfit: 56.2793
+Begin processing the 163rd record. Run 1, Event 9866, LumiSection 99 at 20-Feb-2015 18:26:15.385 CET
+svfit: 225.579
+svfit: 231.218
+Begin processing the 164th record. Run 1, Event 9871, LumiSection 99 at 20-Feb-2015 18:26:15.386 CET
+svfit: 122.933
+Begin processing the 165th record. Run 1, Event 9874, LumiSection 99 at 20-Feb-2015 18:26:15.387 CET
+svfit: 119.15
+Begin processing the 166th record. Run 1, Event 9881, LumiSection 99 at 20-Feb-2015 18:26:15.388 CET
+svfit: 129.797
+Begin processing the 167th record. Run 1, Event 9884, LumiSection 99 at 20-Feb-2015 18:26:15.390 CET
+svfit: 106.733
+Begin processing the 168th record. Run 1, Event 9898, LumiSection 99 at 20-Feb-2015 18:26:15.391 CET
+svfit: 39.5383
+Begin processing the 169th record. Run 1, Event 9899, LumiSection 99 at 20-Feb-2015 18:26:15.392 CET
+svfit: 225.783
+Begin processing the 170th record. Run 1, Event 9900, LumiSection 99 at 20-Feb-2015 18:26:15.393 CET
+svfit: 67.344
+svfit: 69.0274
+Begin processing the 171st record. Run 1, Event 14704, LumiSection 148 at 20-Feb-2015 18:26:15.395 CET
+svfit: 78.0777
+svfit: 78.0775
+Begin processing the 172nd record. Run 1, Event 14706, LumiSection 148 at 20-Feb-2015 18:26:15.396 CET
+svfit: 102.998
+svfit: 108.213
+Begin processing the 173rd record. Run 1, Event 14707, LumiSection 148 at 20-Feb-2015 18:26:15.397 CET
+svfit: 89.1511
+svfit: 91.379
+svfit: 143.474
+svfit: 91.604
+Begin processing the 174th record. Run 1, Event 14709, LumiSection 148 at 20-Feb-2015 18:26:15.399 CET
+svfit: 115.333
+svfit: 115.333
+Begin processing the 175th record. Run 1, Event 14711, LumiSection 148 at 20-Feb-2015 18:26:15.400 CET
+svfit: 102.645
+Begin processing the 176th record. Run 1, Event 14713, LumiSection 148 at 20-Feb-2015 18:26:15.401 CET
+svfit: 181.691
+svfit: 22.2889
+svfit: 185.591
+Begin processing the 177th record. Run 1, Event 14714, LumiSection 148 at 20-Feb-2015 18:26:15.403 CET
+svfit: 129.526
+Begin processing the 178th record. Run 1, Event 14715, LumiSection 148 at 20-Feb-2015 18:26:15.404 CET
+svfit: 95.0474
+svfit: 80.537
+svfit: 97.423
+svfit: 123.443
+Begin processing the 179th record. Run 1, Event 14721, LumiSection 148 at 20-Feb-2015 18:26:15.406 CET
+svfit: 153.828
+Begin processing the 180th record. Run 1, Event 14724, LumiSection 148 at 20-Feb-2015 18:26:15.407 CET
+svfit: 106.454
+Begin processing the 181st record. Run 1, Event 14725, LumiSection 148 at 20-Feb-2015 18:26:15.408 CET
+svfit: 110.068
+svfit: 110.067
+Begin processing the 182nd record. Run 1, Event 14730, LumiSection 148 at 20-Feb-2015 18:26:15.409 CET
+svfit: 169.481
+svfit: 169.481
+svfit: 353.653
+Begin processing the 183rd record. Run 1, Event 14731, LumiSection 148 at 20-Feb-2015 18:26:15.410 CET
+svfit: 172.448
+svfit: 172.447
+Begin processing the 184th record. Run 1, Event 14732, LumiSection 148 at 20-Feb-2015 18:26:15.412 CET
+svfit: 158.566
+Begin processing the 185th record. Run 1, Event 14735, LumiSection 148 at 20-Feb-2015 18:26:15.413 CET
+svfit: 97.7141
+svfit: 100.156
+Begin processing the 186th record. Run 1, Event 14736, LumiSection 148 at 20-Feb-2015 18:26:15.415 CET
+svfit: 121.981
+Begin processing the 187th record. Run 1, Event 14742, LumiSection 148 at 20-Feb-2015 18:26:15.416 CET
+svfit: 132.77
+Begin processing the 188th record. Run 1, Event 14744, LumiSection 148 at 20-Feb-2015 18:26:15.417 CET
+svfit: 157.206
+Begin processing the 189th record. Run 1, Event 14748, LumiSection 148 at 20-Feb-2015 18:26:15.418 CET
+svfit: 138.361
+Begin processing the 190th record. Run 1, Event 14749, LumiSection 148 at 20-Feb-2015 18:26:15.419 CET
+svfit: 112.687
+Begin processing the 191st record. Run 1, Event 14753, LumiSection 148 at 20-Feb-2015 18:26:15.420 CET
+svfit: 128.95
+svfit: 254.896
+svfit: 187.632
+Begin processing the 192nd record. Run 1, Event 14757, LumiSection 148 at 20-Feb-2015 18:26:15.421 CET
+svfit: 179.131
+Begin processing the 193rd record. Run 1, Event 14759, LumiSection 148 at 20-Feb-2015 18:26:15.423 CET
+svfit: 169.295
+svfit: 173.527
+Begin processing the 194th record. Run 1, Event 14760, LumiSection 148 at 20-Feb-2015 18:26:15.424 CET
+svfit: 245.472
+svfit: 251.606
+svfit: 251.608
+Begin processing the 195th record. Run 1, Event 14768, LumiSection 148 at 20-Feb-2015 18:26:15.425 CET
+svfit: 99.5516
+svfit: 112.633
+Begin processing the 196th record. Run 1, Event 14769, LumiSection 148 at 20-Feb-2015 18:26:15.427 CET
+svfit: 123.558
+Begin processing the 197th record. Run 1, Event 14770, LumiSection 148 at 20-Feb-2015 18:26:15.428 CET
+svfit: 282.437
+Begin processing the 198th record. Run 1, Event 14773, LumiSection 148 at 20-Feb-2015 18:26:15.429 CET
+svfit: 136.919
+Begin processing the 199th record. Run 1, Event 14774, LumiSection 148 at 20-Feb-2015 18:26:15.430 CET
+svfit: 149.419
+Begin processing the 200th record. Run 1, Event 14778, LumiSection 148 at 20-Feb-2015 18:26:15.431 CET
+svfit: 117.479
+svfit: 126.512
+Begin processing the 201st record. Run 1, Event 14781, LumiSection 148 at 20-Feb-2015 18:26:15.433 CET
+svfit: 138.262
+svfit: 141.718
+Begin processing the 202nd record. Run 1, Event 14782, LumiSection 148 at 20-Feb-2015 18:26:15.434 CET
+svfit: 112.36
+svfit: 112.36
+Begin processing the 203rd record. Run 1, Event 14784, LumiSection 148 at 20-Feb-2015 18:26:15.435 CET
+svfit: 151.805
+svfit: 151.805
+Begin processing the 204th record. Run 1, Event 14789, LumiSection 148 at 20-Feb-2015 18:26:15.436 CET
+svfit: 72.5948
+svfit: 76.2697
+Begin processing the 205th record. Run 1, Event 14791, LumiSection 148 at 20-Feb-2015 18:26:15.438 CET
+svfit: 113.119
+svfit: 121.816
+Begin processing the 206th record. Run 1, Event 14801, LumiSection 149 at 20-Feb-2015 18:26:15.440 CET
+svfit: 93.6881
+svfit: 93.6875
+svfit: 93.6878
+Begin processing the 207th record. Run 1, Event 14802, LumiSection 149 at 20-Feb-2015 18:26:15.441 CET
+svfit: 126.4
+Begin processing the 208th record. Run 1, Event 14806, LumiSection 149 at 20-Feb-2015 18:26:15.442 CET
+svfit: 96.2594
+svfit: 98.6655
+Begin processing the 209th record. Run 1, Event 14823, LumiSection 149 at 20-Feb-2015 18:26:15.443 CET
+svfit: 98.7973
+svfit: 179.47
+svfit: 600.596
+svfit: 109.356
+svfit: 600.596
+svfit: 600.596
+svfit: 471.944
+svfit: 471.944
+svfit: 471.943
+svfit: 173.427
+svfit: 173.427
+svfit: 173.426
+svfit: 322.331
+svfit: 322.331
+Begin processing the 210th record. Run 1, Event 14827, LumiSection 149 at 20-Feb-2015 18:26:15.447 CET
+svfit: 90.3347
+Begin processing the 211th record. Run 1, Event 14828, LumiSection 149 at 20-Feb-2015 18:26:15.448 CET
+svfit: 190.01
+Begin processing the 212th record. Run 1, Event 14839, LumiSection 149 at 20-Feb-2015 18:26:15.450 CET
+svfit: 189.44
+Begin processing the 213th record. Run 1, Event 14843, LumiSection 149 at 20-Feb-2015 18:26:15.451 CET
+svfit: 122.019
+Begin processing the 214th record. Run 1, Event 14845, LumiSection 149 at 20-Feb-2015 18:26:15.452 CET
+svfit: 105.968
+svfit: 105.968
+svfit: 105.968
+Begin processing the 215th record. Run 1, Event 14849, LumiSection 149 at 20-Feb-2015 18:26:15.453 CET
+svfit: 65.7597
+svfit: 69.0884
+Begin processing the 216th record. Run 1, Event 14852, LumiSection 149 at 20-Feb-2015 18:26:15.454 CET
+svfit: 90.8791
+Begin processing the 217th record. Run 1, Event 14856, LumiSection 149 at 20-Feb-2015 18:26:15.456 CET
+svfit: 264.478
+Begin processing the 218th record. Run 1, Event 14858, LumiSection 149 at 20-Feb-2015 18:26:15.457 CET
+svfit: 82.9179
+svfit: 199.821
+svfit: 147.788
+Begin processing the 219th record. Run 1, Event 14859, LumiSection 149 at 20-Feb-2015 18:26:15.458 CET
+svfit: 170.541
+Begin processing the 220th record. Run 1, Event 14861, LumiSection 149 at 20-Feb-2015 18:26:15.459 CET
+svfit: 283.414
+svfit: 283.413
+Begin processing the 221st record. Run 1, Event 14863, LumiSection 149 at 20-Feb-2015 18:26:15.460 CET
+svfit: 143.599
+svfit: 166.53
+Begin processing the 222nd record. Run 1, Event 14864, LumiSection 149 at 20-Feb-2015 18:26:15.462 CET
+svfit: 211.916
+Begin processing the 223rd record. Run 1, Event 14868, LumiSection 149 at 20-Feb-2015 18:26:15.463 CET
+svfit: 100.021
+svfit: 100.021
+svfit: 102.521
+Begin processing the 224th record. Run 1, Event 14872, LumiSection 149 at 20-Feb-2015 18:26:15.464 CET
+svfit: 144.243
+svfit: 141.851
+svfit: 48.0499
+Begin processing the 225th record. Run 1, Event 14873, LumiSection 149 at 20-Feb-2015 18:26:15.466 CET
+svfit: 110.67
+svfit: 119.179
+Begin processing the 226th record. Run 1, Event 14875, LumiSection 149 at 20-Feb-2015 18:26:15.468 CET
+svfit: 82.5101
+Begin processing the 227th record. Run 1, Event 14878, LumiSection 149 at 20-Feb-2015 18:26:15.469 CET
+svfit: 120.348
+svfit: 120.346
+Begin processing the 228th record. Run 1, Event 14879, LumiSection 149 at 20-Feb-2015 18:26:15.470 CET
+svfit: 171.177
+svfit: 171.177
+Begin processing the 229th record. Run 1, Event 14880, LumiSection 149 at 20-Feb-2015 18:26:15.471 CET
+svfit: 170.215
+Begin processing the 230th record. Run 1, Event 14887, LumiSection 149 at 20-Feb-2015 18:26:15.472 CET
+svfit: 92.338
+svfit: 92.3377
+Begin processing the 231st record. Run 1, Event 14889, LumiSection 149 at 20-Feb-2015 18:26:15.474 CET
+svfit: 712.092
+svfit: 712.089
+Begin processing the 232nd record. Run 1, Event 2102, LumiSection 22 at 20-Feb-2015 18:26:15.476 CET
+svfit: 74.557
+Begin processing the 233rd record. Run 1, Event 2104, LumiSection 22 at 20-Feb-2015 18:26:15.477 CET
+svfit: 123.331
+Begin processing the 234th record. Run 1, Event 2105, LumiSection 22 at 20-Feb-2015 18:26:15.478 CET
+svfit: 210.915
+svfit: 210.913
+Begin processing the 235th record. Run 1, Event 2107, LumiSection 22 at 20-Feb-2015 18:26:15.479 CET
+svfit: 609.101
+svfit: 609.099
+Begin processing the 236th record. Run 1, Event 2110, LumiSection 22 at 20-Feb-2015 18:26:15.480 CET
+svfit: 243.068
+svfit: 48.1258
+svfit: 243.067
+svfit: 115.849
+svfit: 115.848
+Begin processing the 237th record. Run 1, Event 2113, LumiSection 22 at 20-Feb-2015 18:26:15.482 CET
+svfit: 118.444
+svfit: 118.444
+svfit: 121.405
+Begin processing the 238th record. Run 1, Event 2119, LumiSection 22 at 20-Feb-2015 18:26:15.483 CET
+svfit: 140.966
+Begin processing the 239th record. Run 1, Event 2120, LumiSection 22 at 20-Feb-2015 18:26:15.484 CET
+svfit: 90.2864
+svfit: 90.2862
+Begin processing the 240th record. Run 1, Event 2125, LumiSection 22 at 20-Feb-2015 18:26:15.486 CET
+svfit: 58.9431
+svfit: 73.6112
+Begin processing the 241st record. Run 1, Event 2126, LumiSection 22 at 20-Feb-2015 18:26:15.487 CET
+svfit: 119.945
+Begin processing the 242nd record. Run 1, Event 2128, LumiSection 22 at 20-Feb-2015 18:26:15.489 CET
+svfit: 79.5463
+svfit: 73.7099
+Begin processing the 243rd record. Run 1, Event 2134, LumiSection 22 at 20-Feb-2015 18:26:15.490 CET
+svfit: 139.049
+svfit: 110.97
+svfit: 22.4252
+svfit: 139.049
+svfit: 113.744
+Begin processing the 244th record. Run 1, Event 2136, LumiSection 22 at 20-Feb-2015 18:26:15.492 CET
+svfit: 58.4858
+svfit: 94.095
+svfit: 134.703
+Begin processing the 245th record. Run 1, Event 2146, LumiSection 22 at 20-Feb-2015 18:26:15.493 CET
+svfit: 116.432
+svfit: 116.432
+svfit: 107.924
+Begin processing the 246th record. Run 1, Event 2152, LumiSection 22 at 20-Feb-2015 18:26:15.495 CET
+svfit: 130.854
+svfit: 148.049
+Begin processing the 247th record. Run 1, Event 2153, LumiSection 22 at 20-Feb-2015 18:26:15.496 CET
+svfit: 139.553
+svfit: 146.617
+Begin processing the 248th record. Run 1, Event 2156, LumiSection 22 at 20-Feb-2015 18:26:15.497 CET
+svfit: 118.191
+Begin processing the 249th record. Run 1, Event 2157, LumiSection 22 at 20-Feb-2015 18:26:15.499 CET
+svfit: 136.7
+Begin processing the 250th record. Run 1, Event 2160, LumiSection 22 at 20-Feb-2015 18:26:15.499 CET
+svfit: 125.433
+Begin processing the 251st record. Run 1, Event 2166, LumiSection 22 at 20-Feb-2015 18:26:15.501 CET
+svfit: 198.604
+Begin processing the 252nd record. Run 1, Event 2167, LumiSection 22 at 20-Feb-2015 18:26:15.502 CET
+svfit: 116.993
+Begin processing the 253rd record. Run 1, Event 2170, LumiSection 22 at 20-Feb-2015 18:26:15.503 CET
+svfit: 114.85
+svfit: 105.274
+svfit: 109.142
+svfit: 117.721
+svfit: 105.274
+Begin processing the 254th record. Run 1, Event 2174, LumiSection 22 at 20-Feb-2015 18:26:15.505 CET
+svfit: 66.9574
+svfit: 71.6395
+Begin processing the 255th record. Run 1, Event 2175, LumiSection 22 at 20-Feb-2015 18:26:15.506 CET
+svfit: 138.238
+svfit: 122.47
+svfit: 103.388
+svfit: 95.7371
+Begin processing the 256th record. Run 1, Event 2180, LumiSection 22 at 20-Feb-2015 18:26:15.508 CET
+svfit: 117.375
+Begin processing the 257th record. Run 1, Event 2182, LumiSection 22 at 20-Feb-2015 18:26:15.509 CET
+svfit: 42.0542
+Begin processing the 258th record. Run 1, Event 2185, LumiSection 22 at 20-Feb-2015 18:26:15.510 CET
+svfit: 125.954
+Begin processing the 259th record. Run 1, Event 2187, LumiSection 22 at 20-Feb-2015 18:26:15.511 CET
+svfit: 57.6379
+svfit: 125.608
+svfit: 165.528
+svfit: 75.1857
+svfit: 56.232
+svfit: 69.2832
+svfit: 125.608
+svfit: 16.0864
+Begin processing the 260th record. Run 1, Event 2188, LumiSection 22 at 20-Feb-2015 18:26:15.513 CET
+svfit: 113.205
+Begin processing the 261st record. Run 1, Event 2189, LumiSection 22 at 20-Feb-2015 18:26:15.514 CET
+svfit: 123.488
+Begin processing the 262nd record. Run 1, Event 2192, LumiSection 22 at 20-Feb-2015 18:26:15.515 CET
+svfit: 109.245
+svfit: 109.245
+Begin processing the 263rd record. Run 1, Event 2194, LumiSection 22 at 20-Feb-2015 18:26:15.517 CET
+svfit: 75.5169
+Begin processing the 264th record. Run 1, Event 2199, LumiSection 22 at 20-Feb-2015 18:26:15.518 CET
+svfit: 194.957
+svfit: 194.956
+Begin processing the 265th record. Run 1, Event 2200, LumiSection 22 at 20-Feb-2015 18:26:15.519 CET
+svfit: 162.313
+Begin processing the 266th record. Run 1, Event 2205, LumiSection 23 at 20-Feb-2015 18:26:15.521 CET
+svfit: 115.768
+Begin processing the 267th record. Run 1, Event 2207, LumiSection 23 at 20-Feb-2015 18:26:15.522 CET
+svfit: 572.511
+svfit: 631.944
+Begin processing the 268th record. Run 1, Event 2210, LumiSection 23 at 20-Feb-2015 18:26:15.523 CET
+svfit: 119.786
+svfit: 94.3628
+Begin processing the 269th record. Run 1, Event 2212, LumiSection 23 at 20-Feb-2015 18:26:15.524 CET
+svfit: 111.659
+Begin processing the 270th record. Run 1, Event 2213, LumiSection 23 at 20-Feb-2015 18:26:15.525 CET
+svfit: 81.0208
+svfit: 83.0459
+Begin processing the 271st record. Run 1, Event 2217, LumiSection 23 at 20-Feb-2015 18:26:15.526 CET
+svfit: 117.985
+Begin processing the 272nd record. Run 1, Event 2220, LumiSection 23 at 20-Feb-2015 18:26:15.527 CET
+svfit: 227.772
+Begin processing the 273rd record. Run 1, Event 2225, LumiSection 23 at 20-Feb-2015 18:26:15.528 CET
+svfit: 110.779
+Begin processing the 274th record. Run 1, Event 2238, LumiSection 23 at 20-Feb-2015 18:26:15.529 CET
+svfit: 313.69
+svfit: 104.146
+svfit: 173.227
+svfit: 104.146
+svfit: 459.408
+svfit: 34.5732
+svfit: 459.408
+svfit: 273.974
+svfit: 273.974
+Begin processing the 275th record. Run 1, Event 2239, LumiSection 23 at 20-Feb-2015 18:26:15.532 CET
+svfit: 140.557
+Begin processing the 276th record. Run 1, Event 2240, LumiSection 23 at 20-Feb-2015 18:26:15.533 CET
+svfit: 183.401
+Begin processing the 277th record. Run 1, Event 2242, LumiSection 23 at 20-Feb-2015 18:26:15.534 CET
+svfit: 102.991
+svfit: 102.99
+Begin processing the 278th record. Run 1, Event 2244, LumiSection 23 at 20-Feb-2015 18:26:15.535 CET
+svfit: 92.3654
+svfit: 92.3652
+Begin processing the 279th record. Run 1, Event 2247, LumiSection 23 at 20-Feb-2015 18:26:15.537 CET
+svfit: 102.351
+Begin processing the 280th record. Run 1, Event 2250, LumiSection 23 at 20-Feb-2015 18:26:15.538 CET
+svfit: 103.159
+Begin processing the 281st record. Run 1, Event 2259, LumiSection 23 at 20-Feb-2015 18:26:15.539 CET
+svfit: 184.93
+svfit: 184.93
+Begin processing the 282nd record. Run 1, Event 2267, LumiSection 23 at 20-Feb-2015 18:26:15.540 CET
+svfit: 153.669
+svfit: 153.668
+Begin processing the 283rd record. Run 1, Event 2268, LumiSection 23 at 20-Feb-2015 18:26:15.541 CET
+svfit: 101.651
+Begin processing the 284th record. Run 1, Event 2271, LumiSection 23 at 20-Feb-2015 18:26:15.542 CET
+svfit: 126.721
+svfit: 47.152
+svfit: 75.9906
+Begin processing the 285th record. Run 1, Event 2272, LumiSection 23 at 20-Feb-2015 18:26:15.543 CET
+svfit: 89.0095
+svfit: 89.0087
+svfit: 91.5312
+Begin processing the 286th record. Run 1, Event 2274, LumiSection 23 at 20-Feb-2015 18:26:15.545 CET
+svfit: 138.205
+Begin processing the 287th record. Run 1, Event 2283, LumiSection 23 at 20-Feb-2015 18:26:15.546 CET
+svfit: 391.306
+Begin processing the 288th record. Run 1, Event 2288, LumiSection 23 at 20-Feb-2015 18:26:15.547 CET
+svfit: 136.407
+svfit: 136.406
+svfit: 136.406
+Begin processing the 289th record. Run 1, Event 2291, LumiSection 23 at 20-Feb-2015 18:26:15.548 CET
+svfit: 958.756
+Begin processing the 290th record. Run 1, Event 2295, LumiSection 23 at 20-Feb-2015 18:26:15.550 CET
+svfit: 255.971
+svfit: 262.369
+20-Feb-2015 18:26:15 CET  Closed file file:/afs/cern.ch/work/m/molszews/CMSSW/Data/SVFitProducer.root
+
+=============================================
+
+MessageLogger Summary
+
+ type     category        sev    module        subroutine        count    total
+ ---- -------------------- -- ---------------- ----------------  -----    -----
+    1 fileAction           -s file_close                             1        1
+    2 fileAction           -s file_open                              2        2
+
+ type    category    Examples: run/evt        run/evt          run/evt
+ ---- -------------------- ---------------- ---------------- ----------------
+    1 fileAction           PostEndRun                        
+    2 fileAction           pre-events       pre-events       
+
+Severity    # Occurrences   Total Occurrences
+--------    -------------   -----------------
+System                  3                   3
