@@ -174,12 +174,12 @@ PairBaselineSelection::produce(edm::Event& iEvent, const edm::EventSetup& iSetup
         l1 = lP.daughter("leptonOne"); l2 = lP.daughter("leptonTwo");
         if (l1->isMuon()){
             if (l2->isMuon()){
-                std::cout << "muon-muon channel" <<std::endl;
+                //std::cout << "muon-muon channel" <<std::endl;
 //                const pat::Muon *mu  = dynamic_cast<const pat::Muon*>(l1);
 //                const pat::Muon *mu_  = dynamic_cast<const pat::Muon*>(l2);
             }
             else if(l2->isElectron()){
-                std::cout << "muon-electron channel" <<std::endl;
+                //std::cout << "muon-electron channel" <<std::endl;
                 const pat::Muon *mu  = dynamic_cast<const pat::Muon*>(l1);
                 const pat::Electron* el = dynamic_cast<const pat::Electron*>(l2);
                 if(abs(el->gsfTrack()->dxy(PV.position()))  >= 0.045 || abs(el->gsfTrack()->dz(PV.position())) >= 0.2 )
@@ -202,7 +202,7 @@ PairBaselineSelection::produce(edm::Event& iEvent, const edm::EventSetup& iSetup
                     continue;
             }
             else {
-                std::cout << "muon-tau channell" <<std::endl;
+                //std::cout << "muon-tau channell" <<std::endl;
                 const pat::Muon *mu  = dynamic_cast<const pat::Muon*>(l1);
                 const pat::Tau* tau = dynamic_cast<const pat::Tau*>(l2);
                 if(abs(mu->innerTrack()->dxy( PV.position()) )  >= 0.045 || abs(mu->innerTrack()->dz(PV.position())) >= 0.2 )
@@ -263,7 +263,7 @@ PairBaselineSelection::produce(edm::Event& iEvent, const edm::EventSetup& iSetup
         }
         else if(l1->isElectron()){
             if (l2->isMuon()){
-                std::cout << "muon-electron channel" <<std::endl;
+                //std::cout << "muon-electron channel" <<std::endl;
                 const pat::Electron* el = dynamic_cast<const pat::Electron*>(l1);
                 const pat::Muon *mu  = dynamic_cast<const pat::Muon*>(l2);
                 if(abs(el->gsfTrack()->dxy(PV.position()))  >= 0.045 || abs(el->gsfTrack()->dz(PV.position())) >= 0.2 )
@@ -286,12 +286,12 @@ PairBaselineSelection::produce(edm::Event& iEvent, const edm::EventSetup& iSetup
                     continue;
             }
             else if(l2->isElectron()){
-                std::cout << "electron-electron channel" <<std::endl;
+                //std::cout << "electron-electron channel" <<std::endl;
   //              const pat::Electron* el = dynamic_cast<const pat::Electron*>(l1);
   //              const pat::Electron* el_ = dynamic_cast<const pat::Electron*>(l2);
             }
             else {
-                std::cout << "electron-tau channel" <<std::endl;
+                //std::cout << "electron-tau channel" <<std::endl;
                 const pat::Electron* el = dynamic_cast<const pat::Electron*>(l1);
                 const pat::Tau* tau = dynamic_cast<const pat::Tau*>(l2);
 
@@ -346,7 +346,7 @@ PairBaselineSelection::produce(edm::Event& iEvent, const edm::EventSetup& iSetup
         }
         else {
             if (l2->isMuon()){
-                std::cout << "muon-tau channel" <<std::endl;
+                //std::cout << "muon-tau channel" <<std::endl;
                 const pat::Tau* tau = dynamic_cast<const pat::Tau*>(l1);
                 const pat::Muon *mu  = dynamic_cast<const pat::Muon*>(l2);
                 if(abs(mu->innerTrack()->dxy( PV.position()) )  >= 0.045 || abs(mu->innerTrack()->dz(PV.position())) >= 0.2 )
@@ -406,7 +406,7 @@ PairBaselineSelection::produce(edm::Event& iEvent, const edm::EventSetup& iSetup
                 }
             }
             else if(l2->isElectron()){
-                std::cout << "electron-tau channel" <<std::endl;
+                //std::cout << "electron-tau channel" <<std::endl;
                 const pat::Tau* tau = dynamic_cast<const pat::Tau*>(l1);
                 const pat::Electron* el = dynamic_cast<const pat::Electron*>(l2);
 
@@ -457,7 +457,7 @@ PairBaselineSelection::produce(edm::Event& iEvent, const edm::EventSetup& iSetup
                 }
             }
             else {
-                std::cout << "tau-tau channel" <<std::endl;
+                //std::cout << "tau-tau channel" <<std::endl;
                 const pat::Tau* tau = dynamic_cast<const pat::Tau*>(l1);
                 const pat::Tau* tau_ = dynamic_cast<const pat::Tau*>(l2);
                 //leading and trailing taus has the same cuts so far => no if needed

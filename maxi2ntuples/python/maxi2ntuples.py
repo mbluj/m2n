@@ -33,7 +33,7 @@ process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1) )
 process.source = cms.Source("PoolSource",
     # replace 'myfile.root' with the source file you want to use
     fileNames = cms.untracked.vstring(
-        'file:/opt/CMMSW/Data/m2m/GluGluToHToTauTau/GluGluToHToTauTau_10.root'
+        'file:/opt/CMMSW/Data/enritchedGluGluToHToTauTau.root'
     )
 )
 
@@ -54,12 +54,12 @@ process.jetsSelected = cms.EDFilter("PATJetSelector",
 
 ############### PAIRS #############################
 process.mutauPairs = cms.EDProducer("ChannelSelector",
-    pairs = cms.InputTag("svfit"),
+    pairs = cms.InputTag("pairs"),
     channel = cms.string("mutau"),
 )
 
 process.baselineselected = cms.EDProducer("PairBaselineSelection",
-    pairs = cms.InputTag("svfit"),
+    pairs = cms.InputTag("mutauPairs"),
     vertices = cms.InputTag("offlineSlimmedPrimaryVertices"),
     muons = cms.InputTag("slimmedMuons"),
     electrons = cms.InputTag("slimmedElectrons"),
@@ -68,11 +68,13 @@ process.baselineselected = cms.EDProducer("PairBaselineSelection",
 
 process.mutauClean = cms.EDProducer('PATPairSelector',
     pairs = cms.InputTag("baselineselected"), 
-    muCut = cms.string('pt > 18. & abs(eta) < 2.1'),
+    muCut = cms.string(''
+#        'pt > 18. & abs(eta) < 2.1'
+        ),
     elCut = cms.string(''),
-    tauCut = cms.string(
-        "tauID('byCombinedIsolationDeltaBetaCorrRaw3Hits') < 1.5 & "
-        "tauID('againstMuonTight3')"
+    tauCut = cms.string(''
+#        "tauID('byCombinedIsolationDeltaBetaCorrRaw3Hits') < 1.5 & "
+#        "tauID('againstMuonTight3')"
         ),
     deltaR_ = cms.double(0.),
 )
