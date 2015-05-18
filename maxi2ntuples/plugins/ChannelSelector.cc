@@ -39,7 +39,6 @@
 #include <DataFormats/METReco/interface/PFMET.h>
 #include <DataFormats/METReco/interface/PFMETCollection.h>
 #include <DataFormats/METReco/interface/CommonMETData.h>
-#include <TauAnalysis/SVfitStandalone/interface/SVfitStandaloneAlgorithm.h>
 
 #include "DataFormats/VertexReco/interface/VertexFwd.h"
 #include "DataFormats/VertexReco/interface/Vertex.h"
@@ -142,12 +141,12 @@ ChannelSelector::produce(edm::Event& iEvent, const edm::EventSetup& iSetup)
 
     std::unique_ptr<pat::CompositeCandidateCollection> selectedPair(new pat::CompositeCandidateCollection());
     
-
+    if (!leptonPair.isValid()) return;
 
     for (const pat::CompositeCandidate &lP : *leptonPair){
 
         const reco::Candidate * l1, *l2; 
-        l1 = lP.daughter("leptonOne"); l2 = lP.daughter("leptonTwo");
+        l1 = lP.daughter(0); l2 = lP.daughter(1);
 
         std::string leg = "";  std::string leg_ = "";
         if(l1->isMuon())
@@ -164,7 +163,6 @@ ChannelSelector::produce(edm::Event& iEvent, const edm::EventSetup& iSetup)
         else
             leg_ += "tau";
         
-
         if( !(channel == leg + leg_ || channel == leg_ + leg))
             continue;
 

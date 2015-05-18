@@ -38,7 +38,6 @@
 #include <DataFormats/METReco/interface/PFMET.h>
 #include <DataFormats/METReco/interface/PFMETCollection.h>
 #include <DataFormats/METReco/interface/CommonMETData.h>
-#include <TauAnalysis/SVfitStandalone/interface/SVfitStandaloneAlgorithm.h>
 
 #include "DataFormats/VertexReco/interface/VertexFwd.h"
 #include "DataFormats/VertexReco/interface/Vertex.h"
@@ -164,6 +163,8 @@ PairBaselineSelection::produce(edm::Event& iEvent, const edm::EventSetup& iSetup
 
     edm::Handle<pat::CompositeCandidateCollection> leptonPair;
     iEvent.getByToken(PairToken_, leptonPair);
+    if (!leptonPair.isValid()) return;
+
 
     std::unique_ptr<pat::CompositeCandidateCollection> selectedPair(new pat::CompositeCandidateCollection());
     
@@ -171,7 +172,7 @@ PairBaselineSelection::produce(edm::Event& iEvent, const edm::EventSetup& iSetup
     for (const pat::CompositeCandidate &lP : *leptonPair){
 
         const reco::Candidate * l1, *l2; 
-        l1 = lP.daughter("leptonOne"); l2 = lP.daughter("leptonTwo");
+        l1 = lP.daughter(0); l2 = lP.daughter(1);
         if (l1->isMuon()){
             if (l2->isMuon()){
                 //std::cout << "muon-muon channel" <<std::endl;
@@ -179,6 +180,7 @@ PairBaselineSelection::produce(edm::Event& iEvent, const edm::EventSetup& iSetup
 //                const pat::Muon *mu_  = dynamic_cast<const pat::Muon*>(l2);
             }
             else if(l2->isElectron()){
+            /*
                 //std::cout << "muon-electron channel" <<std::endl;
                 const pat::Muon *mu  = dynamic_cast<const pat::Muon*>(l1);
                 const pat::Electron* el = dynamic_cast<const pat::Electron*>(l2);
@@ -200,11 +202,13 @@ PairBaselineSelection::produce(edm::Event& iEvent, const edm::EventSetup& iSetup
                     continue;
                 if (mu->pt() <= 9 || abs(mu->eta()) >= 2.4)
                     continue;
+            */
             }
             else {
                 //std::cout << "muon-tau channell" <<std::endl;
-                const pat::Muon *mu  = dynamic_cast<const pat::Muon*>(l1);
-                const pat::Tau* tau = dynamic_cast<const pat::Tau*>(l2);
+               const pat::Muon* mu = dynamic_cast<const pat::Muon*>(l1->masterClone().get());
+               const pat::Tau* tau = dynamic_cast<const pat::Tau*>(l2->masterClone().get());
+                
                 if(abs(mu->innerTrack()->dxy( PV.position()) )  >= 0.045 || abs(mu->innerTrack()->dz(PV.position())) >= 0.2 )
                     continue;
                 if (!utilities::heppymuonID(*mu, "POG_ID_Medium"))
@@ -213,15 +217,14 @@ PairBaselineSelection::produce(edm::Event& iEvent, const edm::EventSetup& iSetup
                     continue;
                 if (mu->pt() <= 18 && abs(mu->eta()) >= 2.1)
                     continue;
-
+                /*
                 if( tau->tauID("decayModeFinding") <= 0.5 || 
                     tau->tauID("decayModeFindingNewDMs") <= 0.5 ||  
                     tau->tauID("againstElectronVLooseMVA5") <= 0.5 ||
                     tau->tauID("againstMuonTight3") <= 0.5 ||
                     tau->vertex() != PV.position()) 
                     continue;
-                if(tau->tauID("byCombinedIsolationDeltaBetaCorrRaw3Hits") >= 1.5)
-                    continue;
+               */
                 if (tau->pt() <= 20 and abs(tau->eta()) >= 2.3)
                     continue;
                 // VETO
@@ -259,8 +262,9 @@ PairBaselineSelection::produce(edm::Event& iEvent, const edm::EventSetup& iSetup
                                 continue;
                     }
                 }
+                
             }
-        }
+        }/*
         else if(l1->isElectron()){
             if (l2->isMuon()){
                 //std::cout << "muon-electron channel" <<std::endl;
@@ -488,7 +492,7 @@ PairBaselineSelection::produce(edm::Event& iEvent, const edm::EventSetup& iSetup
 //                }
             }
         
-        }
+        }*/
 
 
 

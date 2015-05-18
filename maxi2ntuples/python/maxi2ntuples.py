@@ -33,7 +33,7 @@ process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1) )
 process.source = cms.Source("PoolSource",
     # replace 'myfile.root' with the source file you want to use
     fileNames = cms.untracked.vstring(
-        'file:/opt/CMMSW/Data/enritchedGluGluToHToTauTau.root'
+        'file:/opt/CMMSW/Data/Enriched_miniAOD.root'
     )
 )
 
@@ -53,8 +53,14 @@ process.jetsSelected = cms.EDFilter("PATJetSelector",
 
 
 ############### PAIRS #############################
+
+process.pairswithmet = cms.EDProducer("AddMVAMET",
+    pairs = cms.InputTag("SVllCand"),
+    mets = cms.InputTag("slimmedMETs"),
+)
+
 process.mutauPairs = cms.EDProducer("ChannelSelector",
-    pairs = cms.InputTag("pairs"),
+    pairs = cms.InputTag("pairswithmet"),
     channel = cms.string("mutau"),
 )
 
@@ -98,12 +104,16 @@ process.m2n = cms.EDAnalyzer('maxi2ntuples',
     bits = cms.InputTag("TriggerResults","","HLT"),
     prescales = cms.InputTag("patTrigger"),
     objects = cms.InputTag("selectedPatTrigger"),
-
+    prunedGenParticles = cms.InputTag("prunedGenParticles"),
+    packedGenParticles = cms.InputTag("packedGenParticles"),
+    lheprod = cms.InputTag("externalLHEProducer"),
+    pileupinfo = cms.InputTag("addPileupInfo"),
 )
 
 process.p = cms.Path(
-        process.jetsSelected* 
-        process.mutauPairs* process.baselineselected* process.mutauClean* 
+        process.jetsSelected*
+        process.pairswithmet*
+        process.mutauPairs* process.baselineselected* process.mutauClean*
         process.paircheck*
         process.m2n
 )

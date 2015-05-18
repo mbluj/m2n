@@ -16,6 +16,10 @@
 <use name="DataFormats/PatCandidates"/>
 <use name="DataFormats/TauReco"/>
 <use name="DataFormats/VertexReco"/>
+<use name="DataFormats/Math"/>
+<use name="DataFormats/MuonReco"/>
+<use name="DataFormats/RecoCandidate"/>
+<use name="CommonTools/CandUtils"/>
 <use name="m2n/maxi2ntuples"/>
 <use name="root"/>
 <use name="roottmva"/>

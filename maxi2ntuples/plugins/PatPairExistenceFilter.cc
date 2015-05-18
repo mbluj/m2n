@@ -117,6 +117,7 @@ PatPairExistenceFilter::filter(edm::Event& iEvent, const edm::EventSetup& iSetup
     using namespace edm;
     Handle<pat::CompositeCandidateCollection> pairs;
     iEvent.getByToken(pairsToken_, pairs);
+    if (!pairs.isValid()) return false;
 
     if(pairs->size() == 0 ) return false;
     else return true;

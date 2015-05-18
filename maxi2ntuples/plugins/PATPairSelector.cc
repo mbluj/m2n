@@ -39,7 +39,6 @@
 #include <DataFormats/METReco/interface/PFMET.h>
 #include <DataFormats/METReco/interface/PFMETCollection.h>
 #include <DataFormats/METReco/interface/CommonMETData.h>
-#include <TauAnalysis/SVfitStandalone/interface/SVfitStandaloneAlgorithm.h>
 
 #include "DataFormats/VertexReco/interface/VertexFwd.h"
 #include "DataFormats/VertexReco/interface/Vertex.h"
@@ -147,41 +146,42 @@ PATPairSelector::produce(edm::Event& iEvent, const edm::EventSetup& iSetup)
     using namespace edm;
     edm::Handle<pat::CompositeCandidateCollection> leptonPair;
     iEvent.getByToken(PairToken_, leptonPair);
+    if (!leptonPair.isValid()) return;
 
     std::unique_ptr<pat::CompositeCandidateCollection> selectedPair(new pat::CompositeCandidateCollection());
 
     for (const pat::CompositeCandidate &lP : *leptonPair){
 
         const reco::Candidate * l1, *l2; 
-        l1 = lP.daughter("leptonOne"); l2 = lP.daughter("leptonTwo");
+        l1 = lP.daughter(0)->masterClone().get(); l2 = lP.daughter(1)->masterClone().get();
 
         if ( deltaR(l1->eta(), l1->phi(), l2->eta(), l2->phi()) < deltaR_ )
             continue;
 
         if (l1->isMuon()){
-            const pat::Muon *mu = dynamic_cast<const pat::Muon*>(lP.daughter("leptonOne"));    
+            const pat::Muon *mu = dynamic_cast<const pat::Muon*>(l1);    
             if (!muCut(*mu)) 
                 continue;
         } else if(l1->isElectron()){
-            const pat::Electron* el = dynamic_cast<const pat::Electron*>(lP.daughter("leptonOne"));
+            const pat::Electron* el = dynamic_cast<const pat::Electron*>(l1);
             if (!elCut(*el)) 
                 continue;
         } else{
-            const pat::Tau* tau = dynamic_cast<const pat::Tau*>(lP.daughter("leptonOne"));
+            const pat::Tau* tau = dynamic_cast<const pat::Tau*>(l1);
             if (!tauCut(*tau)) 
                 continue;
         }
 
         if (l2->isMuon()){
-            const pat::Muon *mu = dynamic_cast<const pat::Muon*>(lP.daughter("leptonTwo"));    
+            const pat::Muon *mu = dynamic_cast<const pat::Muon*>(l2);    
             if (!muCut(*mu)) 
                 continue;
         } else if(l2->isElectron()){
-            const pat::Electron* el = dynamic_cast<const pat::Electron*>(lP.daughter("leptonTwo"));
+            const pat::Electron* el = dynamic_cast<const pat::Electron*>(l2);
             if (!elCut(*el)) 
                 continue;
         } else{
-            const pat::Tau* tau = dynamic_cast<const pat::Tau*>(lP.daughter("leptonTwo"));
+            const pat::Tau* tau = dynamic_cast<const pat::Tau*>(l2);
             if (!tauCut(*tau))
                 continue;
         }
