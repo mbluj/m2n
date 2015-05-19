@@ -116,9 +116,9 @@ class maxi2ntuples : public edm::EDAnalyzer {
     TTree * t;                                                                                                //<--------------------------------------------------------------------------------------------------------------
     ///////////////////////////// P A I R     S P E C I F I C: ////////////////////////////////
     std::vector<float> 
-        mupt, muphi, mueta, mum, muq, mud0, mudz, mumt,
+        mupt, muphi, mueta, mum, muq, mud0, mudz, mumt, isLooseMuon, isTightMuon, isHighPtMuon, isMediumMuon, isTightnovtxMuon,
         taupt, tauphi, taueta, taum, tauq, taumt,
-        svfit, metpx, metpt, metphi, metsumEt, mucombreliso, decayModeFinding;
+        svfit, metpx, metpt, metphi, metsumEt, muiso, decayModeFinding;
     std::vector<int> diq;
     std::vector<float>  // decayModeFindingOldDMs, 
         decayModeFindingNewDMs, byCombinedIsolationDeltaBetaCorrRaw3Hits, lbyCombinedIsolationDeltaBetaCorrRaw3Hits, mbyCombinedIsolationDeltaBetaCorrRaw3Hits, tbyCombinedIsolationDeltaBetaCorrRaw3Hits, chargedIsoPtSum, neutralIsoPtSum,
@@ -139,8 +139,7 @@ class maxi2ntuples : public edm::EDAnalyzer {
     bool isZtt, isZmt, isZet, isZee, isZmm, isZem, isZEE, isZMM, isZLL;
     int  isFake, nup;
 
-      short isLooseMuon;
-     float isTightMuon, isHighPtMuon, isMediumMuon, isTightnovtxMuon ;
+     
 };
 
 //
@@ -232,7 +231,7 @@ maxi2ntuples::maxi2ntuples(const edm::ParameterSet& iConfig):
     t->Branch("mvacov10",&mvacov10); 
     t->Branch("mvacov11",&mvacov11); 
 
-    t->Branch("mucombreliso", &mucombreliso);
+    t->Branch("muiso", &muiso);
     t->Branch("jetpt", &jetpt);
     t->Branch("pujetid", &pujetid);
     t->Branch("jetbptag", &jetbptag);
@@ -286,6 +285,7 @@ maxi2ntuples::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     using namespace edm;
  
     mupt.clear(); muphi.clear(); mueta.clear(); mum.clear(); muq.clear(); mud0.clear(); mudz.clear(); mumt.clear();
+    isLooseMuon.clear(); isTightMuon.clear(); isHighPtMuon.clear(); isHighPtMuon.clear();
     taupt.clear(); tauphi.clear(); taueta.clear(); taum.clear(); tauq.clear(); taumt.clear();
     svfit.clear(); 
     metpx.clear(); metpt.clear(); metphi.clear(); metsumEt.clear();                                    //<----------------------------------------------------
@@ -296,7 +296,7 @@ maxi2ntuples::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 
     mvacov00.clear();mvacov01.clear();mvacov10.clear();mvacov11.clear();
 
-    mucombreliso.clear(); decayModeFinding.clear();
+    muiso.clear(); decayModeFinding.clear();
     byCombinedIsolationDeltaBetaCorrRaw3Hits.clear(); lbyCombinedIsolationDeltaBetaCorrRaw3Hits.clear();  mbyCombinedIsolationDeltaBetaCorrRaw3Hits.clear(); tbyCombinedIsolationDeltaBetaCorrRaw3Hits.clear(); chargedIsoPtSum.clear();
     neutralIsoPtSum.clear(); puCorrPtSum.clear(); againstMuonLoose3.clear(); againstMuonTight3.clear(); 
     againstElectronVLooseMVA5.clear(); againstElectronLooseMVA5.clear(); againstElectronMediumMVA5.clear(); againstElectronTightMVA5.clear(); againstElectronVTightMVA5.clear();
@@ -304,7 +304,6 @@ maxi2ntuples::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
  
     jetpt.clear(); pujetid.clear(); jetbptag.clear(); jetcsvtag.clear();
     mjj = -1; deta = 0; isFake = -1; npu = -1;
-    isLooseMuon = -1; isTightMuon = -1; isHighPtMuon = -1; isHighPtMuon = -1;
     lumi  = -1; evt = -1;
 
 
@@ -381,11 +380,12 @@ maxi2ntuples::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
         mud0.push_back(mu->innerTrack()->dxy( PV.position()));
         mudz.push_back(mu->innerTrack()->dz(PV.position()));
         mumt.push_back(sqrt(pow((mu->p4()).pt() + (met->p4()).pt(),2) - pow((mu->p4() + met->p4()).pt(),2)));
-        isLooseMuon = mu->isLooseMuon();
-        isTightMuon = mu->isTightMuon(PV);
-        isHighPtMuon =  mu->isHighPtMuon(PV);
-        isMediumMuon = utilities::heppymuonID(*mu, "POG_ID_Medium");
-        isTightnovtxMuon = utilities::heppymuonID(*mu, "POG_ID_TightNoVtx");
+        isLooseMuon.push_back(mu->isLooseMuon());
+        isTightMuon.push_back(mu->isTightMuon(PV));
+        isHighPtMuon.push_back( mu->isHighPtMuon(PV));
+        isMediumMuon.push_back(utilities::heppymuonID(*mu, "POG_ID_Medium"));
+        isTightnovtxMuon.push_back(utilities::heppymuonID(*mu, "POG_ID_TightNoVtx"));
+
         taupt.push_back(tau->pt());
         tauphi.push_back(tau->phi());
         taueta.push_back(tau->eta());
@@ -430,7 +430,7 @@ maxi2ntuples::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
         pth.push_back( (mu->p4() + tau->p4() + met->p4()).pt()   );
         m_vis.push_back((mu->p4() + tau->p4()).mass()  );
 
-        mucombreliso.push_back( utilities::relIso(*mu, 0.5));
+        muiso.push_back( utilities::relIso(*mu, 0.5));
 
         std::string temp;
         for (pat::TriggerObjectStandAlone obj : *triggerObjects) {
