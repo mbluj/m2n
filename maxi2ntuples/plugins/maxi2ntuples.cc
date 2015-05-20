@@ -239,7 +239,7 @@ maxi2ntuples::maxi2ntuples(const edm::ParameterSet& iConfig):
     t->Branch("mjj", &mjj);
     t->Branch("deta", &deta);
 
-    t->Branch("isLooseMuon,", &isLooseMuon);
+    t->Branch("isLooseMuon", &isLooseMuon);
     t->Branch("isTightMuon", &isTightMuon);
     t->Branch("isHighPtMuon", &isHighPtMuon);
     t->Branch("isMediumMuon", &isMediumMuon);
@@ -285,7 +285,7 @@ maxi2ntuples::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     using namespace edm;
  
     mupt.clear(); muphi.clear(); mueta.clear(); mum.clear(); muq.clear(); mud0.clear(); mudz.clear(); mumt.clear();
-    isLooseMuon.clear(); isTightMuon.clear(); isHighPtMuon.clear(); isHighPtMuon.clear();
+    isLooseMuon.clear(); isTightMuon.clear(); isHighPtMuon.clear(); isMediumMuon.clear(); isTightnovtxMuon.clear();
     taupt.clear(); tauphi.clear(); taueta.clear(); taum.clear(); tauq.clear(); taumt.clear();
     svfit.clear(); 
     metpx.clear(); metpt.clear(); metphi.clear(); metsumEt.clear();                                    //<----------------------------------------------------
