@@ -65,8 +65,45 @@ namespace utilities{
         }
         return false;
     }
-};
 
+    inline bool isbJet(const pat::Jet& j){
+    
+        return j.bDiscriminator("combinedInclusiveSecondaryVertexV2BJetTags") > 0.814;
+    }
+
+    inline bool jetID(const pat::Jet& j){
+
+        float energy = 1;
+        if(true)
+            energy = (j.p4()*j.jecFactor("Uncorrected")).energy();
+        float NHF = j.neutralHadronEnergyFraction()/energy;
+        float NEMF = j.neutralEmEnergyFraction()/energy;
+        float CHF = j.chargedHadronEnergyFraction()/energy;
+        float MUF = j.muonEnergyFraction()/energy;
+        float CEMF = j.chargedEmEnergyFraction()/energy;
+        float NumConst = j.chargedMultiplicity()+j.neutralMultiplicity();
+        float CHM = j.chargedMultiplicity(); 
+        return (NHF<0.99 && NEMF<0.99 && NumConst>1 && MUF<0.8) && ((abs(j.eta())<=2.4 && CHF>0 && CHM>0 && CEMF<0.99) || abs(j.eta())>2.4); //looseID
+        return (NHF<0.90 && NEMF<0.90 && NumConst>1 && MUF<0.8) && ((abs(j.eta())<=2.4 && CHF>0 && CHM>0 && CEMF<0.90) || abs(j.eta())>2.4); //tightID
+    }
+
+    inline bool pujetetaid(const pat::Jet& j){
+        
+       if(abs(j.eta()) < 2.5)
+          return j.userFloat("pileupJetId:fullDiscriminant") > -0.63;
+       else if(abs(j.eta()) < 2.75)
+          return j.userFloat("pileupJetId:fullDiscriminant") > -0.60;
+       else if(abs(j.eta()) < 3.0)
+          return j.userFloat("pileupJetId:fullDiscriminant") > -0.55;
+       else if(abs(j.eta()) < 5.2)
+          return j.userFloat("pileupJetId:fullDiscriminant") > -0.45;
+       else{
+           std::cout << "ERROR: utilities:pujetID";
+           return -100;
+        }
+    }
+
+};
 
 
 

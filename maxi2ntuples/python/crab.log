@@ -1,0 +1,159 @@
+DEBUG 2015-05-24 11:50:22,672: 	 Executing command: 'submit'
+DEBUG 2015-05-24 11:50:22,673: 	 Could not find CRAB cache file /home/dirack/.crab3; creating a new one.
+DEBUG 2015-05-24 11:50:22,732: 	 CredentialException
+Message: voms-proxy-info command not found
+	ModuleName : WMCore.Credential.Proxy
+	MethodName : __init__
+	ClassInstance : None
+	FileName : /cvmfs/cms.cern.ch/crab3/slc6_amd64_gcc481/cms/crabclient/3.3.16.patch1/lib/python2.6/site-packages/WMCore/Credential/Proxy.py
+	ClassName : None
+	LineNumber : 152
+	ErrorNr : 0
+
+Traceback: 
+
+
+ERROR 2015-05-24 11:50:22,732: 	 Problem with Grid environment: voms-proxy-info command not found 
+ERROR 2015-05-24 11:50:22,732: 	 Caught exception
+Traceback (most recent call last):
+  File "/cvmfs/cms.cern.ch/crab3/slc6_amd64_gcc481/cms/crabclient/3.3.16.patch1/bin/crab", line 139, in <module>
+    client()
+  File "/cvmfs/cms.cern.ch/crab3/slc6_amd64_gcc481/cms/crabclient/3.3.16.patch1/bin/crab", line 124, in __call__
+    self.cmd = sub_cmd(self.logger, args[1:])
+  File "/cvmfs/cms.cern.ch/crab3/slc6_amd64_gcc481/cms/crabclient/3.3.16.patch1/lib/python2.6/site-packages/CRABClient/Commands/submit.py", line 39, in __init__
+    SubCommand.__init__(self, logger, cmdargs, disable_interspersed_args = True)
+  File "/cvmfs/cms.cern.ch/crab3/slc6_amd64_gcc481/cms/crabclient/3.3.16.patch1/lib/python2.6/site-packages/CRABClient/Commands/SubCommand.py", line 284, in __init__
+    self.proxyCreated = self.proxy.createNewVomsProxySimple(timeLeftThreshold = 720)
+  File "/cvmfs/cms.cern.ch/crab3/slc6_amd64_gcc481/cms/crabclient/3.3.16.patch1/lib/python2.6/site-packages/CRABClient/CredentialInteractions.py", line 123, in createNewVomsProxySimple
+    proxy = self.proxy()
+  File "/cvmfs/cms.cern.ch/crab3/slc6_amd64_gcc481/cms/crabclient/3.3.16.patch1/lib/python2.6/site-packages/CRABClient/CredentialInteractions.py", line 73, in proxy
+    raise EnvironmentException('Problem with Grid environment: %s ' % ex._message)
+EnvironmentException: Problem with Grid environment: voms-proxy-info command not found 
+DEBUG 2015-05-24 11:51:59,978: 	 Executing command: 'submit'
+DEBUG 2015-05-24 11:51:59,979: 	 Found CRAB cache file /home/dirack/.crab3
+DEBUG 2015-05-24 11:51:59,989: 	 Checking credentials
+DEBUG 2015-05-24 11:51:59,990: 	 Found proxy file /tmp/x509up_u500
+DEBUG 2015-05-24 11:51:59,990: 	 Getting proxy life time left
+DEBUG 2015-05-24 11:52:01,496: 	 Executing : 
+ command : voms-proxy-info -file /tmp/x509up_u500 -timeleft
+ output : 42969
+
+ error: 
+ retcode : 0
+DEBUG 2015-05-24 11:52:02,100: 	 Executing : 
+ command : voms-proxy-info -file /tmp/x509up_u500 -actimeleft
+ output : 42968
+
+ error: 
+ retcode : 0
+DEBUG 2015-05-24 11:52:02,100: 	 Proxy valid for 11:56:09 hours
+INFO 2015-05-24 11:52:02,101: 	 Will use CRAB configuration file crab_config.py
+DEBUG 2015-05-24 11:52:02,101: 	 Loading CRAB configuration file.
+DEBUG 2015-05-24 11:52:02,109: 	 Will use CRAB Analysis plugin (i.e. will run an analysis job type).
+ERROR: OSError: [Errno 13] Permission denied: '/afs'
+
+	Please email hn-cms-computing-tools@cern.ch for support with the crab.log file or crab.log URL.
+	Client Version: 3.3.16.patch1
+Unhandled Exception!
+[Errno 13] Permission denied: '/afs'
+Traceback (most recent call last):
+  File "/cvmfs/cms.cern.ch/crab3/slc6_amd64_gcc481/cms/crabclient/3.3.16.patch1/bin/crab", line 139, in <module>
+    client()
+  File "/cvmfs/cms.cern.ch/crab3/slc6_amd64_gcc481/cms/crabclient/3.3.16.patch1/bin/crab", line 124, in __call__
+    self.cmd = sub_cmd(self.logger, args[1:])
+  File "/cvmfs/cms.cern.ch/crab3/slc6_amd64_gcc481/cms/crabclient/3.3.16.patch1/lib/python2.6/site-packages/CRABClient/Commands/submit.py", line 39, in __init__
+    SubCommand.__init__(self, logger, cmdargs, disable_interspersed_args = True)
+  File "/cvmfs/cms.cern.ch/crab3/slc6_amd64_gcc481/cms/crabclient/3.3.16.patch1/lib/python2.6/site-packages/CRABClient/Commands/SubCommand.py", line 294, in __init__
+    getattr(self.configuration.General, 'requestName', None))
+  File "/cvmfs/cms.cern.ch/crab3/slc6_amd64_gcc481/cms/crabclient/3.3.16.patch1/lib/python2.6/site-packages/CRABClient/ClientUtilities.py", line 333, in createWorkArea
+    os.makedirs(workingArea)
+  File "/cvmfs/cms.cern.ch/crab3/slc6_amd64_gcc481/external/python/2.6.8-comp6/lib/python2.6/os.py", line 150, in makedirs
+    makedirs(head, mode)
+  File "/cvmfs/cms.cern.ch/crab3/slc6_amd64_gcc481/external/python/2.6.8-comp6/lib/python2.6/os.py", line 150, in makedirs
+    makedirs(head, mode)
+  File "/cvmfs/cms.cern.ch/crab3/slc6_amd64_gcc481/external/python/2.6.8-comp6/lib/python2.6/os.py", line 150, in makedirs
+    makedirs(head, mode)
+  File "/cvmfs/cms.cern.ch/crab3/slc6_amd64_gcc481/external/python/2.6.8-comp6/lib/python2.6/os.py", line 150, in makedirs
+    makedirs(head, mode)
+  File "/cvmfs/cms.cern.ch/crab3/slc6_amd64_gcc481/external/python/2.6.8-comp6/lib/python2.6/os.py", line 150, in makedirs
+    makedirs(head, mode)
+  File "/cvmfs/cms.cern.ch/crab3/slc6_amd64_gcc481/external/python/2.6.8-comp6/lib/python2.6/os.py", line 150, in makedirs
+    makedirs(head, mode)
+  File "/cvmfs/cms.cern.ch/crab3/slc6_amd64_gcc481/external/python/2.6.8-comp6/lib/python2.6/os.py", line 150, in makedirs
+    makedirs(head, mode)
+  File "/cvmfs/cms.cern.ch/crab3/slc6_amd64_gcc481/external/python/2.6.8-comp6/lib/python2.6/os.py", line 150, in makedirs
+    makedirs(head, mode)
+  File "/cvmfs/cms.cern.ch/crab3/slc6_amd64_gcc481/external/python/2.6.8-comp6/lib/python2.6/os.py", line 150, in makedirs
+    makedirs(head, mode)
+  File "/cvmfs/cms.cern.ch/crab3/slc6_amd64_gcc481/external/python/2.6.8-comp6/lib/python2.6/os.py", line 150, in makedirs
+    makedirs(head, mode)
+  File "/cvmfs/cms.cern.ch/crab3/slc6_amd64_gcc481/external/python/2.6.8-comp6/lib/python2.6/os.py", line 150, in makedirs
+    makedirs(head, mode)
+  File "/cvmfs/cms.cern.ch/crab3/slc6_amd64_gcc481/external/python/2.6.8-comp6/lib/python2.6/os.py", line 157, in makedirs
+    mkdir(name, mode)
+OSError: [Errno 13] Permission denied: '/afs'
+	Please use crab uploadlog to upload the log file /opt/CMMSW/tautau/M2N_For_Italians/src/m2n/maxi2ntuples/python/crab.log
+DEBUG 2015-05-24 11:56:09,757: 	 Executing command: 'submit'
+DEBUG 2015-05-24 11:56:09,757: 	 Found CRAB cache file /home/dirack/.crab3
+DEBUG 2015-05-24 11:56:09,766: 	 Checking credentials
+DEBUG 2015-05-24 11:56:09,767: 	 Found proxy file /tmp/x509up_u500
+DEBUG 2015-05-24 11:56:09,767: 	 Getting proxy life time left
+DEBUG 2015-05-24 11:56:10,371: 	 Executing : 
+ command : voms-proxy-info -file /tmp/x509up_u500 -timeleft
+ output : 43187
+
+ error: 
+ retcode : 0
+DEBUG 2015-05-24 11:56:10,975: 	 Executing : 
+ command : voms-proxy-info -file /tmp/x509up_u500 -actimeleft
+ output : 43186
+
+ error: 
+ retcode : 0
+DEBUG 2015-05-24 11:56:10,976: 	 Proxy valid for 11:59:47 hours
+INFO 2015-05-24 11:56:10,976: 	 Will use CRAB configuration file crab_config.py
+DEBUG 2015-05-24 11:56:10,976: 	 Loading CRAB configuration file.
+DEBUG 2015-05-24 11:56:10,978: 	 Will use CRAB Analysis plugin (i.e. will run an analysis job type).
+ERROR: OSError: [Errno 13] Permission denied: '/afs'
+
+	Please email hn-cms-computing-tools@cern.ch for support with the crab.log file or crab.log URL.
+	Client Version: 3.3.16.patch1
+Unhandled Exception!
+[Errno 13] Permission denied: '/afs'
+Traceback (most recent call last):
+  File "/cvmfs/cms.cern.ch/crab3/slc6_amd64_gcc481/cms/crabclient/3.3.16.patch1/bin/crab", line 139, in <module>
+    client()
+  File "/cvmfs/cms.cern.ch/crab3/slc6_amd64_gcc481/cms/crabclient/3.3.16.patch1/bin/crab", line 124, in __call__
+    self.cmd = sub_cmd(self.logger, args[1:])
+  File "/cvmfs/cms.cern.ch/crab3/slc6_amd64_gcc481/cms/crabclient/3.3.16.patch1/lib/python2.6/site-packages/CRABClient/Commands/submit.py", line 39, in __init__
+    SubCommand.__init__(self, logger, cmdargs, disable_interspersed_args = True)
+  File "/cvmfs/cms.cern.ch/crab3/slc6_amd64_gcc481/cms/crabclient/3.3.16.patch1/lib/python2.6/site-packages/CRABClient/Commands/SubCommand.py", line 294, in __init__
+    getattr(self.configuration.General, 'requestName', None))
+  File "/cvmfs/cms.cern.ch/crab3/slc6_amd64_gcc481/cms/crabclient/3.3.16.patch1/lib/python2.6/site-packages/CRABClient/ClientUtilities.py", line 333, in createWorkArea
+    os.makedirs(workingArea)
+  File "/cvmfs/cms.cern.ch/crab3/slc6_amd64_gcc481/external/python/2.6.8-comp6/lib/python2.6/os.py", line 150, in makedirs
+    makedirs(head, mode)
+  File "/cvmfs/cms.cern.ch/crab3/slc6_amd64_gcc481/external/python/2.6.8-comp6/lib/python2.6/os.py", line 150, in makedirs
+    makedirs(head, mode)
+  File "/cvmfs/cms.cern.ch/crab3/slc6_amd64_gcc481/external/python/2.6.8-comp6/lib/python2.6/os.py", line 150, in makedirs
+    makedirs(head, mode)
+  File "/cvmfs/cms.cern.ch/crab3/slc6_amd64_gcc481/external/python/2.6.8-comp6/lib/python2.6/os.py", line 150, in makedirs
+    makedirs(head, mode)
+  File "/cvmfs/cms.cern.ch/crab3/slc6_amd64_gcc481/external/python/2.6.8-comp6/lib/python2.6/os.py", line 150, in makedirs
+    makedirs(head, mode)
+  File "/cvmfs/cms.cern.ch/crab3/slc6_amd64_gcc481/external/python/2.6.8-comp6/lib/python2.6/os.py", line 150, in makedirs
+    makedirs(head, mode)
+  File "/cvmfs/cms.cern.ch/crab3/slc6_amd64_gcc481/external/python/2.6.8-comp6/lib/python2.6/os.py", line 150, in makedirs
+    makedirs(head, mode)
+  File "/cvmfs/cms.cern.ch/crab3/slc6_amd64_gcc481/external/python/2.6.8-comp6/lib/python2.6/os.py", line 150, in makedirs
+    makedirs(head, mode)
+  File "/cvmfs/cms.cern.ch/crab3/slc6_amd64_gcc481/external/python/2.6.8-comp6/lib/python2.6/os.py", line 150, in makedirs
+    makedirs(head, mode)
+  File "/cvmfs/cms.cern.ch/crab3/slc6_amd64_gcc481/external/python/2.6.8-comp6/lib/python2.6/os.py", line 150, in makedirs
+    makedirs(head, mode)
+  File "/cvmfs/cms.cern.ch/crab3/slc6_amd64_gcc481/external/python/2.6.8-comp6/lib/python2.6/os.py", line 150, in makedirs
+    makedirs(head, mode)
+  File "/cvmfs/cms.cern.ch/crab3/slc6_amd64_gcc481/external/python/2.6.8-comp6/lib/python2.6/os.py", line 157, in makedirs
+    mkdir(name, mode)
+OSError: [Errno 13] Permission denied: '/afs'
+	Please use crab uploadlog to upload the log file /opt/CMMSW/tautau/M2N_For_Italians/src/m2n/maxi2ntuples/python/crab.log

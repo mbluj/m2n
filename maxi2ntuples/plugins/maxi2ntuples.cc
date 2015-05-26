@@ -59,6 +59,7 @@
 #include "DataFormats/METReco/interface/PFMET.h"
 #include "DataFormats/METReco/interface/PFMETCollection.h"
 #include "DataFormats/Math/interface/deltaR.h"
+#include "DataFormats/Math/interface/deltaPhi.h"
 #include "FWCore/Common/interface/TriggerNames.h"
 #include "DataFormats/Common/interface/TriggerResults.h"
 #include "DataFormats/PatCandidates/interface/TriggerObjectStandAlone.h"
@@ -124,16 +125,17 @@ class maxi2ntuples : public edm::EDAnalyzer {
         decayModeFindingNewDMs, byCombinedIsolationDeltaBetaCorrRaw3Hits, lbyCombinedIsolationDeltaBetaCorrRaw3Hits, mbyCombinedIsolationDeltaBetaCorrRaw3Hits, tbyCombinedIsolationDeltaBetaCorrRaw3Hits, chargedIsoPtSum, neutralIsoPtSum,
         puCorrPtSum, againstMuonLoose3, againstMuonTight3, againstElectronVLooseMVA5, againstElectronLooseMVA5, againstElectronMediumMVA5, againstElectronTightMVA5, againstElectronVTightMVA5,
         byIsolationMVA3newDMwoLTraw, byIsolationMVA3oldDMwoLTraw, byIsolationMVA3newDMwLTraw, byIsolationMVA3oldDMwLTraw,
-        pth, m_vis,
-        mvacov00, mvacov01, mvacov10, mvacov11  ; 
+        pth, ptvis, m_vis,
+        mvacov00, mvacov01, mvacov10, mvacov11,
+        hdijetphi, visjeteta; 
     std::vector<std::string> hltmatch;
 
     ///////////////////////////// E V E N T     S P E C I F I C: ////////////////////////////////
     //trigger paths
     std::vector<std::string> hltpaths;
     //jets
-    std::vector<float> jetpt, pujetid, jetbptag, jetcsvtag;
-    float  run, lumi, evt, npv, npu, mjj, deta;
+    std::vector<float> jetpt, jeteta, jetphi, pujetid, jetbptag, jetcsvtag, bjet, jecfactor, jetlooseID, pujetetaid;
+    float  run, lumi, evt, npv, npu, mjj, ptjj, phijj, deta, dphi, njetingap;
     unsigned short paircount;//, mu_dz ; 
     //genParticles
     bool isZtt, isZmt, isZet, isZee, isZmm, isZem, isZEE, isZMM, isZLL;
@@ -223,21 +225,35 @@ maxi2ntuples::maxi2ntuples(const edm::ParameterSet& iConfig):
     t->Branch("byIsolationMVA3oldDMwLTraw",&byIsolationMVA3oldDMwLTraw); 
     t->Branch("diq", &diq);
 
-    t->Branch("pth");
-    t->Branch("m_vis"); 
+    t->Branch("pth", &pth);
+    t->Branch("ptvis", &ptvis);
+    t->Branch("m_vis", &m_vis); 
 
     t->Branch("mvacov00",&mvacov00); 
     t->Branch("mvacov01",&mvacov01); 
     t->Branch("mvacov10",&mvacov10); 
     t->Branch("mvacov11",&mvacov11); 
 
+    t->Branch("hdijetphi",&hdijetphi); 
+    t->Branch("visjeteta",&visjeteta); 
+
     t->Branch("muiso", &muiso);
     t->Branch("jetpt", &jetpt);
+    t->Branch("jeteta", &jeteta);
+    t->Branch("jetphi", &jetphi);
     t->Branch("pujetid", &pujetid);
     t->Branch("jetbptag", &jetbptag);
     t->Branch("jetcsvtag", &jetcsvtag);
+    t->Branch("jecfactor", &jecfactor);
+    t->Branch("jetlooseID", &jetlooseID);
+    t->Branch("pujetetaid", &pujetetaid);
+    t->Branch("bjet", &bjet);
     t->Branch("mjj", &mjj);
+    t->Branch("ptjj", &ptjj);
+    t->Branch("phijj", &phijj);
     t->Branch("deta", &deta);
+    t->Branch("dphi", &dphi);
+    t->Branch("njetingap", &njetingap);
 
     t->Branch("isLooseMuon", &isLooseMuon);
     t->Branch("isTightMuon", &isTightMuon);
@@ -292,9 +308,10 @@ maxi2ntuples::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     hltmatch.clear();  hltpaths.clear();
   //  decayModeFindingOldDMs.clear(); 
     decayModeFindingNewDMs.clear();
-    diq.clear(); pth.clear(); m_vis.clear();     
+    diq.clear(); pth.clear(); ptvis.clear(); m_vis.clear();     
 
     mvacov00.clear();mvacov01.clear();mvacov10.clear();mvacov11.clear();
+    hdijetphi.clear(); visjeteta.clear();
 
     muiso.clear(); decayModeFinding.clear();
     byCombinedIsolationDeltaBetaCorrRaw3Hits.clear(); lbyCombinedIsolationDeltaBetaCorrRaw3Hits.clear();  mbyCombinedIsolationDeltaBetaCorrRaw3Hits.clear(); tbyCombinedIsolationDeltaBetaCorrRaw3Hits.clear(); chargedIsoPtSum.clear();
@@ -302,8 +319,9 @@ maxi2ntuples::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     againstElectronVLooseMVA5.clear(); againstElectronLooseMVA5.clear(); againstElectronMediumMVA5.clear(); againstElectronTightMVA5.clear(); againstElectronVTightMVA5.clear();
     byIsolationMVA3newDMwoLTraw.clear();  byIsolationMVA3oldDMwoLTraw.clear();  byIsolationMVA3newDMwLTraw.clear();  byIsolationMVA3oldDMwLTraw.clear() ;
  
-    jetpt.clear(); pujetid.clear(); jetbptag.clear(); jetcsvtag.clear();
-    mjj = -1; deta = 0; isFake = -1; npu = -1;
+    jetpt.clear(); jeteta.clear(); jetphi.clear(); pujetid.clear(); jetbptag.clear(); jetcsvtag.clear(); bjet.clear(); jecfactor.clear();
+    jetlooseID.clear(); pujetetaid.clear();
+    mjj = -1; ptjj = -1; phijj = -10; deta = -10; dphi = -1; isFake = -1; npu = -1; njetingap = 0;
     lumi  = -1; evt = -1;
 
 
@@ -428,6 +446,7 @@ maxi2ntuples::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 
         diq.push_back((int)(mu->charge() * tau->charge()));
         pth.push_back( (mu->p4() + tau->p4() + met->p4()).pt()   );
+        ptvis.push_back( (mu->p4() + tau->p4()).pt()   );
         m_vis.push_back((mu->p4() + tau->p4()).mass()  );
 
         muiso.push_back( utilities::relIso(*mu, 0.5));
@@ -441,13 +460,24 @@ maxi2ntuples::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
         }
         hltmatch.push_back(temp);
 
+        if(jets->size() > 1){
+        
+            TLorentzVector jjp4 = TLorentzVector(jets->at(0).px(), jets->at(0).py(), jets->at(0).pz(), jets->at(0).energy()) 
+                +  TLorentzVector(jets->at(1).px(), jets->at(1).py(), jets->at(1).pz(), jets->at(1).energy());
+            hdijetphi.push_back(deltaPhi(jjp4.Phi(), (mu->p4() + tau->p4()).phi() ));
+            visjeteta.push_back(std::min( fabs(jets->at(0).eta() - (mu->p4() + tau->p4()).eta()), 
+                        fabs(jets->at(1).eta() - (mu->p4() + tau->p4()).eta())));
+        
+        }
+
      }
 
 
     for (unsigned int i = 0, n = triggerBits->size(); i < n; ++i) {
         if(triggerBits->accept(i)){
             std::string path = names.triggerName(i);
-            if( path != "generation_step" &&  path !=  "digitisation_step" && path != "L1simulation_step"  &&  path != "digi2raw_step"  &&  path != "HLT_ReducedIterativeTracking_v1"   &&  path != "HLT_ZeroBias_v1"  &&  path != "HLT_Physics_v1"  &&  path != "HLTriggerFinalPath")
+            if( path != "generation_step" &&  path !=  "digitisation_step" && path != "L1simulation_step"  &&  path != "digi2raw_step"  
+                    &&  path != "HLT_ReducedIterativeTracking_v1"   &&  path != "HLT_ZeroBias_v1"  &&  path != "HLT_Physics_v1"  &&  path != "HLTriggerFinalPath")
             hltpaths.push_back(names.triggerName(i)); 
         }
     }
@@ -456,14 +486,35 @@ maxi2ntuples::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     //jets
     for (const pat::Jet &j : *jets) {
         jetpt.push_back(j.pt());
+        jeteta.push_back(j.eta());
+        jetphi.push_back(j.phi());
         pujetid.push_back(j.userFloat("pileupJetId:fullDiscriminant"));
         jetbptag.push_back(j.bDiscriminator("jetBProbabilityBJetTags")); 
         jetcsvtag.push_back(j.bDiscriminator("combinedInclusiveSecondaryVertexV2BJetTags"));
+        bjet.push_back(utilities::isbJet(j));
+        jecfactor.push_back(j.jecFactor("Uncorrected"));
+        jetlooseID.push_back(utilities::jetID(j));
+        pujetetaid.push_back(utilities::pujetetaid(j));
     }
-    if(jets->size() > 1){
-        mjj = (TLorentzVector(jets->at(0).px(), jets->at(0).py(), jets->at(0).pz(), jets->at(0).energy()) +  TLorentzVector(jets->at(1).px(), jets->at(1).py(), jets->at(1).pz(), jets->at(1).energy())).M();
-        deta = fabs( jets->at(0).eta() - jets->at(1).eta() );
 
+    if(jets->size() > 1){
+        TLorentzVector jjp4 = TLorentzVector(jets->at(0).px(), jets->at(0).py(), jets->at(0).pz(), jets->at(0).energy()) +  TLorentzVector(jets->at(1).px(), jets->at(1).py(), jets->at(1).pz(), jets->at(1).energy());
+        mjj = jjp4.M();
+        ptjj = jjp4.Pt();
+        phijj = jjp4.Phi();
+        deta = fabs( jets->at(0).eta() - jets->at(1).eta() );
+        dphi = fabs( jets->at(0).phi() - jets->at(1).phi() );
+
+    }
+    if(jets->size() > 2){
+        for(std::vector<int>::size_type i = 2; i != jets->size(); i++){
+            if ( (*jets)[i].pt() < 30 || ! (*jets)[i].userFloat("pileupJetId:fullDiscriminant") || !utilities::pujetetaid( (*jets)[i]) )
+                continue;
+            if( (*jets)[i].eta() > std::min((*jets)[0].eta(),(*jets)[1].eta() ) &&  (*jets)[i].eta() < std::max((*jets)[0].eta(),(*jets)[1].eta() )   ){
+                njetingap+=1;         
+            }
+        
+        }
     }
 
 
