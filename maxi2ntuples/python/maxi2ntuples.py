@@ -25,19 +25,41 @@ process.GlobalTag = GlobalTag(process.GlobalTag, 'auto:run2_mc', '')
 
 process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1) )
 
+#dopisuje na koniec pliku
+def pisanie(plik, tekst):
+    with open(plik,"a") as f:
+        f.write(tekst)
 
-#inoutfilename = sys.argv[2];
-#direc = 'WZJetsTo3LNu/'
-#print inoutfilename;
+def nadpisanie(plik, tekst):
+    f = open(plik,"w")
+    f.write(tekst)
+    f.close()
+
+
+dir = '/opt/CMMSW/Data/'
+#inputFile = sys.argv[2];
+inputFile = "Enriched_miniAOD";
+Number_of_events = 464755;
+xSection = 3.748;
+outputFile = "ntuples.root";
+#print inputFile;
+nadpisanie(dir+inputFile+'.json', "Number_of_events = "+ str(Number_of_events)+'\n')
+pisanie(dir+inputFile+'.json', "xSection = "+ str(xSection)+'\n')
 
 process.source = cms.Source("PoolSource",
     # replace 'myfile.root' with the source file you want to use
     fileNames = cms.untracked.vstring(
-        'file:/opt/CMMSW/Data/Enriched_miniAOD.root'
+        'file:'+dir+inputFile+'.root'
+#        'file:/afs/cern.ch/work/m/molszews/CMSSW/Data/mbluj/Enriched_miniAOD_100_1_qrj.root'
     )
 )
 
-outputFile = "/opt/CMMSW/Data/ntuples.root";
+'''
+process.out = cms.OutputModule("PoolOutputModule",
+    fileName = cms.untracked.string('miniAODMVAMET.root'),
+)
+'''
+
 process.TFileService = cms.Service("TFileService", fileName = cms.string(outputFile))
 
 
@@ -51,12 +73,21 @@ process.jetsSelected = cms.EDFilter("PATJetSelector",
         filter = cms.bool(False)
         )
 
-
 ############### PAIRS #############################
+
+MVAPairMET = ();
+for index in range(100):
+  MVAMETName = "pfMETMVA%i" % index
+  MVAPairMET += (cms.InputTag(MVAMETName),)
+
 
 process.pairswithmet = cms.EDProducer("AddMVAMET",
     pairs = cms.InputTag("SVllCand"),
     mets = cms.InputTag("slimmedMETs"),
+    pairsmets = cms.VInputTag(MVAPairMET),
+    mvamet = cms.InputTag("pfMETMVA0"),
+    useMVAMET  = cms.untracked.bool(False),
+    usePairMET = cms.untracked.bool(False),
 )
 
 process.mutauPairs = cms.EDProducer("ChannelSelector",
@@ -73,7 +104,8 @@ process.baselineselected = cms.EDProducer("PairBaselineSelection",
 
 
 process.mutauClean = cms.EDProducer('PATPairSelector',
-    pairs = cms.InputTag("baselineselected"), 
+#    pairs = cms.InputTag("baselineselected"), 
+    pairs = cms.InputTag('mutauPairs'), 
     muCut = cms.string(''
 #        'pt > 18. & abs(eta) < 2.1'
         ),
@@ -106,15 +138,19 @@ process.m2n = cms.EDAnalyzer('maxi2ntuples',
     objects = cms.InputTag("selectedPatTrigger"),
     prunedGenParticles = cms.InputTag("prunedGenParticles"),
     packedGenParticles = cms.InputTag("packedGenParticles"),
+#    lheprod = cms.InputTag("source"),
     lheprod = cms.InputTag("externalLHEProducer"),
     pileupinfo = cms.InputTag("addPileupInfo"),
 )
 
 process.p = cms.Path(
-        process.jetsSelected*
-        process.pairswithmet*
-        process.mutauPairs* process.baselineselected* process.mutauClean*
-        process.paircheck*
-        process.m2n
+        process.jetsSelected
+        *process.pairswithmet
+        *process.mutauPairs
+#        *process.baselineselected
+        *process.mutauClean
+        *process.paircheck
+        *process.m2n
 )
-  
+ 
+#process.e = cms.EndPath(process.out)

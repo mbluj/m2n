@@ -20,7 +20,7 @@
 <use name="DataFormats/MuonReco"/>
 <use name="DataFormats/RecoCandidate"/>
 <use name="CommonTools/CandUtils"/>
-<use name="m2n/maxi2ntuples"/>
 <use name="root"/>
 <use name="roottmva"/>
+<use name="m2n/maxi2ntuples"/>
 <flags EDM_PLUGIN="1"/>

@@ -79,12 +79,12 @@ class AddMVAMET : public edm::EDProducer {
       //virtual void endLuminosityBlock(edm::LuminosityBlock const&, edm::EventSetup const&) override;
 
       // ----------member data ---------------------------
-      edm::EDGetTokenT<reco::PFMETCollection> mvametToken_;
+      edm::EDGetTokenT<std::vector<reco::PFMETCollection>> mvametToken_;
       edm::EDGetTokenT<pat::METCollection> metToken_;
       edm::EDGetTokenT<pat::CompositeCandidateCollection> pairsToken_;
-      std::vector<edm::InputTag> pairsmetToken_;
-      bool usePairMET;
-      bool useMVAMET;
+    //  std::vector<edm::InputTag> pairsmetToken_;
+      bool _usePairMET;
+      bool _useMVAMET;
 };
 
 //
@@ -100,13 +100,13 @@ class AddMVAMET : public edm::EDProducer {
 // constructors and destructor
 //
 AddMVAMET::AddMVAMET(const edm::ParameterSet& iConfig):
-     mvametToken_(consumes<reco::PFMETCollection>(iConfig.getParameter<edm::InputTag>("mvamet"))),
+     mvametToken_(consumes<std::vector<reco::PFMETCollection>>(iConfig.getParameter<edm::InputTag>("mvamet"))),
      metToken_(consumes<pat::METCollection>(iConfig.getParameter<edm::InputTag>("mets"))),
      pairsToken_(consumes<pat::CompositeCandidateCollection>(iConfig.getParameter<edm::InputTag>("pairs")))
 {
-   usePairMET = iConfig.getUntrackedParameter<bool>("usePairMET");
-   useMVAMET = iConfig.getUntrackedParameter<bool>("useMVAMET");
-   pairsmetToken_ = iConfig.getParameter<std::vector<edm::InputTag> >("pairsmets");
+   _usePairMET = iConfig.getUntrackedParameter<bool>("usePairMET");
+//   _useMVAMET = iConfig.getUntrackedParameter<bool>("useMVAMET");
+//   pairsmetToken_ = iConfig.getParameter<std::vector<edm::InputTag> >("pairsmets");
 
    //register your products
    //now do what ever other initialization is needed
@@ -138,40 +138,23 @@ AddMVAMET::produce(edm::Event& iEvent, const edm::EventSetup& iSetup)
 
 //    edm::Handle<reco::PFMETCollection> mvamets;
 //    iEvent.getByToken(mvametToken_, mvamets);
-//    const reco::PFMET &met = mvamets->front();
+//    const pat::MET &met = mvamets->front();
 
 
     edm::Handle<pat::CompositeCandidateCollection> pairs;
     iEvent.getByToken(pairsToken_, pairs);
     if (!pairs.isValid()) return;
 
-    
-    if(usePairMET){
-
-        for (std::vector<int>::size_type i = 0; i != pairs->size(); i++) {// std::vector<int>::size_type i = 2; i != jets->size(); i++
-
-            edm::Handle<reco::PFMETCollection> mets;
-       //     std::cout << pairsmetToken_[i];
-            iEvent.getByLabel(pairsmetToken_[i], mets);
- //           reco::PFMETCollection::const_iterator met = mets->begin();
-        //    const pat::MET &met = mets->front();
-
-            pat::CompositeCandidate pair((*pairs)[i]);
-            pair.addDaughter(reco::ShallowCloneCandidate(reco::CandidateBaseRef(edm::Ref<reco::PFMETCollection>(mets, 0))));
-            AddFourMomenta addP4;
-            addP4.set(pair);
-            pairsCollection->push_back(pair);
-            pair.clearDaughters();
-        }
-    }
-    else{
+    if(false){
 
         edm::Handle<pat::METCollection> mets;
         iEvent.getByToken(metToken_, mets);
         const pat::MET &met = mets->front();
 
+
         for (const pat::CompositeCandidate &lP : *pairs) {
         
+            std::cout << (*pairs)[0].pt();
             pat::CompositeCandidate pair(lP);
             pair.addDaughter(met);
             AddFourMomenta addP4;
@@ -179,8 +162,31 @@ AddMVAMET::produce(edm::Event& iEvent, const edm::EventSetup& iSetup)
             //std::cout << "PT: " << pair.pt() << std::endl;
             pairsCollection->push_back(pair);
             pair.clearDaughters();
+        
         }
     }
+    
+    if(true){
+
+        for (std::vector<int>::size_type i = 0; i != pairs->size(); i++) {// std::vector<int>::size_type i = 2; i != jets->size(); i++
+
+            edm::Handle<std::vector<reco::PFMETCollection>> mets;
+      //      std::cout << pairsmetToken_[i];
+            iEvent.getByToken(mvametToken_, mets);
+            const reco::PFMETCollection metcollection = (*mets)[0];
+            const reco::PFMET &met = metcollection.front();
+
+            pat::CompositeCandidate pair((*pairs)[i]);
+            pair.addDaughter(met);
+            AddFourMomenta addP4;
+            addP4.set(pair);
+            std::cout << "PT: " << pair.pt() << std::endl;
+            pairsCollection->push_back(pair);
+            pair.clearDaughters();
+        }
+    
+    }
+
 
 
     iEvent.put(std::move(pairsCollection));

@@ -33,11 +33,17 @@ process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1) )
 process.source = cms.Source("PoolSource",
     # replace 'myfile.root' with the source file you want to use
     fileNames = cms.untracked.vstring(
-#        'file:/opt/CMMSW/Data/Enriched_miniAOD.root'
     )
 )
 
-outputFile = "ntuples.root";
+'''
+process.out = cms.OutputModule("PoolOutputModule",
+    fileName = cms.untracked.string('miniAODMVAMET.root'),
+)
+'''
+
+
+outputFile = "VBF.root";
 process.TFileService = cms.Service("TFileService", fileName = cms.string(outputFile))
 
 
@@ -54,9 +60,19 @@ process.jetsSelected = cms.EDFilter("PATJetSelector",
 
 ############### PAIRS #############################
 
+MVAPairMET = ();
+for index in range(100):
+  MVAMETName = "pfMETMVA%i" % index
+  MVAPairMET += (cms.InputTag(MVAMETName),)
+
+
 process.pairswithmet = cms.EDProducer("AddMVAMET",
     pairs = cms.InputTag("SVllCand"),
     mets = cms.InputTag("slimmedMETs"),
+    pairsmets = cms.VInputTag(MVAPairMET),
+    mvamet = cms.InputTag("pfMETMVA0"),
+    useMVAMET  = cms.untracked.bool(False),
+    usePairMET = cms.untracked.bool(True),
 )
 
 process.mutauPairs = cms.EDProducer("ChannelSelector",
@@ -111,10 +127,11 @@ process.m2n = cms.EDAnalyzer('maxi2ntuples',
 )
 
 process.p = cms.Path(
-        process.jetsSelected*
-        process.pairswithmet*
-        process.mutauPairs* process.baselineselected* process.mutauClean*
-        process.paircheck*
-        process.m2n
+        process.jetsSelected
+        *process.pairswithmet
+        *process.mutauPairs* process.baselineselected* process.mutauClean
+        *process.paircheck
+        *process.m2n
 )
-  
+ 
+#process.e = cms.EndPath(process.out)

@@ -58,6 +58,7 @@
 
 #include "DataFormats/METReco/interface/PFMET.h"
 #include "DataFormats/METReco/interface/PFMETCollection.h"
+#include <DataFormats/METReco/interface/CommonMETData.h>
 #include "DataFormats/Math/interface/deltaR.h"
 #include "DataFormats/Math/interface/deltaPhi.h"
 #include "FWCore/Common/interface/TriggerNames.h"
@@ -175,7 +176,6 @@ maxi2ntuples::maxi2ntuples(const edm::ParameterSet& iConfig):
     packedGenToken_(consumes<pat::PackedGenParticleCollection>(iConfig.getParameter<edm::InputTag>("packedGenParticles"))),
     lheprodToken_(consumes<LHEEventProduct>(iConfig.getParameter<edm::InputTag>("lheprod"))),
     PileupSummaryInfoToken_(consumes<PileupSummaryInfoCollection>(iConfig.getParameter<edm::InputTag>("pileupinfo")))
-
 {
    //now do what ever initialization is needed
 
@@ -330,6 +330,9 @@ maxi2ntuples::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     if (vertices->empty()) return; // skip the event if no PV found
     const reco::Vertex &PV = vertices->front();
 
+    edm::Handle<pat::METCollection> mets;
+    iEvent.getByToken(metToken_, mets);
+ //   const pat::MET &smet = mets->front();
 
 
     edm::Handle<pat::CompositeCandidateCollection> pairs;
@@ -376,10 +379,9 @@ maxi2ntuples::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     evt = iEvent.id().event(); 
     npv =  vertices->size();
      for (const pat::CompositeCandidate &lP : *pairs){
+       
         const pat::Muon *mu = 0; 
-        const pat::Tau *tau = 0;    
-        const pat::MET *met = dynamic_cast<const pat::MET*>(lP.daughter(2));
-
+        const pat::Tau *tau = 0;
         if(lP.daughter(0)->isMuon()){
             mu = dynamic_cast<const pat::Muon*>(lP.daughter(0)->masterClone().get());    
             tau = dynamic_cast<const pat::Tau*>(lP.daughter(1)->masterClone().get());    
@@ -389,6 +391,13 @@ maxi2ntuples::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
             mu = dynamic_cast<const pat::Muon*>(lP.daughter(1)->masterClone().get());    
             tau = dynamic_cast<const pat::Tau*>(lP.daughter(0)->masterClone().get());    
         }
+
+        const reco::Candidate *met = lP.daughter(2);
+        if (lP.daughter(2)->hasMasterClone())
+            const edm::Ref<reco::PFMETCollection> met = lP.daughter(2)->masterClone().castTo<edm::Ref<reco::PFMETCollection>>();
+        else
+            met = dynamic_cast<const pat::MET*>(lP.daughter(2));
+
 
         mupt.push_back(mu->pt());
         muphi.push_back(mu->phi());
@@ -411,10 +420,13 @@ maxi2ntuples::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
         tauq.push_back(tau->charge());
         taumt.push_back(sqrt(pow((tau->p4()).pt() + (met->p4()).pt(),2) - pow((tau->p4() + met->p4()).pt(),2)));
         svfit.push_back(lP.userFloat("SVfitMass"));
+
         metpx.push_back(met->px());
+        //std::cout << "met->px(): " << met->px() << " ; METx: " << lP.userFloat("MEt_px") << " : ";//  << met->electronEtFraction() << std::endl;
         metpt.push_back(met->pt());
         metphi.push_back(met->phi());
-        metsumEt.push_back(met->sumEt());
+//        metsumEt.push_back(met->sumEt());
+
 
         mvacov00.push_back(lP.userFloat("MEt_cov00"));
         mvacov01.push_back(lP.userFloat("MEt_cov01"));
@@ -472,6 +484,10 @@ maxi2ntuples::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 
      }
 
+//    metpx.push_back(smet.px());
+//    metpt.push_back(smet.pt());
+//    metphi.push_back(smet.phi());
+//    metsumEt.push_back(smet.sumEt());
 
     for (unsigned int i = 0, n = triggerBits->size(); i < n; ++i) {
         if(triggerBits->accept(i)){
