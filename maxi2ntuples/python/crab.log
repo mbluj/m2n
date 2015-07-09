@@ -268,3 +268,46 @@ Traceback (most recent call last):
     raise ConfigException("Working area '%s' already exists \nPlease change the requestName in the config file" % fullpath)
 ConfigException: Working area '/afs/cern.ch/work/m/molszews/CMSSW/tautau/M2N_For_Italians/src/m2n/maxi2ntuples/python/test/crab_m2n' already exists 
 Please change the requestName in the config file
+DEBUG 2015-07-03 22:29:10,267: 	 Executing command: 'status'
+DEBUG 2015-07-03 22:29:10,269: 	 Found CRAB cache file /afs/cern.ch/user/m/molszews/.crab3
+DEBUG 2015-07-03 22:29:10,298: 	 Checking credentials
+DEBUG 2015-07-03 22:29:10,298: 	 Proxy file /tmp/x509up_u39587 not found
+DEBUG 2015-07-03 22:29:10,298: 	 Creating new proxy for 24:00 hours with VO group '' and VO role 'NULL'.
+DEBUG 2015-07-03 22:29:16,224: 	 Executing : 
+ command : voms-proxy-init -voms cms:/cms -valid 24:00 -rfc
+ output : None
+ error: None
+ retcode : 0
+DEBUG 2015-07-03 22:29:16,730: 	 Executing : 
+ command : voms-proxy-info -file /tmp/x509up_u39587 -timeleft
+ output : 86398
+
+ error: 
+ retcode : 0
+DEBUG 2015-07-03 22:29:17,238: 	 Executing : 
+ command : voms-proxy-info -file /tmp/x509up_u39587 -actimeleft
+ output : 86397
+
+ error: 
+ retcode : 0
+DEBUG 2015-07-03 22:29:17,745: 	 Executing : 
+ command : env X509_USER_PROXY=/tmp/x509up_u39587 voms-proxy-info -fqan
+ output : /cms/Role=NULL/Capability=NULL
+
+ error: 
+ retcode : 0
+DEBUG 2015-07-03 22:29:17,745: 	 Proxy created.
+ERROR 2015-07-03 22:29:17,745: 	 Cannot find .requestcache file in CRAB project directory /afs/cern.ch/work/m/molszews/CMSSW/tautau/M2N_For_Italians/src/m2n/maxi2ntuples/python/test
+ERROR 2015-07-03 22:29:17,746: 	 Caught exception
+Traceback (most recent call last):
+  File "/cvmfs/cms.cern.ch/crab3/slc6_amd64_gcc481/cms/crabclient/3.3.1506-comp2/bin/crab", line 136, in <module>
+    client()
+  File "/cvmfs/cms.cern.ch/crab3/slc6_amd64_gcc481/cms/crabclient/3.3.1506-comp2/bin/crab", line 122, in __call__
+    self.cmd = sub_cmd(self.logger, args[1:])
+  File "/cvmfs/cms.cern.ch/crab3/slc6_amd64_gcc481/cms/crabclient/3.3.1506-comp2/lib/python2.6/site-packages/CRABClient/Commands/SubCommand.py", line 317, in __init__
+    self.loadLocalCache(proxyOptsSetPlace)
+  File "/cvmfs/cms.cern.ch/crab3/slc6_amd64_gcc481/cms/crabclient/3.3.1506-comp2/lib/python2.6/site-packages/CRABClient/Commands/SubCommand.py", line 431, in loadLocalCache
+    self.cachedinfo, self.logfile = loadCache(self.requestarea, self.logger)
+  File "/cvmfs/cms.cern.ch/crab3/slc6_amd64_gcc481/cms/crabclient/3.3.1506-comp2/lib/python2.6/site-packages/CRABClient/ClientUtilities.py", line 412, in loadCache
+    raise CachefileNotFoundException(msg)
+CachefileNotFoundException: Cannot find .requestcache file in CRAB project directory /afs/cern.ch/work/m/molszews/CMSSW/tautau/M2N_For_Italians/src/m2n/maxi2ntuples/python/test

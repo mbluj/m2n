@@ -173,62 +173,114 @@ PairBaselineSelection::produce(edm::Event& iEvent, const edm::EventSetup& iSetup
 
         const reco::Candidate * l1, *l2; 
         l1 = lP.daughter(0); l2 = lP.daughter(1);
+        short unsigned int channelcase; 
+
+        const pat::Muon *mu = 0;
+//        const pat::Muon *mu_ = 0;
+        const pat::Electron* el = 0;
+//        const pat::Electron* el_ = 0;
+        const pat::Tau* tau = 0;
+        const pat::Tau* tau_ = 0;
+        pat::PackedCandidate const* packedLeadTauCand  = 0;
+        pat::PackedCandidate const* packedTrailTauCand = 0;
         if (l1->isMuon()){
             if (l2->isMuon()){
                 //std::cout << "muon-muon channel" <<std::endl;
-//                const pat::Muon *mu  = dynamic_cast<const pat::Muon*>(l1);
-//                const pat::Muon *mu_  = dynamic_cast<const pat::Muon*>(l2);
+                channelcase = 1;
+                mu  = dynamic_cast<const pat::Muon*>(l1->masterClone().get());
+//              mu_  = dynamic_cast<const pat::Muon*>(l2->masterClone().get());
             }
             else if(l2->isElectron()){
-            /*
                 //std::cout << "muon-electron channel" <<std::endl;
-                const pat::Muon *mu  = dynamic_cast<const pat::Muon*>(l1);
-                const pat::Electron* el = dynamic_cast<const pat::Electron*>(l2);
-                if(abs(el->gsfTrack()->dxy(PV.position()))  >= 0.045 || abs(el->gsfTrack()->dz(PV.position())) >= 0.2 )
-                    continue;
-                if (!el->electronID("POG_MVA_ID_Run2_NonTrig_Tight"))
-                    continue;
-                if(utilities::relIso(*el, 0.5) >= 0.15)       
-                    continue;
-                if (el->pt() <= 13 || abs(el->eta()) >= 2.5)
-                    continue;
-                
-                if(abs(mu->innerTrack()->dxy( PV.position() ))  >= 0.045 || abs(mu->innerTrack()->dz(PV.position())) >= 0.2 )
-                    continue;
-                if (!utilities::heppymuonID(*mu, "POG_ID_Medium")){
-                    continue;
-                }
-                if(utilities::relIso(*mu, 0.5) >= 0.15)       
-                    continue;
-                if (mu->pt() <= 9 || abs(mu->eta()) >= 2.4)
-                    continue;
-            */
+                channelcase = 2;
+                mu  = dynamic_cast<const pat::Muon*>(l1->masterClone().get());
+                el = dynamic_cast<const pat::Electron*>(l2->masterClone().get());
             }
             else {
                 //std::cout << "muon-tau channell" <<std::endl;
-               const pat::Muon* mu = dynamic_cast<const pat::Muon*>(l1->masterClone().get());
-               const pat::Tau* tau = dynamic_cast<const pat::Tau*>(l2->masterClone().get());
-                
-                if(abs(mu->innerTrack()->dxy( PV.position()) )  >= 0.045 || abs(mu->innerTrack()->dz(PV.position())) >= 0.2 )
-                    continue;
-                if (!utilities::heppymuonID(*mu, "POG_ID_Medium"))
-                    continue;
-                if(utilities::relIso(*mu, 0.5) >= 0.1)       
-                    continue;
-                if (mu->pt() <= 18 && abs(mu->eta()) >= 2.1)
-                    continue;
-                /*
-                if( tau->tauID("decayModeFinding") <= 0.5 || 
+                channelcase = 3;
+                mu = dynamic_cast<const pat::Muon*>(l1->masterClone().get());
+                tau = dynamic_cast<const pat::Tau*>(l2->masterClone().get());
+            }
+        }
+        else if(l1->isElectron()){
+            if (l2->isMuon()){
+                //std::cout << "muon-electron channel" <<std::endl;
+                channelcase = 2;
+                el = dynamic_cast<const pat::Electron*>(l1->masterClone().get());
+                mu  = dynamic_cast<const pat::Muon*>(l2->masterClone().get());
+            }
+            else if(l2->isElectron()){
+                channelcase = 4;
+                //std::cout << "electron-electron channel" <<std::endl;
+                el = dynamic_cast<const pat::Electron*>(l1->masterClone().get());
+//              el_ = dynamic_cast<const pat::Electron*>(l2->masterClone().get());
+            }
+            else {
+                //std::cout << "electron-tau channel" <<std::endl;
+                channelcase = 5;
+                el = dynamic_cast<const pat::Electron*>(l1->masterClone().get());
+                tau = dynamic_cast<const pat::Tau*>(l2->masterClone().get());
+            }
+        }
+        else {
+            if (l2->isMuon()){
+                //std::cout << "muon-tau channel" <<std::endl;
+                channelcase = 3;
+                tau = dynamic_cast<const pat::Tau*>(l1->masterClone().get());
+                mu  = dynamic_cast<const pat::Muon*>(l2->masterClone().get());
+            }
+            else if(l2->isElectron()){
+                //std::cout << "electron-tau channel" <<std::endl;
+                channelcase = 5;
+                tau = dynamic_cast<const pat::Tau*>(l1->masterClone().get());
+                el = dynamic_cast<const pat::Electron*>(l2->masterClone().get());
+            }
+            else {
+                //std::cout << "tau-tau channel" <<std::endl;
+                channelcase = 6;
+                tau = dynamic_cast<const pat::Tau*>(l1->masterClone().get());
+                packedLeadTauCand = dynamic_cast<pat::PackedCandidate const*>(tau->leadChargedHadrCand().get());
+                tau_ = dynamic_cast<const pat::Tau*>(l2->masterClone().get());
+                packedTrailTauCand = dynamic_cast<pat::PackedCandidate const*>(tau_->leadChargedHadrCand().get());
+            }
+        }
+
+        switch(channelcase){
+            case 1:
+                break;
+
+            case 2:
+                if(
+                    (abs(el->gsfTrack()->dxy(PV.position()))  >= 0.045 || abs(el->gsfTrack()->dz(PV.position())) >= 0.2)  ||
+                    !el->electronID("POG_MVA_ID_Run2_NonTrig_Tight") ||
+                    utilities::relIso(*el, 0.5) >= 0.15 ||
+                    el->pt() <= 13 || abs(el->eta()) >= 2.5 ||
+                    (abs(mu->innerTrack()->dxy( PV.position() ))  >= 0.045 || abs(mu->innerTrack()->dz(PV.position())) >= 0.2 ) ||
+                    !utilities::heppymuonID(*mu, "POG_ID_Medium") ||
+                    utilities::relIso(*mu, 0.5) >= 0.15 ||
+                    (mu->pt() <= 9 || abs(mu->eta()) >= 2.4)
+                ) continue;
+                break;
+
+            case 3: //std::cout << "muon-tau channell" <<std::endl;
+                if(
+                    abs(mu->innerTrack()->dxy( PV.position()) )  >= 0.045 || 
+                    abs(mu->innerTrack()->dz(PV.position())) >= 0.2  ||
+                    !utilities::heppymuonID(*mu, "POG_ID_Medium") || 
+                    utilities::relIso(*mu, 0.5) >= 0.1 || 
+                    (mu->pt() <= 18 && abs(mu->eta()) >= 2.1) ||
+                    tau->tauID("decayModeFinding") <= 0.5 || 
                     tau->tauID("decayModeFindingNewDMs") <= 0.5 ||  
-                    tau->tauID("againstElectronVLooseMVA5") <= 0.5 ||
-                    tau->tauID("againstMuonTight3") <= 0.5 ||
-                    tau->vertex() != PV.position()) 
-                    continue;
-               */
-                if (tau->pt() <= 20 and abs(tau->eta()) >= 2.3)
-                    continue;
+            //        tau->tauID("againstElectronVLooseMVA5") <= 0.5 ||
+            //        tau->tauID("againstMuonTight3") <= 0.5 ||
+                    abs(tau->vertex().z() - PV.z()) < 0.2 ||
+                    tau->pt() <= 20 || 
+                    abs(tau->eta()) >= 2.3
+                ) continue;
                 // VETO
                 // Second lepton veto
+                /*
                 for (const pat::Muon &vetomu : *muons) {
                     if (abs(vetomu.px() - mu->px()) +  abs(vetomu.py() - mu->py()) + abs(vetomu.pz() - mu->pz()) > 0.01 && !vetomu.innerTrack().isNull()){
                         if (vetomu.charge() != mu->charge()) {
@@ -262,43 +314,11 @@ PairBaselineSelection::produce(edm::Event& iEvent, const edm::EventSetup& iSetup
                                 continue;
                     }
                 }
-                
-            }
-        }/*
-        else if(l1->isElectron()){
-            if (l2->isMuon()){
-                //std::cout << "muon-electron channel" <<std::endl;
-                const pat::Electron* el = dynamic_cast<const pat::Electron*>(l1);
-                const pat::Muon *mu  = dynamic_cast<const pat::Muon*>(l2);
-                if(abs(el->gsfTrack()->dxy(PV.position()))  >= 0.045 || abs(el->gsfTrack()->dz(PV.position())) >= 0.2 )
-                    continue;
-                if (!el->electronID("POG_MVA_ID_Run2_NonTrig_Tight"))
-                    continue;
-                if(utilities::relIso(*el, 0.5) >= 0.15)       
-                    continue;
-                if (el->pt() <= 13 || abs(el->eta()) >= 2.5)
-                    continue;
-                
-                if(abs(mu->innerTrack()->dxy( PV.position() ))  >= 0.045 || abs(mu->innerTrack()->dz(PV.position())) >= 0.2 )
-                    continue;
-                if (!utilities::heppymuonID(*mu, "POG_ID_Medium")){
-                    continue;
-                }
-                if(utilities::relIso(*mu, 0.5) >= 0.15)       
-                    continue;
-                if (mu->pt() <= 9 || abs(mu->eta()) >= 2.4)
-                    continue;
-            }
-            else if(l2->isElectron()){
-                //std::cout << "electron-electron channel" <<std::endl;
-  //              const pat::Electron* el = dynamic_cast<const pat::Electron*>(l1);
-  //              const pat::Electron* el_ = dynamic_cast<const pat::Electron*>(l2);
-            }
-            else {
-                //std::cout << "electron-tau channel" <<std::endl;
-                const pat::Electron* el = dynamic_cast<const pat::Electron*>(l1);
-                const pat::Tau* tau = dynamic_cast<const pat::Tau*>(l2);
-
+                */
+                break;
+            case 4:
+                break;
+            case 5:
                 if(abs(el->gsfTrack()->dxy(PV.position()))  >= 0.045 || abs(el->gsfTrack()->dz(PV.position())) >= 0.2 )
                     continue;
                 if (!el->electronID("POG_MVA_ID_Run2_NonTrig_Tight"))
@@ -344,165 +364,29 @@ PairBaselineSelection::produce(edm::Event& iEvent, const edm::EventSetup& iSetup
                             continue;
                     }
                 }
-
-            }
-        
-        }
-        else {
-            if (l2->isMuon()){
-                //std::cout << "muon-tau channel" <<std::endl;
-                const pat::Tau* tau = dynamic_cast<const pat::Tau*>(l1);
-                const pat::Muon *mu  = dynamic_cast<const pat::Muon*>(l2);
-                if(abs(mu->innerTrack()->dxy( PV.position()) )  >= 0.045 || abs(mu->innerTrack()->dz(PV.position())) >= 0.2 )
-                    continue;
-                if (!utilities::heppymuonID(*mu, "POG_ID_Medium"))
-                    continue;
-                if(utilities::relIso(*mu, 0.5) >= 0.1)       
-                    continue;
-                if (mu->pt() <= 18 && abs(mu->eta()) >= 2.1)
-                    continue;
-
-                if( tau->tauID("decayModeFinding") <= 0.5 || 
-                    tau->tauID("decayModeFindingNewDMs") <= 0.5 ||  
-                    tau->tauID("againstElectronVLooseMVA5") <= 0.5 ||
-                    tau->tauID("againstMuonTight3") <= 0.5 ||
-                    tau->vertex() != PV.position()) 
-                    continue;
-                if(tau->tauID("byCombinedIsolationDeltaBetaCorrRaw3Hits") >= 1.5)
-                    continue;
-                if (tau->pt() <= 20 and abs(tau->eta()) >= 2.3)
-                    continue;
-                // VETO
-                // Second lepton veto
-                for (const pat::Muon &vetomu : *muons) {
-                    if (abs(vetomu.px() - mu->px()) +  abs(vetomu.py() - mu->py()) + abs(vetomu.pz() - mu->pz()) > 0.01 && !vetomu.innerTrack().isNull() ){
-                        if (vetomu.charge() != mu->charge()) {
-                            if (vetomu.pt() > 15 && abs(vetomu.eta()) < 2.4  && 
-                                vetomu.isGlobalMuon() && vetomu.isTrackerMuon() && 
-                                vetomu.isPFMuon() &&
-                                abs(vetomu.innerTrack()->dz( PV.position()) ) < 0.2 &&
-                                abs(vetomu.innerTrack()->dxy( PV.position()) ) < 0.045  &&
-                                utilities::relIso(vetomu, 0.5) < 0.3)
-                                continue;
-                        }
-                        // Third lepton veto : next muon veto
-                        if (vetomu.pt() > 10           &&
-                            abs(vetomu.eta()) < 2.4    &&
-                            utilities::heppymuonID(vetomu, "POG_ID_Medium")   &&
-                            abs(vetomu.innerTrack()->dxy( PV.position())) < 0.045  &&
-                            abs(vetomu.innerTrack()->dz( PV.position())) < 0.2   &&
-                            utilities::relIso(vetomu, 0.5) < 0.3)
-                            continue;
-                    }
-                }
-                // Third lepton veto: Next electron veto
-                // Third lepton veto: Next electron veto
-                for (const pat::Electron &vetoel : *electrons) {
-                    if (!vetoel.gsfTrack().isNull() &&  abs(vetoel.px() - mu->px()) +  abs(vetoel.py() - mu->py()) + abs(vetoel.pz() - mu->pz()) > 0.01){
-                        if (vetoel.pt() > 10                                     &&
-                            abs(vetoel.eta()) < 2.5                              &&
-                            abs(vetoel.gsfTrack()->dxy(PV.position())) < 0.045                          &&
-                            abs(vetoel.gsfTrack()->dz(PV.position())) < 0.2                             &&
-                       //  FIXME    vetoel.cutBasedId('POG_PHYS14_25ns_v1_Veto')       &&
-                            utilities::relIso(vetoel, 0.5) < 0.3 )
-                                continue;
-                    }
-                }
-            }
-            else if(l2->isElectron()){
-                //std::cout << "electron-tau channel" <<std::endl;
-                const pat::Tau* tau = dynamic_cast<const pat::Tau*>(l1);
-                const pat::Electron* el = dynamic_cast<const pat::Electron*>(l2);
-
-                if(abs(el->gsfTrack()->dxy(PV.position()))  >= 0.045 || abs(el->gsfTrack()->dz(PV.position())) >= 0.2 )
-                    continue;
-                if (!el->electronID("POG_MVA_ID_Run2_NonTrig_Tight"))
-                    continue;
-                if(utilities::relIso(*el, 0.5) >= 0.1)       
-                    continue;
-                if (el->pt() <= 23. || abs(el->eta()) >= 2.5)
-                    continue;
-
-                if( tau->tauID("decayModeFinding") <= 0.5 || 
-                    tau->tauID("decayModeFindingNewDMs") <= 0.5 ||  
-                    tau->tauID("againstElectronTightMVA5") <= 0.5 ||
-                    tau->tauID("againstMuonLoose3") <= 0.5 ||
-                    (tau->vertex().z() + 130./tan(tau->theta()) <= 0.5 && tau->vertex().z() + 130./tan(tau->theta()) >= -1.5) || //  tau.zImpact() in heppy
-                    tau->vertex() != PV.position()) 
-                    continue;
-                if(tau->tauID("byCombinedIsolationDeltaBetaCorrRaw3Hits") >= 1.5)
-                    continue;
-                if (tau->pt() <= 20 and abs(tau->eta()) >= 2.3)
-                    continue;
-
-                //V E T O
-                for (const pat::Electron &vetoel : *electrons) {
-                    if (!vetoel.gsfTrack().isNull() && abs(vetoel.px() - el->px()) +  abs(vetoel.py() - el->py()) + abs(vetoel.pz() - el->pz()) > 0.01){
-                        if (vetoel.pt() > 10                                     &&
-                            abs(vetoel.eta()) < 2.5                              &&
-                            abs(vetoel.gsfTrack()->dxy(PV.position())) < 0.045                          &&
-                            abs(vetoel.gsfTrack()->dz(PV.position())) < 0.2                             &&
-                       //  FIXME    vetoel.cutBasedId('POG_PHYS14_25ns_v1_Veto')       &&
-                            utilities::relIso(vetoel, 0.5) < 0.3 )
-                                continue;
-                    }
-                }
-
-                for (const pat::Muon &vetomu : *muons) {
-                    if (!vetomu.innerTrack().isNull() && abs(vetomu.px() - el->px()) +  abs(vetomu.py() - el->py()) + abs(vetomu.pz() - el->pz()) > 0.01){
-                        if (vetomu.pt() > 10           &&
-                            abs(vetomu.eta()) < 2.4    &&
-                            utilities::heppymuonID(vetomu, "POG_ID_Medium")   &&
-                            abs(vetomu.innerTrack()->dxy( PV.position())) < 0.045  &&
-                            abs(vetomu.innerTrack()->dz( PV.position())) < 0.2   &&
-                            utilities::relIso(vetomu, 0.5) < 0.3)
-                            continue;
-                    }
-                }
-            }
-            else {
-                //std::cout << "tau-tau channel" <<std::endl;
-                const pat::Tau* tau = dynamic_cast<const pat::Tau*>(l1);
-                const pat::Tau* tau_ = dynamic_cast<const pat::Tau*>(l2);
+                break;
+            case 6:
                 //leading and trailing taus has the same cuts so far => no if needed
-//                if (tau->tauID("byCombinedIsolationDeltaBetaCorrRaw3Hits") < tau_->tauID("byCombinedIsolationDeltaBetaCorrRaw3Hits") ){
-                    if( tau->tauID("decayModeFinding") <= 0.5 || 
-                        tau->tauID("decayModeFindingNewDMs") <= 0.5 ||  
-                        tau->tauID("againstElectronVLooseMVA5") <= 0.5 ||
-                        tau->tauID("againstMuonLoose3") <= 0.5 ||
-                        tau->vertex() != PV.position()) 
-                        continue;
-                    if(tau->tauID("byCombinedIsolationDeltaBetaCorrRaw3Hits") >= 1.)
-                        continue;
-                    if (tau->pt() <= 45. and abs(tau->eta()) >= 2.1)
-                        continue;
-                
-                    if( tau_->tauID("decayModeFinding") <= 0.5 || 
-                        tau_->tauID("decayModeFindingNewDMs") <= 0.5 ||  
-                        tau_->tauID("againstElectronVLooseMVA5") <= 0.5 ||
-                        tau_->tauID("againstMuonLoose3") <= 0.5 ||
-                        tau_->vertex() != PV.position()) 
-                        continue;
-                    if(tau_->tauID("byCombinedIsolationDeltaBetaCorrRaw3Hits") >= 1.)
-                        continue;
-                    if (tau_->pt() <= 45. and abs(tau_->eta()) >= 2.1)
-                        continue;
-//                }
-//                else{
-//                }
-            }
-        
-        }*/
+                if( 
+                    tau->tauID("decayModeFindingNewDMs") <= 0.5 || 
+                    abs(packedLeadTauCand->dz()) >= 0.2 ||
+                    tau->pt() <= 45. ||
+                    abs(tau->eta()) >= 2.1  ||
+                    tau_->tauID("decayModeFindingNewDMs") <= 0.5 || 
+                    abs(packedTrailTauCand->dz()) >= 0.2 ||
+                    tau_->pt() <= 45. || 
+                    abs(tau_->eta()) >= 2.1 
+
+                  ) continue;
+                break;
+            default:
+                std::cout << "ERROR: wrong pair!" <<std::endl;
+                break;
+        }
 
 
-
-
-          //  std::cout << "passsed" <<std::endl;
-            
-
-
+        //  std::cout << "passsed" <<std::endl;
         selectedPair->push_back(lP);
-    
     }
 
     iEvent.put(std::move(selectedPair));
