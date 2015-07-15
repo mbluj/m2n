@@ -96,7 +96,7 @@ process.pairswithmet = cms.EDProducer("AddMVAMET",
 
 process.pairs = cms.EDProducer("ChannelSelector",
     pairs = cms.InputTag("pairswithmet"),
-    channel = cms.string("tautau"),
+    channel = cms.string("mutau"),
 )
 
 
@@ -119,15 +119,23 @@ process.selected = cms.EDProducer("PairBaselineSelection",
     vertices = cms.InputTag("offlineSlimmedPrimaryVertices"),
     muons = cms.InputTag("slimmedMuons"),
     electrons = cms.InputTag("slimmedElectrons"),
+    bits = cms.InputTag("TriggerResults","","HLT"),
+    prescales = cms.InputTag("patTrigger"),
+    objects = cms.InputTag("selectedPatTrigger"),
 )
 
 process.paircheck = cms.EDFilter("PatPairExistenceFilter",
     pairs = cms.InputTag("selected"),
 )
+process.load('L1Trigger.Skimmer.l1Filter_cfi')
+process.l1Filter.algorithms = cms.vstring('L1_Mu16er_TauJet20er', 'L1_SingleMu20er')
 
+process.load('HLTrigger.HLTfilters.hltLevel1GTSeed_cfi')
+process.hltLevel1GTSeed.L1TechTriggerSeeding = cms.bool(False)
+process.hltLevel1GTSeed.L1SeedsLogicalExpression = cms.string('(L1_SingleMuBeamHalo OR L1_SingleMuOpen)  AND NOT L1_SingleJet6U')
 
-#process.m2n = cms.EDAnalyzer('maxi2ntuples',
-process.m2n = cms.EDAnalyzer('tautau',
+process.m2n = cms.EDAnalyzer('maxi2ntuples',
+#process.m2n = cms.EDAnalyzer('tautau',
 
     vertices = cms.InputTag("offlineSlimmedPrimaryVertices"),
     muons = cms.InputTag("slimmedMuons"),
@@ -152,6 +160,8 @@ process.p = cms.Path(
         process.jetsSelected
         *process.pairswithmet
         *process.pairs
+#        *process.hltLevel1GTSeed
+#        *process.l1Filter
         *process.clean
         *process.selected
         *process.paircheck

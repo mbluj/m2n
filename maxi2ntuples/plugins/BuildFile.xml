@@ -20,6 +20,8 @@
 <use name="DataFormats/MuonReco"/>
 <use name="DataFormats/RecoCandidate"/>
 <use name="CommonTools/CandUtils"/>
+<use name="L1Trigger/Skimmer"/>
+<use name="HLTrigger/HLTfilters"/>
 <use name="root"/>
 <use name="roottmva"/>
 <use name="m2n/maxi2ntuples"/>

@@ -8,7 +8,8 @@ outputdir = '/afs/cern.ch/work/m/molszews/CMSSW/Data/ntuple_VBF/'
 
 for dirname, dirnames, filenames in os.walk(directory):
     for filename in filenames:
-        if '.root' in filename:
+#        if '.root' in filename:
+        if 'Enriched_miniAOD_1.root' in filename:
             print "running: " + filename;
             call(["cmsRun", "python/maxi2ntuples.py", directory, outputdir, filename])
 
