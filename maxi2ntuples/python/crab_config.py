@@ -8,8 +8,7 @@ config.JobType.pluginName = 'Analysis'
 config.JobType.psetName = 'maxi2ntuples.py'
 config.JobType.allowUndistributedCMSSW = True
 
-#config.Data.inputDataset = '/VBF_HToTauTau_M-125_13TeV-powheg-pythia6/bluj-EnrMiniAOD_72X_synch_v2-00fe95d9ba807a4943e3f7b9ec0d4e02/USER'
-config.Data.inputDataset = '/VBF_HToTauTau_M-125_13TeV-powheg-pythia6/lcadamur-VBF_HTauTau-14021cf92b609bd2cdfd7d04edfc7ab0/USER'
+config.Data.inputDataset = '/DYJetsToLL_M-50_13TeV-madgraph-pythia8/molszews-DYJetsToLL_Phys14_CMSSW_7_2-14021cf92b609bd2cdfd7d04edfc7ab0/USER'
 config.Data.inputDBS = 'phys03'
 config.Data.splitting = 'FileBased'
 config.Data.unitsPerJob = 30

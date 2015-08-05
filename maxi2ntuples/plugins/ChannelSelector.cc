@@ -147,7 +147,6 @@ ChannelSelector::produce(edm::Event& iEvent, const edm::EventSetup& iSetup)
 
         const reco::Candidate * l1, *l2; 
         l1 = lP.daughter(0); l2 = lP.daughter(1);
-
         std::string leg = "";  std::string leg_ = "";
         if(l1->isMuon())
             leg += "mu";

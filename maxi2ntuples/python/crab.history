@@ -1,0 +1,22 @@
+150804_132351: /afs/cern.ch/cms/ccs/wm/scripts/Crab/CRAB_2_11_1_patch1/python/crab.py -create -cfg crab.cfg
+150804_132407: /afs/cern.ch/cms/ccs/wm/scripts/Crab/CRAB_2_11_1_patch1/python/crab.py -create -cfg crab.cfg
+150804_132608: /afs/cern.ch/cms/ccs/wm/scripts/Crab/CRAB_2_11_1_patch1/python/crab.py -create -cfg crab.cfg
+150804_132709: /afs/cern.ch/cms/ccs/wm/scripts/Crab/CRAB_2_11_1_patch1/python/crab.py -submit
+150804_132846: /afs/cern.ch/cms/ccs/wm/scripts/Crab/CRAB_2_11_1_patch1/python/crab.py -submit
+150804_132906: /afs/cern.ch/cms/ccs/wm/scripts/Crab/CRAB_2_11_1_patch1/python/crab.py -submit
+150804_133330: /afs/cern.ch/cms/ccs/wm/scripts/Crab/CRAB_2_11_1_patch1/python/crab.py -create -cfg crab.cfg
+150804_133351: /afs/cern.ch/cms/ccs/wm/scripts/Crab/CRAB_2_11_1_patch1/python/crab.py -submit
+150804_133427: /afs/cern.ch/cms/ccs/wm/scripts/Crab/CRAB_2_11_1_patch1/python/crab.py -status
+150804_133702: /afs/cern.ch/cms/ccs/wm/scripts/Crab/CRAB_2_11_1_patch1/python/crab.py -status
+150804_133730: /afs/cern.ch/cms/ccs/wm/scripts/Crab/CRAB_2_11_1_patch1/python/crab.py -status
+150804_134537: /afs/cern.ch/cms/ccs/wm/scripts/Crab/CRAB_2_11_1_patch1/python/crab.py -status
+150804_134600: /afs/cern.ch/cms/ccs/wm/scripts/Crab/CRAB_2_11_1_patch1/python/crab.py -status
+150804_134719: /afs/cern.ch/cms/ccs/wm/scripts/Crab/CRAB_2_11_1_patch1/python/crab.py -status
+150804_135242: /afs/cern.ch/cms/ccs/wm/scripts/Crab/CRAB_2_11_1_patch1/python/crab.py -status
+150804_135830: /afs/cern.ch/cms/ccs/wm/scripts/Crab/CRAB_2_11_1_patch1/python/crab.py -status
+150804_140120: /afs/cern.ch/cms/ccs/wm/scripts/Crab/CRAB_2_11_1_patch1/python/crab.py -status
+150804_141038: /afs/cern.ch/cms/ccs/wm/scripts/Crab/CRAB_2_11_1_patch1/python/crab.py -status
+150804_143352: /afs/cern.ch/cms/ccs/wm/scripts/Crab/CRAB_2_11_1_patch1/python/crab.py -status
+150804_164512: /afs/cern.ch/cms/ccs/wm/scripts/Crab/CRAB_2_11_1_patch1/python/crab.py -status
+150804_184035: /afs/cern.ch/cms/ccs/wm/scripts/Crab/CRAB_2_11_1_patch1/python/crab.py -status
+150805_003105: /afs/cern.ch/cms/ccs/wm/scripts/Crab/CRAB_2_11_1_patch1/python/crab.py -status

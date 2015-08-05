@@ -281,6 +281,7 @@ PairBaselineSelection::produce(edm::Event& iEvent, const edm::EventSetup& iSetup
 
     if (pass)
         selectedPair->push_back(lP);
+//        std::cout << "Passeddddddddddddddddd!\n"; 
     }
 
     iEvent.put(std::move(selectedPair));
@@ -379,11 +380,11 @@ bool PairBaselineSelection::mutau(const reco::Vertex &PV, const L1GtTriggerMenu*
         //abs(tau->vertex().z() - PV.z()) < 0.2 
     ) return false;
 
-
     std::string path = "";
     for (unsigned int i = 0, n = triggerBits->size(); i < n; ++i) {
         if(triggerBits->accept(i)){
             path += names.triggerName(i);
+    //        std::cout <<  names.triggerName(i) << std::endl;
         }
     }
     
@@ -397,7 +398,7 @@ bool PairBaselineSelection::mutau(const reco::Vertex &PV, const L1GtTriggerMenu*
 
     //Phys'14 MC samples
     
-    if (path.find("HLT_IsoMu17_eta2p1_LooseIsoPFTau20_v1") != std::string::npos){
+    if (path.find("HLT_IsoMu17_eta2p1_LooseIsoPFTau20_v2") != std::string::npos){
         for (pat::TriggerObjectStandAlone obj : *triggerObjects) {
             obj.unpackPathNames(names);
             // for (unsigned h = 0; h < obj.filterLabels().size(); ++h) std::cout << obj.filterLabels()[h]  << std::endl;

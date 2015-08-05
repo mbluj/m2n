@@ -145,7 +145,6 @@ AddMVAMET::produce(edm::Event& iEvent, const edm::EventSetup& iSetup)
     iEvent.getByToken(pairsToken_, pairs);
     if (!pairs.isValid()) return;
 
-    
     if(usePairMET){
 
         for (std::vector<int>::size_type i = 0; i != pairs->size(); i++) {// std::vector<int>::size_type i = 2; i != jets->size(); i++

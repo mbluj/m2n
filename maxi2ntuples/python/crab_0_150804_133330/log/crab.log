@@ -1,0 +1,712 @@
+2015-08-04 13:33:30,444 [DEBUG] 	/afs/cern.ch/cms/ccs/wm/scripts/Crab/CRAB_2_11_1_patch1/python/crab.py -create -cfg crab.cfg
+
+2015-08-04 13:33:30,444 [INFO] 	Version 2.11.1_patch1 running on Tue Aug  4 13:33:30 2015 CET (11:33:30 UTC)
+
+crab. Working options:
+	scheduler           remoteGlidein
+	job type            CMSSW
+	server              OFF
+	working directory   /afs/cern.ch/work/m/molszews/CMSSW/tautau/M2N/CMSSW_7_4_5/src/m2n/maxi2ntuples/python/crab_0_150804_133330/
+
+2015-08-04 13:33:30,444 [DEBUG] 	Downloading file [http://cmsdoc.cern.ch/cms/LCG/crab/config/] to [/afs/cern.ch/user/m/molszews/.cms_crab/allowed_releases.conf].
+2015-08-04 13:33:30,554 [DEBUG] 	Input whitelist: 
+2015-08-04 13:33:30,555 [DEBUG] 	Input blacklist: 
+2015-08-04 13:33:30,555 [DEBUG] 	Converted whitelist: 
+2015-08-04 13:33:30,555 [DEBUG] 	Converted blacklist: 
+2015-08-04 13:33:32,730 [DEBUG] 	Downloading file [http://cmsdoc.cern.ch/cms/LCG/crab/config/] to [/afs/cern.ch/user/m/molszews/.cms_crab/site_black_list.conf].
+2015-08-04 13:33:32,730 [DEBUG] 	Enforced black list: TAPE,srm-cms.cern.ch,cmssrm.fnal.gov,T1_RU,T1_TW,cmseos.fnal.gov,cmsdca2.fnal.gov,T2_PK_NCP,T3_US_Vanderbilt_EC2
+ 
+2015-08-04 13:33:36,153 [DEBUG] 	Linux lxplus0066.cern.ch 2.6.32-504.16.2.el6.x86_64 #1 SMP Tue Apr 21 21:44:51 CEST 2015 x86_64 x86_64 x86_64 GNU/Linux
+ 
+Used properties:
+Linux lxplus0066.cern.ch 2.6.32-504.16.2.el6.x86_64 #1 SMP Tue Apr 21 21:44:51 CEST 2015 x86_64 x86_64 x86_64 GNU/Linux
+ 
+Used properties:
+   CMSSW.datasetpath : /DYJetsToLL_M-50_13TeV-madgraph-pythia8/molszews-DYJetsToLL_Phys14_CMSSW_7_2-14021cf92b609bd2cdfd7d04edfc7ab0/USER
+   CMSSW.dbs_url : phys03
+   CMSSW.number_of_jobs : 5
+   CMSSW.output_file : outfile.root
+   CMSSW.pset : maxi2ntuples.py
+   CMSSW.total_number_of_events : 10
+   CRAB.cfg : crab.cfg
+   CRAB.create : 
+   CRAB.jobtype : cmssw
+   CRAB.scheduler : remoteGlidein
+   USER.copy_data : 0
+   USER.return_data : 1
+   USER.storage_element : T2_PL_Warsaw
+   USER.user_remote_dir : TutGridSchool
+End of used properties.
+
+2015-08-04 13:33:36,153 [DEBUG] 	Downloading file [http://cmsdoc.cern.ch/cms/LCG/crab/config/] to [/afs/cern.ch/user/m/molszews/.cms_crab/site_black_list.conf].
+2015-08-04 13:33:36,154 [DEBUG] 	Enforced black list: TAPE,srm-cms.cern.ch,cmssrm.fnal.gov,T1_RU,T1_TW,cmseos.fnal.gov,cmsdca2.fnal.gov,T2_PK_NCP,T3_US_Vanderbilt_EC2 
+2015-08-04 13:33:36,154 [INFO] 	PSN black list: TAPE,srm-cms.cern.ch,cmssrm.fnal.gov,T1_RU,T1_TW,cmseos.fnal.gov,cmsdca2.fnal.gov,T2_PK_NCP,T3_US_Vanderbilt_EC2
+2015-08-04 13:33:36,263 [DEBUG] 	CMSSW::__init__
+2015-08-04 13:33:36,264 [DEBUG] 	Scram::Scram() version is 2
+2015-08-04 13:33:36,264 [DEBUG] 	Scram::Scram() arch is slc6_amd64_gcc491
+2015-08-04 13:33:36,264 [DEBUG] 	Downloading file [https://cmssdt.cern.ch/SDT/cgi-bin] to [/afs/cern.ch/user/m/molszews/.cms_crab/ReleasesXML?anytype=1].
+2015-08-04 13:33:36,330 [INFO] 	Contacting Data Discovery Services ...
+2015-08-04 13:33:36,331 [DEBUG] 	No mapping to a DBS2 instance possible for dbs_url=https://cmsweb.cern.ch/dbs/prod/phys03/DBSReader
+2015-08-04 13:33:36,331 [INFO] 	Accessing DBS at: https://cmsweb.cern.ch/dbs/prod/phys03/DBSReader
+2015-08-04 13:33:39,261 [INFO] 	DBS3 lookup took  2.86 sec
+2015-08-04 13:33:39,269 [INFO] 	Datatype is mc
+2015-08-04 13:33:39,275 [DEBUG] 	No mapping to a DBS2 instance possible for dbs_url=https://cmsweb.cern.ch/dbs/prod/phys03/DBSReader
+2015-08-04 13:33:39,275 [DEBUG] 	Retrieve block locations with
+curl -ks --cert $X509_USER_PROXY --key $X509_USER_PROXY "https://cmsweb.cern.ch/phedex/datasvc/json/prod/BlockReplicaSummary?dataset=/DYJetsToLL_M-50_13TeV-madgraph-pythia8/molszews-DYJetsToLL_Phys14_CMSSW_7_2-14021cf92b609bd2cdfd7d04edfc7ab0/USER&complete=y"
+2015-08-04 13:33:39,701 [DEBUG] 	Retrieve PNNs type with
+curl -ks --cert $X509_USER_PROXY --key $X509_USER_PROXY "https://cmsweb.cern.ch/phedex/datasvc/cjson/prod/nodes"
+2015-08-04 13:33:40,056 [INFO] 	No dataset location information found in PhEDEx
+2015-08-04 13:33:40,057 [INFO] 	Use origin site location recorded in local scope DBS
+2015-08-04 13:33:41,152 [INFO] 	Requested dataset: /DYJetsToLL_M-50_13TeV-madgraph-pythia8/molszews-DYJetsToLL_Phys14_CMSSW_7_2-14021cf92b609bd2cdfd7d04edfc7ab0/USER has 2821270 events in 12 blocks.
+
+2015-08-04 13:33:41,593 [DEBUG] 	Job splitting method: EventBased
+2015-08-04 13:33:41,594 [INFO] 	May not create the exact number_of_jobs requested.
+2015-08-04 13:33:41,594 [DEBUG] 	Events in Block File 289314
+2015-08-04 13:33:41,594 [DEBUG] 	
+Job 1 can run over 2 events.
+Job 1 Destination: ['T2_PL_Warsaw']
+Job 2 can run over 2 events.
+Job 2 Destination: ['T2_PL_Warsaw']
+Job 3 can run over 2 events.
+Job 3 Destination: ['T2_PL_Warsaw']
+Job 4 can run over 2 events.
+Job 4 Destination: ['T2_PL_Warsaw']
+Job 5 can run over 2 events.
+Job 5 Destination: ['T2_PL_Warsaw']
+
+2015-08-04 13:33:41,594 [INFO] 	5 job(s) can run on 10 events.
+
+2015-08-04 13:33:41,597 [INFO] 	List of jobs and available destination sites:
+
+Block     1: jobs                  1-5: sites: T2_PL_Warsaw
+
+2015-08-04 13:33:41,630 [DEBUG] 	PsetManipulator::__init__: PSet file = maxi2ntuples.py
+2015-08-04 13:33:43,997 [INFO] 	Adding ntupla.root (from TFileService) to list of output files
+2015-08-04 13:33:44,042 [DEBUG] 	lib /afs/cern.ch/work/m/molszews/CMSSW/tautau/M2N/CMSSW_7_4_5/lib to be tarred
+2015-08-04 13:33:44,895 [DEBUG] 	Creator: JobType CMSSW created
+2015-08-04 13:33:44,895 [DEBUG] 	Creator: total # of jobs = 5
+2015-08-04 13:33:44,895 [DEBUG] 	Creator constructor finished
+2015-08-04 13:33:45,158 [DEBUG] 	Creator::run() called
+2015-08-04 13:33:45,159 [DEBUG] 	Scram::Scram() version is 2
+2015-08-04 13:33:45,159 [DEBUG] 	Scram::Scram() arch is slc6_amd64_gcc491
+2015-08-04 13:33:45,481 [INFO] 	Creating 5 jobs, please wait...
+2015-08-04 13:33:45,482 [DEBUG] 	Creation Time: 0.323072910309
+2015-08-04 13:33:45,482 [INFO] 	Total of 5 jobs created.
+
+2015-08-04 13:33:51,467 [DEBUG] 	/afs/cern.ch/cms/ccs/wm/scripts/Crab/CRAB_2_11_1_patch1/python/crab.py -submit
+
+2015-08-04 13:33:51,467 [INFO] 	Version 2.11.1_patch1 running on Tue Aug  4 13:33:51 2015 CET (11:33:51 UTC)
+
+crab. Working options:
+	scheduler           remoteGlidein
+	job type            CMSSW
+	server              OFF
+	working directory   /afs/cern.ch/work/m/molszews/CMSSW/tautau/M2N/CMSSW_7_4_5/src/m2n/maxi2ntuples/python/crab_0_150804_133330/
+
+2015-08-04 13:33:51,467 [DEBUG] 	Downloading file [http://cmsdoc.cern.ch/cms/LCG/crab/config/] to [/afs/cern.ch/user/m/molszews/.cms_crab/allowed_releases.conf].
+2015-08-04 13:33:51,543 [DEBUG] 	Input whitelist: 
+2015-08-04 13:33:51,543 [DEBUG] 	Input blacklist: 
+2015-08-04 13:33:51,543 [DEBUG] 	Converted whitelist: 
+2015-08-04 13:33:51,543 [DEBUG] 	Converted blacklist: 
+2015-08-04 13:33:53,547 [DEBUG] 	Downloading file [http://cmsdoc.cern.ch/cms/LCG/crab/config/] to [/afs/cern.ch/user/m/molszews/.cms_crab/site_black_list.conf].
+2015-08-04 13:33:53,548 [DEBUG] 	Enforced black list: TAPE,srm-cms.cern.ch,cmssrm.fnal.gov,T1_RU,T1_TW,cmseos.fnal.gov,cmsdca2.fnal.gov,T2_PK_NCP,T3_US_Vanderbilt_EC2
+ 
+2015-08-04 13:33:56,145 [DEBUG] 	Downloading file [http://cmsdoc.cern.ch/cms/LCG/crab/config/] to [/afs/cern.ch/user/m/molszews/.cms_crab/site_black_list.conf].
+2015-08-04 13:33:56,145 [DEBUG] 	Enforced black list: TAPE,srm-cms.cern.ch,cmssrm.fnal.gov,T1_RU,T1_TW,cmseos.fnal.gov,cmsdca2.fnal.gov,T2_PK_NCP,T3_US_Vanderbilt_EC2 
+2015-08-04 13:33:56,145 [INFO] 	PSN black list: TAPE,srm-cms.cern.ch,cmssrm.fnal.gov,T1_RU,T1_TW,cmseos.fnal.gov,cmsdca2.fnal.gov,T2_PK_NCP,T3_US_Vanderbilt_EC2
+2015-08-04 13:33:56,152 [DEBUG] 	parseRange_ None
+2015-08-04 13:33:56,157 [DEBUG] 	Scram::Scram() version is 2
+2015-08-04 13:33:56,157 [DEBUG] 	Scram::Scram() arch is slc6_amd64_gcc491
+2015-08-04 13:33:56,159 [DEBUG] 	Submitter::run() called
+2015-08-04 13:33:56,161 [DEBUG] 	nsjobs -1
+2015-08-04 13:33:56,161 [DEBUG] 	Total jobs 5
+2015-08-04 13:33:56,163 [DEBUG] 	nj_list [1, 2, 3, 4, 5]
+2015-08-04 13:33:56,771 [DEBUG] 	GRIDNAME: /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=molszews/CN=740841/CN=Michal Olszewski 
+2015-08-04 13:33:58,090 [DEBUG] 	Submission DashBoard Pre-Submission report: {'ApplicationVersion': 'CMSSW_7_4_5', 'taskId': 'molszews_crab_0_150804_133330_9mw5o2', 'resubmitter': 'user', 'tool': 'crab2', 'vo': 'cms', 'tool_ui': 'lxplus0066.cern.ch', 'JSToolVersion': '2.11.1_patch1', 'user': 'molszews', 'scheduler': 'GLIDEIN', 'taskType': 'analysis', 'CMSUser': 'molszews', 'jobId': 'TaskMeta', 'datasetFull': '/DYJetsToLL_M-50_13TeV-madgraph-pythia8/molszews-DYJetsToLL_Phys14_CMSSW_7_2-14021cf92b609bd2cdfd7d04edfc7ab0/USER', 'exe': 'cmsRun', 'GridName': '/DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=molszews/CN=740841/CN=Michal Olszewski', 'SubmissionType': 'direct'}
+2015-08-04 13:33:58,090 [INFO] 	Checking available resources...
+2015-08-04 13:33:58,094 [INFO] 	Found  compatible site(s) for job 1
+2015-08-04 13:33:58,095 [INFO] 	1 blocks of jobs will be submitted
+2015-08-04 13:33:58,095 [DEBUG] 	Delegating proxy 
+2015-08-04 13:33:58,095 [DEBUG] 	Submitting jobs [1, 2, 3, 4, 5]
+2015-08-04 13:33:58,241 [DEBUG] 	Calling ServerConfig default
+2015-08-04 13:33:58,241 [DEBUG] 	getting serverlist from web
+2015-08-04 13:33:58,241 [DEBUG] 	Downloading file [http://cmsdoc.cern.ch/cms/LCG/crab/config/] to [/afs/cern.ch/user/m/molszews/.cms_crab/AvailableServerList].
+2015-08-04 13:33:58,242 [DEBUG] 	All avaialble servers: [['cern_vocms0117', '2.8.4-', 'remoteGlidein'], ['cern_vocms0117', '2.8.4-', 'remoteGlidein'], ['ucsd_submit-6', '2.8.4-', 'remoteGlidein'], ['ucsd_submit-6', '2.8.4-', 'remoteGlidein'], ['ucsd_submit-6', '2.8.4-', 'remoteGlidein']]
+2015-08-04 13:33:58,242 [DEBUG] 	All avaialble servers compatible with 2.11.1_patch1: ['cern_vocms0117', 'cern_vocms0117', 'ucsd_submit-6', 'ucsd_submit-6', 'ucsd_submit-6']
+2015-08-04 13:33:58,242 [DEBUG] 	Avaialble servers: ['cern_vocms0117', 'cern_vocms0117', 'ucsd_submit-6', 'ucsd_submit-6', 'ucsd_submit-6'] choosen: ucsd_submit-6
+2015-08-04 13:33:58,242 [DEBUG] 	Downloading file [http://cmsdoc.cern.ch/cms/LCG/crab/config/] to [/afs/cern.ch/user/m/molszews/.cms_crab/server_ucsd_submit-6.conf].
+2015-08-04 13:33:58,243 [DEBUG] 	/afs/cern.ch/user/m/molszews/.cms_crab/0_GET_server_ucsd_submit-6.conf expired, refreshing cache
+2015-08-04 13:33:58,243 [DEBUG] 	getData: 
+	url: /cms/LCG/crab/config/server_ucsd_submit-6.conf
+	data: {}
+2015-08-04 13:33:58,277 [INFO] 	remotehost from Avail.List = submit-6.t2.ucsd.edu
+2015-08-04 13:33:58,336 [INFO] 	list of PSN's for submission: T2_PL_Warsaw
+2015-08-04 13:33:58,336 [DEBUG] 	Scram::Scram() version is 2
+2015-08-04 13:33:58,336 [DEBUG] 	Scram::Scram() arch is slc6_amd64_gcc491
+2015-08-04 13:33:59,283 [INFO] 	contacting remote host submit-6.t2.ucsd.edu
+2015-08-04 13:34:00,551 [DEBUG] 	Execute command :
+eval `scram unsetenv -sh`;  gsissh  -o ControlMaster=auto -o ControlPath=/tmp/molszews/.ssh/ssh-link-819340738-submit-6.t2.ucsd.edu -o BatchMode=yes -o StrictHostKeyChecking=no -o ForwardX11=no submit-6.t2.ucsd.edu  "sleep 3600"
+2015-08-04 13:34:00,554 [INFO] 	Establishing gsissh ControlPath. Wait 2 sec ...
+2015-08-04 13:34:02,556 [INFO] 	Establishing gsissh ControlPath. Wait 2 sec ...
+2015-08-04 13:34:04,561 [INFO] 	COPY FILES TO REMOTE HOST
+2015-08-04 13:34:04,561 [DEBUG] 	Execute command :
+eval `scram unsetenv -sh`;  gsissh -o ControlMaster=auto -o ControlPath=/tmp/molszews/.ssh/ssh-link-819340738-submit-6.t2.ucsd.edu -o BatchMode=yes -o StrictHostKeyChecking=no -o ForwardX11=no submit-6.t2.ucsd.edu  mkdir -p molszews_crab_0_150804_133330_9mw5o2
+2015-08-04 13:34:05,165 [DEBUG] 	Status,output= 0,
+2015-08-04 13:34:05,166 [DEBUG] 	Execute command :
+gsiscp -o ControlMaster=auto -o ControlPath=/tmp/molszews/.ssh/ssh-link-819340738-submit-6.t2.ucsd.edu -o BatchMode=yes -o StrictHostKeyChecking=no -o ForwardX11=no /afs/cern.ch/work/m/molszews/CMSSW/tautau/M2N/CMSSW_7_4_5/src/m2n/maxi2ntuples/python/crab_0_150804_133330/share/default.tgz /afs/cern.ch/work/m/molszews/CMSSW/tautau/M2N/CMSSW_7_4_5/src/m2n/maxi2ntuples/python/crab_0_150804_133330/share/arguments.xml /afs/cern.ch/work/m/molszews/CMSSW/tautau/M2N/CMSSW_7_4_5/src/m2n/maxi2ntuples/python/crab_0_150804_133330/job/CMSSW.sh /afs/cern.ch/work/m/molszews/CMSSW/tautau/M2N/CMSSW_7_4_5/src/m2n/maxi2ntuples/python/crab_0_150804_133330/share//molszews_crab_0_150804_133330_9mw5o2_job5.jdl /tmp/x509up_u39587 submit-6.t2.ucsd.edu:molszews_crab_0_150804_133330_9mw5o2
+2015-08-04 13:34:09,195 [DEBUG] 	Status,output= 0,
+2015-08-04 13:34:09,195 [INFO] 	SUBMIT TO REMOTE GLIDEIN FRONTEND
+2015-08-04 13:34:09,195 [DEBUG] 	Execute command :
+eval `scram unsetenv -sh`;  gsissh -o ControlMaster=auto -o ControlPath=/tmp/molszews/.ssh/ssh-link-819340738-submit-6.t2.ucsd.edu -o BatchMode=yes -o StrictHostKeyChecking=no -o ForwardX11=no submit-6.t2.ucsd.edu "cd molszews_crab_0_150804_133330_9mw5o2;  condor_submit  molszews_crab_0_150804_133330_9mw5o2_job5.jdl; echo 'CONDOR_SUBMIT-EXIT-STATUS IS' \$?"
+2015-08-04 13:34:10,088 [DEBUG] 	Status,output= 0,Submitting job(s).....
+5 job(s) submitted to cluster 619322.
+CONDOR_SUBMIT-EXIT-STATUS IS 0
+2015-08-04 13:34:10,090 [DEBUG] 	Returning {u'molszews_crab_0_150804_133330_9mw5o2_job2': 'submit-6.t2.ucsd.edu//150804//619322.1', u'molszews_crab_0_150804_133330_9mw5o2_job3': 'submit-6.t2.ucsd.edu//150804//619322.2', u'molszews_crab_0_150804_133330_9mw5o2_job1': 'submit-6.t2.ucsd.edu//150804//619322.0', u'molszews_crab_0_150804_133330_9mw5o2_job4': 'submit-6.t2.ucsd.edu//150804//619322.3', u'molszews_crab_0_150804_133330_9mw5o2_job5': 'submit-6.t2.ucsd.edu//150804//619322.4'}
+molszews_crab_0_150804_133330_9mw5o2
+lxplus0066.cern.ch
+2015-08-04 13:34:10,173 [DEBUG] 	WMS : lxplus0066.cern.ch
+Collection ID : molszews_crab_0_150804_133330_9mw5o2
+2015-08-04 13:34:10,175 [DEBUG] 	Submitted job # 1
+2015-08-04 13:34:10,175 [DEBUG] 	Submitted job # 2
+2015-08-04 13:34:10,175 [DEBUG] 	Submitted job # 3
+2015-08-04 13:34:10,175 [DEBUG] 	Submitted job # 4
+2015-08-04 13:34:10,176 [DEBUG] 	Submitted job # 5
+2015-08-04 13:34:10,228 [DEBUG] 	Updating [[1, 2, 3, 4, 5]] state SubSuccess
+2015-08-04 13:34:10,909 [DEBUG] 	GRIDNAME: /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=molszews/CN=740841/CN=Michal Olszewski 
+2015-08-04 13:34:12,130 [DEBUG] 	Submission Time: 15.9709639549
+2015-08-04 13:34:12,131 [INFO] 	Total of 5 jobs submitted.
+2015-08-04 13:34:27,632 [DEBUG] 	/afs/cern.ch/cms/ccs/wm/scripts/Crab/CRAB_2_11_1_patch1/python/crab.py -status
+
+2015-08-04 13:34:27,632 [INFO] 	Version 2.11.1_patch1 running on Tue Aug  4 13:34:27 2015 CET (11:34:27 UTC)
+
+crab. Working options:
+	scheduler           remoteGlidein
+	job type            CMSSW
+	server              OFF
+	working directory   /afs/cern.ch/work/m/molszews/CMSSW/tautau/M2N/CMSSW_7_4_5/src/m2n/maxi2ntuples/python/crab_0_150804_133330/
+
+2015-08-04 13:34:27,633 [DEBUG] 	Downloading file [http://cmsdoc.cern.ch/cms/LCG/crab/config/] to [/afs/cern.ch/user/m/molszews/.cms_crab/allowed_releases.conf].
+2015-08-04 13:34:27,715 [DEBUG] 	Input whitelist: 
+2015-08-04 13:34:27,715 [DEBUG] 	Input blacklist: 
+2015-08-04 13:34:27,716 [DEBUG] 	Converted whitelist: 
+2015-08-04 13:34:27,716 [DEBUG] 	Converted blacklist: 
+2015-08-04 13:34:29,789 [DEBUG] 	Downloading file [http://cmsdoc.cern.ch/cms/LCG/crab/config/] to [/afs/cern.ch/user/m/molszews/.cms_crab/site_black_list.conf].
+2015-08-04 13:34:29,790 [DEBUG] 	Enforced black list: TAPE,srm-cms.cern.ch,cmssrm.fnal.gov,T1_RU,T1_TW,cmseos.fnal.gov,cmsdca2.fnal.gov,T2_PK_NCP,T3_US_Vanderbilt_EC2
+ 
+2015-08-04 13:34:32,397 [DEBUG] 	Downloading file [http://cmsdoc.cern.ch/cms/LCG/crab/config/] to [/afs/cern.ch/user/m/molszews/.cms_crab/site_black_list.conf].
+2015-08-04 13:34:32,397 [DEBUG] 	Enforced black list: TAPE,srm-cms.cern.ch,cmssrm.fnal.gov,T1_RU,T1_TW,cmseos.fnal.gov,cmsdca2.fnal.gov,T2_PK_NCP,T3_US_Vanderbilt_EC2 
+2015-08-04 13:34:32,397 [INFO] 	PSN black list: TAPE,srm-cms.cern.ch,cmssrm.fnal.gov,T1_RU,T1_TW,cmseos.fnal.gov,cmsdca2.fnal.gov,T2_PK_NCP,T3_US_Vanderbilt_EC2
+2015-08-04 13:34:32,417 [DEBUG] 	Status::run() called
+2015-08-04 13:34:32,417 [INFO] 	Checking the status of all jobs: please wait
+2015-08-04 13:34:32,452 [INFO] 	contacting remote host submit-6.t2.ucsd.edu
+2015-08-04 13:34:33,525 [DEBUG] 	Execute command :
+gsiscp -o ControlMaster=auto -o ControlPath=/tmp/molszews/.ssh/ssh-link-819340738-submit-6.t2.ucsd.edu -o BatchMode=yes -o StrictHostKeyChecking=no -o ForwardX11=no /tmp/x509up_u39587 submit-6.t2.ucsd.edu:molszews_crab_0_150804_133330_9mw5o2
+2015-08-04 13:34:34,649 [DEBUG] 	Status,output= 0,
+2015-08-04 13:34:34,650 [DEBUG] 	Execute command :
+eval `scram unsetenv -sh`;  gsissh -o ControlMaster=auto -o ControlPath=/tmp/molszews/.ssh/ssh-link-819340738-submit-6.t2.ucsd.edu -o BatchMode=yes -o StrictHostKeyChecking=no -o ForwardX11=no submit-6.t2.ucsd.edu  "condor_history -userlog molszews_crab_0_150804_133330_9mw5o2/condor.log -xml"
+2015-08-04 13:34:35,358 [INFO] 	
+ID    END STATUS            ACTION       ExeExitCode JobExitCode E_HOST
+----- --- ----------------- ------------  ---------- ----------- ---------
+1     N   Submitted         SubSuccess                           
+2     N   Submitted         SubSuccess                           
+3     N   Submitted         SubSuccess                           
+4     N   Submitted         SubSuccess                           
+5     N   Submitted         SubSuccess                           
+
+2015-08-04 13:34:35,369 [INFO] 	 5 Total Jobs 
+ >>>>>>>>> 5 Jobs Submitted 
+	List of jobs Submitted: 1-5 
+
+2015-08-04 13:34:35,371 [INFO] 	You can also follow the status of this task on :
+	CMS Dashboard: http://dashb-cms-job-task.cern.ch/taskmon.html#task=molszews_crab_0_150804_133330_9mw5o2
+	Your task name is: molszews_crab_0_150804_133330_9mw5o2 
+
+2015-08-04 13:34:35,371 [DEBUG] 	Status Time: 2.95470499992
+2015-08-04 13:37:02,303 [DEBUG] 	/afs/cern.ch/cms/ccs/wm/scripts/Crab/CRAB_2_11_1_patch1/python/crab.py -status
+
+2015-08-04 13:37:02,303 [INFO] 	Version 2.11.1_patch1 running on Tue Aug  4 13:37:02 2015 CET (11:37:02 UTC)
+
+crab. Working options:
+	scheduler           remoteGlidein
+	job type            CMSSW
+	server              OFF
+	working directory   /afs/cern.ch/work/m/molszews/CMSSW/tautau/M2N/CMSSW_7_4_5/src/m2n/maxi2ntuples/python/crab_0_150804_133330/
+
+2015-08-04 13:37:02,304 [DEBUG] 	Downloading file [http://cmsdoc.cern.ch/cms/LCG/crab/config/] to [/afs/cern.ch/user/m/molszews/.cms_crab/allowed_releases.conf].
+2015-08-04 13:37:02,408 [DEBUG] 	Input whitelist: 
+2015-08-04 13:37:02,408 [DEBUG] 	Input blacklist: 
+2015-08-04 13:37:02,408 [DEBUG] 	Converted whitelist: 
+2015-08-04 13:37:02,408 [DEBUG] 	Converted blacklist: 
+2015-08-04 13:37:04,795 [DEBUG] 	Downloading file [http://cmsdoc.cern.ch/cms/LCG/crab/config/] to [/afs/cern.ch/user/m/molszews/.cms_crab/site_black_list.conf].
+2015-08-04 13:37:04,797 [DEBUG] 	Enforced black list: TAPE,srm-cms.cern.ch,cmssrm.fnal.gov,T1_RU,T1_TW,cmseos.fnal.gov,cmsdca2.fnal.gov,T2_PK_NCP,T3_US_Vanderbilt_EC2
+ 
+2015-08-04 13:37:07,425 [DEBUG] 	Downloading file [http://cmsdoc.cern.ch/cms/LCG/crab/config/] to [/afs/cern.ch/user/m/molszews/.cms_crab/site_black_list.conf].
+2015-08-04 13:37:07,426 [DEBUG] 	Enforced black list: TAPE,srm-cms.cern.ch,cmssrm.fnal.gov,T1_RU,T1_TW,cmseos.fnal.gov,cmsdca2.fnal.gov,T2_PK_NCP,T3_US_Vanderbilt_EC2 
+2015-08-04 13:37:07,426 [INFO] 	PSN black list: TAPE,srm-cms.cern.ch,cmssrm.fnal.gov,T1_RU,T1_TW,cmseos.fnal.gov,cmsdca2.fnal.gov,T2_PK_NCP,T3_US_Vanderbilt_EC2
+2015-08-04 13:37:07,429 [DEBUG] 	Status::run() called
+2015-08-04 13:37:07,429 [INFO] 	Checking the status of all jobs: please wait
+2015-08-04 13:37:07,463 [INFO] 	contacting remote host submit-6.t2.ucsd.edu
+2015-08-04 13:37:08,813 [DEBUG] 	Execute command :
+gsiscp -o ControlMaster=auto -o ControlPath=/tmp/molszews/.ssh/ssh-link-819340738-submit-6.t2.ucsd.edu -o BatchMode=yes -o StrictHostKeyChecking=no -o ForwardX11=no /tmp/x509up_u39587 submit-6.t2.ucsd.edu:molszews_crab_0_150804_133330_9mw5o2
+2015-08-04 13:37:09,943 [DEBUG] 	Status,output= 0,
+2015-08-04 13:37:09,943 [DEBUG] 	Execute command :
+eval `scram unsetenv -sh`;  gsissh -o ControlMaster=auto -o ControlPath=/tmp/molszews/.ssh/ssh-link-819340738-submit-6.t2.ucsd.edu -o BatchMode=yes -o StrictHostKeyChecking=no -o ForwardX11=no submit-6.t2.ucsd.edu  "condor_history -userlog molszews_crab_0_150804_133330_9mw5o2/condor.log -xml"
+2015-08-04 13:37:10,725 [INFO] 	
+ID    END STATUS            ACTION       ExeExitCode JobExitCode E_HOST
+----- --- ----------------- ------------  ---------- ----------- ---------
+1     N   Submitted         SubSuccess                           
+2     N   Submitted         SubSuccess                           
+3     N   Submitted         SubSuccess                           
+4     N   Submitted         SubSuccess                           
+5     N   Submitted         SubSuccess                           
+
+2015-08-04 13:37:10,749 [INFO] 	 5 Total Jobs 
+ >>>>>>>>> 5 Jobs Submitted 
+	List of jobs Submitted: 1-5 
+
+2015-08-04 13:37:10,751 [INFO] 	You can also follow the status of this task on :
+	CMS Dashboard: http://dashb-cms-job-task.cern.ch/taskmon.html#task=molszews_crab_0_150804_133330_9mw5o2
+	Your task name is: molszews_crab_0_150804_133330_9mw5o2 
+
+2015-08-04 13:37:10,752 [DEBUG] 	Status Time: 3.32212901115
+2015-08-04 13:37:30,653 [DEBUG] 	/afs/cern.ch/cms/ccs/wm/scripts/Crab/CRAB_2_11_1_patch1/python/crab.py -status
+
+2015-08-04 13:37:30,653 [INFO] 	Version 2.11.1_patch1 running on Tue Aug  4 13:37:30 2015 CET (11:37:30 UTC)
+
+crab. Working options:
+	scheduler           remoteGlidein
+	job type            CMSSW
+	server              OFF
+	working directory   /afs/cern.ch/work/m/molszews/CMSSW/tautau/M2N/CMSSW_7_4_5/src/m2n/maxi2ntuples/python/crab_0_150804_133330/
+
+2015-08-04 13:37:30,653 [DEBUG] 	Downloading file [http://cmsdoc.cern.ch/cms/LCG/crab/config/] to [/afs/cern.ch/user/m/molszews/.cms_crab/allowed_releases.conf].
+2015-08-04 13:37:30,727 [DEBUG] 	Input whitelist: 
+2015-08-04 13:37:30,727 [DEBUG] 	Input blacklist: 
+2015-08-04 13:37:30,727 [DEBUG] 	Converted whitelist: 
+2015-08-04 13:37:30,728 [DEBUG] 	Converted blacklist: 
+2015-08-04 13:37:32,846 [DEBUG] 	Downloading file [http://cmsdoc.cern.ch/cms/LCG/crab/config/] to [/afs/cern.ch/user/m/molszews/.cms_crab/site_black_list.conf].
+2015-08-04 13:37:32,847 [DEBUG] 	Enforced black list: TAPE,srm-cms.cern.ch,cmssrm.fnal.gov,T1_RU,T1_TW,cmseos.fnal.gov,cmsdca2.fnal.gov,T2_PK_NCP,T3_US_Vanderbilt_EC2
+ 
+2015-08-04 13:37:35,601 [DEBUG] 	Downloading file [http://cmsdoc.cern.ch/cms/LCG/crab/config/] to [/afs/cern.ch/user/m/molszews/.cms_crab/site_black_list.conf].
+2015-08-04 13:37:35,602 [DEBUG] 	Enforced black list: TAPE,srm-cms.cern.ch,cmssrm.fnal.gov,T1_RU,T1_TW,cmseos.fnal.gov,cmsdca2.fnal.gov,T2_PK_NCP,T3_US_Vanderbilt_EC2 
+2015-08-04 13:37:35,602 [INFO] 	PSN black list: TAPE,srm-cms.cern.ch,cmssrm.fnal.gov,T1_RU,T1_TW,cmseos.fnal.gov,cmsdca2.fnal.gov,T2_PK_NCP,T3_US_Vanderbilt_EC2
+2015-08-04 13:37:35,608 [DEBUG] 	Status::run() called
+2015-08-04 13:37:35,608 [INFO] 	Checking the status of all jobs: please wait
+2015-08-04 13:37:35,632 [INFO] 	contacting remote host submit-6.t2.ucsd.edu
+2015-08-04 13:37:36,783 [DEBUG] 	Execute command :
+gsiscp -o ControlMaster=auto -o ControlPath=/tmp/molszews/.ssh/ssh-link-819340738-submit-6.t2.ucsd.edu -o BatchMode=yes -o StrictHostKeyChecking=no -o ForwardX11=no /tmp/x509up_u39587 submit-6.t2.ucsd.edu:molszews_crab_0_150804_133330_9mw5o2
+2015-08-04 13:37:37,894 [DEBUG] 	Status,output= 0,
+2015-08-04 13:37:37,894 [DEBUG] 	Execute command :
+eval `scram unsetenv -sh`;  gsissh -o ControlMaster=auto -o ControlPath=/tmp/molszews/.ssh/ssh-link-819340738-submit-6.t2.ucsd.edu -o BatchMode=yes -o StrictHostKeyChecking=no -o ForwardX11=no submit-6.t2.ucsd.edu  "condor_history -userlog molszews_crab_0_150804_133330_9mw5o2/condor.log -xml"
+2015-08-04 13:37:38,647 [INFO] 	
+ID    END STATUS            ACTION       ExeExitCode JobExitCode E_HOST
+----- --- ----------------- ------------  ---------- ----------- ---------
+1     N   Submitted         SubSuccess                           
+2     N   Submitted         SubSuccess                           
+3     N   Submitted         SubSuccess                           
+4     N   Submitted         SubSuccess                           
+5     N   Submitted         SubSuccess                           
+
+2015-08-04 13:37:38,660 [INFO] 	 5 Total Jobs 
+ >>>>>>>>> 5 Jobs Submitted 
+	List of jobs Submitted: 1-5 
+
+2015-08-04 13:37:38,663 [INFO] 	You can also follow the status of this task on :
+	CMS Dashboard: http://dashb-cms-job-task.cern.ch/taskmon.html#task=molszews_crab_0_150804_133330_9mw5o2
+	Your task name is: molszews_crab_0_150804_133330_9mw5o2 
+
+2015-08-04 13:37:38,663 [DEBUG] 	Status Time: 3.05495786667
+2015-08-04 13:45:37,179 [DEBUG] 	/afs/cern.ch/cms/ccs/wm/scripts/Crab/CRAB_2_11_1_patch1/python/crab.py -status
+
+2015-08-04 13:45:37,179 [INFO] 	Version 2.11.1_patch1 running on Tue Aug  4 13:45:37 2015 CET (11:45:37 UTC)
+
+crab. Working options:
+	scheduler           remoteGlidein
+	job type            CMSSW
+	server              OFF
+	working directory   /afs/cern.ch/work/m/molszews/CMSSW/tautau/M2N/CMSSW_7_4_5/src/m2n/maxi2ntuples/python/crab_0_150804_133330/
+
+2015-08-04 13:45:37,180 [DEBUG] 	Downloading file [http://cmsdoc.cern.ch/cms/LCG/crab/config/] to [/afs/cern.ch/user/m/molszews/.cms_crab/allowed_releases.conf].
+2015-08-04 13:45:37,277 [DEBUG] 	Input whitelist: 
+2015-08-04 13:45:37,277 [DEBUG] 	Input blacklist: 
+2015-08-04 13:45:37,277 [DEBUG] 	Converted whitelist: 
+2015-08-04 13:45:37,277 [DEBUG] 	Converted blacklist: 
+2015-08-04 13:45:39,393 [DEBUG] 	Downloading file [http://cmsdoc.cern.ch/cms/LCG/crab/config/] to [/afs/cern.ch/user/m/molszews/.cms_crab/site_black_list.conf].
+2015-08-04 13:45:39,394 [DEBUG] 	Enforced black list: TAPE,srm-cms.cern.ch,cmssrm.fnal.gov,T1_RU,T1_TW,cmseos.fnal.gov,cmsdca2.fnal.gov,T2_PK_NCP,T3_US_Vanderbilt_EC2
+ 
+2015-08-04 13:45:42,345 [DEBUG] 	Downloading file [http://cmsdoc.cern.ch/cms/LCG/crab/config/] to [/afs/cern.ch/user/m/molszews/.cms_crab/site_black_list.conf].
+2015-08-04 13:45:42,345 [DEBUG] 	Enforced black list: TAPE,srm-cms.cern.ch,cmssrm.fnal.gov,T1_RU,T1_TW,cmseos.fnal.gov,cmsdca2.fnal.gov,T2_PK_NCP,T3_US_Vanderbilt_EC2 
+2015-08-04 13:45:42,346 [INFO] 	PSN black list: TAPE,srm-cms.cern.ch,cmssrm.fnal.gov,T1_RU,T1_TW,cmseos.fnal.gov,cmsdca2.fnal.gov,T2_PK_NCP,T3_US_Vanderbilt_EC2
+2015-08-04 13:45:42,351 [DEBUG] 	Status::run() called
+2015-08-04 13:45:42,352 [INFO] 	Checking the status of all jobs: please wait
+2015-08-04 13:45:42,389 [INFO] 	contacting remote host submit-6.t2.ucsd.edu
+2015-08-04 13:45:43,633 [DEBUG] 	Execute command :
+gsiscp -o ControlMaster=auto -o ControlPath=/tmp/molszews/.ssh/ssh-link-819340738-submit-6.t2.ucsd.edu -o BatchMode=yes -o StrictHostKeyChecking=no -o ForwardX11=no /tmp/x509up_u39587 submit-6.t2.ucsd.edu:molszews_crab_0_150804_133330_9mw5o2
+2015-08-04 13:45:44,762 [DEBUG] 	Status,output= 0,
+2015-08-04 13:45:44,763 [DEBUG] 	Execute command :
+eval `scram unsetenv -sh`;  gsissh -o ControlMaster=auto -o ControlPath=/tmp/molszews/.ssh/ssh-link-819340738-submit-6.t2.ucsd.edu -o BatchMode=yes -o StrictHostKeyChecking=no -o ForwardX11=no submit-6.t2.ucsd.edu  "condor_history -userlog molszews_crab_0_150804_133330_9mw5o2/condor.log -xml"
+2015-08-04 13:45:45,501 [INFO] 	
+ID    END STATUS            ACTION       ExeExitCode JobExitCode E_HOST
+----- --- ----------------- ------------  ---------- ----------- ---------
+1     N   Submitted         SubSuccess                           
+2     N   Submitted         SubSuccess                           
+3     N   Submitted         SubSuccess                           
+4     N   Submitted         SubSuccess                           
+5     N   Submitted         SubSuccess                           
+
+2015-08-04 13:45:45,522 [INFO] 	 5 Total Jobs 
+ >>>>>>>>> 5 Jobs Submitted 
+	List of jobs Submitted: 1-5 
+
+2015-08-04 13:45:45,527 [INFO] 	You can also follow the status of this task on :
+	CMS Dashboard: http://dashb-cms-job-task.cern.ch/taskmon.html#task=molszews_crab_0_150804_133330_9mw5o2
+	Your task name is: molszews_crab_0_150804_133330_9mw5o2 
+
+2015-08-04 13:45:45,527 [DEBUG] 	Status Time: 3.1757581234
+2015-08-04 13:46:00,541 [DEBUG] 	/afs/cern.ch/cms/ccs/wm/scripts/Crab/CRAB_2_11_1_patch1/python/crab.py -status
+
+2015-08-04 13:46:00,541 [INFO] 	Version 2.11.1_patch1 running on Tue Aug  4 13:46:00 2015 CET (11:46:00 UTC)
+
+crab. Working options:
+	scheduler           remoteGlidein
+	job type            CMSSW
+	server              OFF
+	working directory   /afs/cern.ch/work/m/molszews/CMSSW/tautau/M2N/CMSSW_7_4_5/src/m2n/maxi2ntuples/python/crab_0_150804_133330/
+
+2015-08-04 13:46:00,541 [DEBUG] 	Downloading file [http://cmsdoc.cern.ch/cms/LCG/crab/config/] to [/afs/cern.ch/user/m/molszews/.cms_crab/allowed_releases.conf].
+2015-08-04 13:46:00,617 [DEBUG] 	Input whitelist: 
+2015-08-04 13:46:00,617 [DEBUG] 	Input blacklist: 
+2015-08-04 13:46:00,617 [DEBUG] 	Converted whitelist: 
+2015-08-04 13:46:00,618 [DEBUG] 	Converted blacklist: 
+2015-08-04 13:46:02,682 [DEBUG] 	Downloading file [http://cmsdoc.cern.ch/cms/LCG/crab/config/] to [/afs/cern.ch/user/m/molszews/.cms_crab/site_black_list.conf].
+2015-08-04 13:46:02,682 [DEBUG] 	Enforced black list: TAPE,srm-cms.cern.ch,cmssrm.fnal.gov,T1_RU,T1_TW,cmseos.fnal.gov,cmsdca2.fnal.gov,T2_PK_NCP,T3_US_Vanderbilt_EC2
+ 
+2015-08-04 13:46:05,345 [DEBUG] 	Downloading file [http://cmsdoc.cern.ch/cms/LCG/crab/config/] to [/afs/cern.ch/user/m/molszews/.cms_crab/site_black_list.conf].
+2015-08-04 13:46:05,345 [DEBUG] 	Enforced black list: TAPE,srm-cms.cern.ch,cmssrm.fnal.gov,T1_RU,T1_TW,cmseos.fnal.gov,cmsdca2.fnal.gov,T2_PK_NCP,T3_US_Vanderbilt_EC2 
+2015-08-04 13:46:05,345 [INFO] 	PSN black list: TAPE,srm-cms.cern.ch,cmssrm.fnal.gov,T1_RU,T1_TW,cmseos.fnal.gov,cmsdca2.fnal.gov,T2_PK_NCP,T3_US_Vanderbilt_EC2
+2015-08-04 13:46:05,349 [DEBUG] 	Status::run() called
+2015-08-04 13:46:05,349 [INFO] 	Checking the status of all jobs: please wait
+2015-08-04 13:46:05,375 [INFO] 	contacting remote host submit-6.t2.ucsd.edu
+2015-08-04 13:46:06,515 [DEBUG] 	Execute command :
+gsiscp -o ControlMaster=auto -o ControlPath=/tmp/molszews/.ssh/ssh-link-819340738-submit-6.t2.ucsd.edu -o BatchMode=yes -o StrictHostKeyChecking=no -o ForwardX11=no /tmp/x509up_u39587 submit-6.t2.ucsd.edu:molszews_crab_0_150804_133330_9mw5o2
+2015-08-04 13:46:07,651 [DEBUG] 	Status,output= 0,
+2015-08-04 13:46:07,652 [DEBUG] 	Execute command :
+eval `scram unsetenv -sh`;  gsissh -o ControlMaster=auto -o ControlPath=/tmp/molszews/.ssh/ssh-link-819340738-submit-6.t2.ucsd.edu -o BatchMode=yes -o StrictHostKeyChecking=no -o ForwardX11=no submit-6.t2.ucsd.edu  "condor_history -userlog molszews_crab_0_150804_133330_9mw5o2/condor.log -xml"
+2015-08-04 13:46:08,439 [INFO] 	
+ID    END STATUS            ACTION       ExeExitCode JobExitCode E_HOST
+----- --- ----------------- ------------  ---------- ----------- ---------
+1     N   Submitted         SubSuccess                           
+2     N   Submitted         SubSuccess                           
+3     N   Submitted         SubSuccess                           
+4     N   Submitted         SubSuccess                           
+5     N   Submitted         SubSuccess                           
+
+2015-08-04 13:46:08,453 [INFO] 	 5 Total Jobs 
+ >>>>>>>>> 5 Jobs Submitted 
+	List of jobs Submitted: 1-5 
+
+2015-08-04 13:46:08,454 [INFO] 	You can also follow the status of this task on :
+	CMS Dashboard: http://dashb-cms-job-task.cern.ch/taskmon.html#task=molszews_crab_0_150804_133330_9mw5o2
+	Your task name is: molszews_crab_0_150804_133330_9mw5o2 
+
+2015-08-04 13:46:08,454 [DEBUG] 	Status Time: 3.10491299629
+2015-08-04 13:47:19,219 [DEBUG] 	/afs/cern.ch/cms/ccs/wm/scripts/Crab/CRAB_2_11_1_patch1/python/crab.py -status
+
+2015-08-04 13:47:19,220 [INFO] 	Version 2.11.1_patch1 running on Tue Aug  4 13:47:19 2015 CET (11:47:19 UTC)
+
+crab. Working options:
+	scheduler           remoteGlidein
+	job type            CMSSW
+	server              OFF
+	working directory   /afs/cern.ch/work/m/molszews/CMSSW/tautau/M2N/CMSSW_7_4_5/src/m2n/maxi2ntuples/python/crab_0_150804_133330/
+
+2015-08-04 13:47:19,220 [DEBUG] 	Downloading file [http://cmsdoc.cern.ch/cms/LCG/crab/config/] to [/afs/cern.ch/user/m/molszews/.cms_crab/allowed_releases.conf].
+2015-08-04 13:47:19,332 [DEBUG] 	Input whitelist: 
+2015-08-04 13:47:19,333 [DEBUG] 	Input blacklist: 
+2015-08-04 13:47:19,333 [DEBUG] 	Converted whitelist: 
+2015-08-04 13:47:19,333 [DEBUG] 	Converted blacklist: 
+2015-08-04 13:47:21,948 [DEBUG] 	Downloading file [http://cmsdoc.cern.ch/cms/LCG/crab/config/] to [/afs/cern.ch/user/m/molszews/.cms_crab/site_black_list.conf].
+2015-08-04 13:47:21,950 [DEBUG] 	Enforced black list: TAPE,srm-cms.cern.ch,cmssrm.fnal.gov,T1_RU,T1_TW,cmseos.fnal.gov,cmsdca2.fnal.gov,T2_PK_NCP,T3_US_Vanderbilt_EC2
+ 
+2015-08-04 13:47:24,550 [DEBUG] 	Downloading file [http://cmsdoc.cern.ch/cms/LCG/crab/config/] to [/afs/cern.ch/user/m/molszews/.cms_crab/site_black_list.conf].
+2015-08-04 13:47:24,550 [DEBUG] 	Enforced black list: TAPE,srm-cms.cern.ch,cmssrm.fnal.gov,T1_RU,T1_TW,cmseos.fnal.gov,cmsdca2.fnal.gov,T2_PK_NCP,T3_US_Vanderbilt_EC2 
+2015-08-04 13:47:24,550 [INFO] 	PSN black list: TAPE,srm-cms.cern.ch,cmssrm.fnal.gov,T1_RU,T1_TW,cmseos.fnal.gov,cmsdca2.fnal.gov,T2_PK_NCP,T3_US_Vanderbilt_EC2
+2015-08-04 13:47:24,554 [DEBUG] 	Status::run() called
+2015-08-04 13:47:24,554 [INFO] 	Checking the status of all jobs: please wait
+2015-08-04 13:47:24,595 [INFO] 	contacting remote host submit-6.t2.ucsd.edu
+2015-08-04 13:47:25,722 [DEBUG] 	Execute command :
+gsiscp -o ControlMaster=auto -o ControlPath=/tmp/molszews/.ssh/ssh-link-819340738-submit-6.t2.ucsd.edu -o BatchMode=yes -o StrictHostKeyChecking=no -o ForwardX11=no /tmp/x509up_u39587 submit-6.t2.ucsd.edu:molszews_crab_0_150804_133330_9mw5o2
+2015-08-04 13:47:26,855 [DEBUG] 	Status,output= 0,
+2015-08-04 13:47:26,856 [DEBUG] 	Execute command :
+eval `scram unsetenv -sh`;  gsissh -o ControlMaster=auto -o ControlPath=/tmp/molszews/.ssh/ssh-link-819340738-submit-6.t2.ucsd.edu -o BatchMode=yes -o StrictHostKeyChecking=no -o ForwardX11=no submit-6.t2.ucsd.edu  "condor_history -userlog molszews_crab_0_150804_133330_9mw5o2/condor.log -xml"
+2015-08-04 13:47:27,788 [INFO] 	
+ID    END STATUS            ACTION       ExeExitCode JobExitCode E_HOST
+----- --- ----------------- ------------  ---------- ----------- ---------
+1     N   Submitted         SubSuccess                           
+2     N   Submitted         SubSuccess                           
+3     N   Submitted         SubSuccess                           
+4     N   Submitted         SubSuccess                           
+5     N   Submitted         SubSuccess                           
+
+2015-08-04 13:47:27,801 [INFO] 	 5 Total Jobs 
+ >>>>>>>>> 5 Jobs Submitted 
+	List of jobs Submitted: 1-5 
+
+2015-08-04 13:47:27,802 [INFO] 	You can also follow the status of this task on :
+	CMS Dashboard: http://dashb-cms-job-task.cern.ch/taskmon.html#task=molszews_crab_0_150804_133330_9mw5o2
+	Your task name is: molszews_crab_0_150804_133330_9mw5o2 
+
+2015-08-04 13:47:27,802 [DEBUG] 	Status Time: 3.248057127
+2015-08-04 13:52:42,409 [DEBUG] 	/afs/cern.ch/cms/ccs/wm/scripts/Crab/CRAB_2_11_1_patch1/python/crab.py -status
+
+2015-08-04 13:52:42,410 [INFO] 	Version 2.11.1_patch1 running on Tue Aug  4 13:52:42 2015 CET (11:52:42 UTC)
+
+crab. Working options:
+	scheduler           remoteGlidein
+	job type            CMSSW
+	server              OFF
+	working directory   /afs/cern.ch/work/m/molszews/CMSSW/tautau/M2N/CMSSW_7_4_5/src/m2n/maxi2ntuples/python/crab_0_150804_133330/
+
+2015-08-04 13:52:42,410 [DEBUG] 	Downloading file [http://cmsdoc.cern.ch/cms/LCG/crab/config/] to [/afs/cern.ch/user/m/molszews/.cms_crab/allowed_releases.conf].
+2015-08-04 13:52:42,517 [DEBUG] 	Input whitelist: 
+2015-08-04 13:52:42,518 [DEBUG] 	Input blacklist: 
+2015-08-04 13:52:42,518 [DEBUG] 	Converted whitelist: 
+2015-08-04 13:52:42,518 [DEBUG] 	Converted blacklist: 
+2015-08-04 13:52:44,717 [DEBUG] 	Downloading file [http://cmsdoc.cern.ch/cms/LCG/crab/config/] to [/afs/cern.ch/user/m/molszews/.cms_crab/site_black_list.conf].
+2015-08-04 13:52:44,718 [DEBUG] 	Enforced black list: TAPE,srm-cms.cern.ch,cmssrm.fnal.gov,T1_RU,T1_TW,cmseos.fnal.gov,cmsdca2.fnal.gov,T2_PK_NCP,T3_US_Vanderbilt_EC2
+ 
+2015-08-04 13:52:47,284 [DEBUG] 	Downloading file [http://cmsdoc.cern.ch/cms/LCG/crab/config/] to [/afs/cern.ch/user/m/molszews/.cms_crab/site_black_list.conf].
+2015-08-04 13:52:47,285 [DEBUG] 	Enforced black list: TAPE,srm-cms.cern.ch,cmssrm.fnal.gov,T1_RU,T1_TW,cmseos.fnal.gov,cmsdca2.fnal.gov,T2_PK_NCP,T3_US_Vanderbilt_EC2 
+2015-08-04 13:52:47,285 [INFO] 	PSN black list: TAPE,srm-cms.cern.ch,cmssrm.fnal.gov,T1_RU,T1_TW,cmseos.fnal.gov,cmsdca2.fnal.gov,T2_PK_NCP,T3_US_Vanderbilt_EC2
+2015-08-04 13:52:47,288 [DEBUG] 	Status::run() called
+2015-08-04 13:52:47,288 [INFO] 	Checking the status of all jobs: please wait
+2015-08-04 13:52:47,323 [INFO] 	contacting remote host submit-6.t2.ucsd.edu
+2015-08-04 13:52:48,440 [DEBUG] 	Execute command :
+gsiscp -o ControlMaster=auto -o ControlPath=/tmp/molszews/.ssh/ssh-link-819340738-submit-6.t2.ucsd.edu -o BatchMode=yes -o StrictHostKeyChecking=no -o ForwardX11=no /tmp/x509up_u39587 submit-6.t2.ucsd.edu:molszews_crab_0_150804_133330_9mw5o2
+2015-08-04 13:52:49,574 [DEBUG] 	Status,output= 0,
+2015-08-04 13:52:49,575 [DEBUG] 	Execute command :
+eval `scram unsetenv -sh`;  gsissh -o ControlMaster=auto -o ControlPath=/tmp/molszews/.ssh/ssh-link-819340738-submit-6.t2.ucsd.edu -o BatchMode=yes -o StrictHostKeyChecking=no -o ForwardX11=no submit-6.t2.ucsd.edu  "condor_history -userlog molszews_crab_0_150804_133330_9mw5o2/condor.log -xml"
+2015-08-04 13:52:50,301 [INFO] 	
+ID    END STATUS            ACTION       ExeExitCode JobExitCode E_HOST
+----- --- ----------------- ------------  ---------- ----------- ---------
+1     N   Submitted         SubSuccess                           
+2     N   Submitted         SubSuccess                           
+3     N   Submitted         SubSuccess                           
+4     N   Submitted         SubSuccess                           
+5     N   Submitted         SubSuccess                           
+
+2015-08-04 13:52:50,314 [INFO] 	 5 Total Jobs 
+ >>>>>>>>> 5 Jobs Submitted 
+	List of jobs Submitted: 1-5 
+
+2015-08-04 13:52:50,315 [INFO] 	You can also follow the status of this task on :
+	CMS Dashboard: http://dashb-cms-job-task.cern.ch/taskmon.html#task=molszews_crab_0_150804_133330_9mw5o2
+	Your task name is: molszews_crab_0_150804_133330_9mw5o2 
+
+2015-08-04 13:52:50,315 [DEBUG] 	Status Time: 3.02689790726
+2015-08-04 13:58:30,439 [DEBUG] 	/afs/cern.ch/cms/ccs/wm/scripts/Crab/CRAB_2_11_1_patch1/python/crab.py -status
+
+2015-08-04 13:58:30,439 [INFO] 	Version 2.11.1_patch1 running on Tue Aug  4 13:58:30 2015 CET (11:58:30 UTC)
+
+crab. Working options:
+	scheduler           remoteGlidein
+	job type            CMSSW
+	server              OFF
+	working directory   /afs/cern.ch/work/m/molszews/CMSSW/tautau/M2N/CMSSW_7_4_5/src/m2n/maxi2ntuples/python/crab_0_150804_133330/
+
+2015-08-04 13:58:30,439 [DEBUG] 	Downloading file [http://cmsdoc.cern.ch/cms/LCG/crab/config/] to [/afs/cern.ch/user/m/molszews/.cms_crab/allowed_releases.conf].
+2015-08-04 13:58:30,439 [DEBUG] 	/afs/cern.ch/user/m/molszews/.cms_crab/0_GET_allowed_releases.conf expired, refreshing cache
+2015-08-04 13:58:30,439 [DEBUG] 	getData: 
+	url: /cms/LCG/crab/config/allowed_releases.conf
+	data: {}
+2015-08-04 13:58:30,569 [DEBUG] 	Input whitelist: 
+2015-08-04 13:58:30,569 [DEBUG] 	Input blacklist: 
+2015-08-04 13:58:30,570 [DEBUG] 	Converted whitelist: 
+2015-08-04 13:58:30,570 [DEBUG] 	Converted blacklist: 
+2015-08-04 13:58:33,035 [DEBUG] 	Downloading file [http://cmsdoc.cern.ch/cms/LCG/crab/config/] to [/afs/cern.ch/user/m/molszews/.cms_crab/site_black_list.conf].
+2015-08-04 13:58:33,036 [DEBUG] 	/afs/cern.ch/user/m/molszews/.cms_crab/0_GET_site_black_list.conf expired, refreshing cache
+2015-08-04 13:58:33,036 [DEBUG] 	getData: 
+	url: /cms/LCG/crab/config/site_black_list.conf
+	data: {}
+2015-08-04 13:58:33,043 [DEBUG] 	Enforced black list: TAPE,srm-cms.cern.ch,cmssrm.fnal.gov,T1_RU,T1_TW,cmseos.fnal.gov,cmsdca2.fnal.gov,T2_PK_NCP,T3_US_Vanderbilt_EC2
+ 
+2015-08-04 13:58:35,693 [DEBUG] 	Downloading file [http://cmsdoc.cern.ch/cms/LCG/crab/config/] to [/afs/cern.ch/user/m/molszews/.cms_crab/site_black_list.conf].
+2015-08-04 13:58:35,693 [DEBUG] 	Enforced black list: TAPE,srm-cms.cern.ch,cmssrm.fnal.gov,T1_RU,T1_TW,cmseos.fnal.gov,cmsdca2.fnal.gov,T2_PK_NCP,T3_US_Vanderbilt_EC2 
+2015-08-04 13:58:35,693 [INFO] 	PSN black list: TAPE,srm-cms.cern.ch,cmssrm.fnal.gov,T1_RU,T1_TW,cmseos.fnal.gov,cmsdca2.fnal.gov,T2_PK_NCP,T3_US_Vanderbilt_EC2
+2015-08-04 13:58:35,697 [DEBUG] 	Status::run() called
+2015-08-04 13:58:35,697 [INFO] 	Checking the status of all jobs: please wait
+2015-08-04 13:58:35,728 [INFO] 	contacting remote host submit-6.t2.ucsd.edu
+2015-08-04 13:58:36,862 [DEBUG] 	Execute command :
+gsiscp -o ControlMaster=auto -o ControlPath=/tmp/molszews/.ssh/ssh-link-819340738-submit-6.t2.ucsd.edu -o BatchMode=yes -o StrictHostKeyChecking=no -o ForwardX11=no /tmp/x509up_u39587 submit-6.t2.ucsd.edu:molszews_crab_0_150804_133330_9mw5o2
+2015-08-04 13:58:37,983 [DEBUG] 	Status,output= 0,
+2015-08-04 13:58:37,983 [DEBUG] 	Execute command :
+eval `scram unsetenv -sh`;  gsissh -o ControlMaster=auto -o ControlPath=/tmp/molszews/.ssh/ssh-link-819340738-submit-6.t2.ucsd.edu -o BatchMode=yes -o StrictHostKeyChecking=no -o ForwardX11=no submit-6.t2.ucsd.edu  "condor_history -userlog molszews_crab_0_150804_133330_9mw5o2/condor.log -xml"
+2015-08-04 13:58:38,690 [INFO] 	
+ID    END STATUS            ACTION       ExeExitCode JobExitCode E_HOST
+----- --- ----------------- ------------  ---------- ----------- ---------
+1     N   Submitted         SubSuccess                           
+2     N   Submitted         SubSuccess                           
+3     N   Submitted         SubSuccess                           
+4     N   Submitted         SubSuccess                           
+5     N   Submitted         SubSuccess                           
+
+2015-08-04 13:58:38,705 [INFO] 	 5 Total Jobs 
+ >>>>>>>>> 5 Jobs Submitted 
+	List of jobs Submitted: 1-5 
+
+2015-08-04 13:58:38,707 [INFO] 	You can also follow the status of this task on :
+	CMS Dashboard: http://dashb-cms-job-task.cern.ch/taskmon.html#task=molszews_crab_0_150804_133330_9mw5o2
+	Your task name is: molszews_crab_0_150804_133330_9mw5o2 
+
+2015-08-04 13:58:38,707 [DEBUG] 	Status Time: 3.00972890854
+2015-08-04 14:01:20,437 [DEBUG] 	/afs/cern.ch/cms/ccs/wm/scripts/Crab/CRAB_2_11_1_patch1/python/crab.py -status
+
+2015-08-04 14:01:20,437 [INFO] 	Version 2.11.1_patch1 running on Tue Aug  4 14:01:20 2015 CET (12:01:20 UTC)
+
+crab. Working options:
+	scheduler           remoteGlidein
+	job type            CMSSW
+	server              OFF
+	working directory   /afs/cern.ch/work/m/molszews/CMSSW/tautau/M2N/CMSSW_7_4_5/src/m2n/maxi2ntuples/python/crab_0_150804_133330/
+
+2015-08-04 14:01:20,438 [DEBUG] 	Downloading file [http://cmsdoc.cern.ch/cms/LCG/crab/config/] to [/afs/cern.ch/user/m/molszews/.cms_crab/allowed_releases.conf].
+2015-08-04 14:01:20,539 [DEBUG] 	Input whitelist: 
+2015-08-04 14:01:20,539 [DEBUG] 	Input blacklist: 
+2015-08-04 14:01:20,539 [DEBUG] 	Converted whitelist: 
+2015-08-04 14:01:20,539 [DEBUG] 	Converted blacklist: 
+2015-08-04 14:01:22,942 [DEBUG] 	Downloading file [http://cmsdoc.cern.ch/cms/LCG/crab/config/] to [/afs/cern.ch/user/m/molszews/.cms_crab/site_black_list.conf].
+2015-08-04 14:01:22,942 [DEBUG] 	Enforced black list: TAPE,srm-cms.cern.ch,cmssrm.fnal.gov,T1_RU,T1_TW,cmseos.fnal.gov,cmsdca2.fnal.gov,T2_PK_NCP,T3_US_Vanderbilt_EC2
+ 
+2015-08-04 14:01:25,587 [DEBUG] 	Downloading file [http://cmsdoc.cern.ch/cms/LCG/crab/config/] to [/afs/cern.ch/user/m/molszews/.cms_crab/site_black_list.conf].
+2015-08-04 14:01:25,588 [DEBUG] 	Enforced black list: TAPE,srm-cms.cern.ch,cmssrm.fnal.gov,T1_RU,T1_TW,cmseos.fnal.gov,cmsdca2.fnal.gov,T2_PK_NCP,T3_US_Vanderbilt_EC2 
+2015-08-04 14:01:25,588 [INFO] 	PSN black list: TAPE,srm-cms.cern.ch,cmssrm.fnal.gov,T1_RU,T1_TW,cmseos.fnal.gov,cmsdca2.fnal.gov,T2_PK_NCP,T3_US_Vanderbilt_EC2
+2015-08-04 14:01:25,592 [DEBUG] 	Status::run() called
+2015-08-04 14:01:25,592 [INFO] 	Checking the status of all jobs: please wait
+2015-08-04 14:01:25,626 [INFO] 	contacting remote host submit-6.t2.ucsd.edu
+2015-08-04 14:01:27,053 [DEBUG] 	Execute command :
+gsiscp -o ControlMaster=auto -o ControlPath=/tmp/molszews/.ssh/ssh-link-819340738-submit-6.t2.ucsd.edu -o BatchMode=yes -o StrictHostKeyChecking=no -o ForwardX11=no /tmp/x509up_u39587 submit-6.t2.ucsd.edu:molszews_crab_0_150804_133330_9mw5o2
+2015-08-04 14:01:28,236 [DEBUG] 	Status,output= 0,
+2015-08-04 14:01:28,237 [DEBUG] 	Execute command :
+eval `scram unsetenv -sh`;  gsissh -o ControlMaster=auto -o ControlPath=/tmp/molszews/.ssh/ssh-link-819340738-submit-6.t2.ucsd.edu -o BatchMode=yes -o StrictHostKeyChecking=no -o ForwardX11=no submit-6.t2.ucsd.edu  "condor_history -userlog molszews_crab_0_150804_133330_9mw5o2/condor.log -xml"
+2015-08-04 14:01:29,082 [INFO] 	
+ID    END STATUS            ACTION       ExeExitCode JobExitCode E_HOST
+----- --- ----------------- ------------  ---------- ----------- ---------
+1     N   Submitted         SubSuccess                           
+2     N   Submitted         SubSuccess                           
+3     N   Submitted         SubSuccess                           
+4     N   Submitted         SubSuccess                           
+5     N   Submitted         SubSuccess                           
+
+2015-08-04 14:01:29,095 [INFO] 	 5 Total Jobs 
+ >>>>>>>>> 5 Jobs Submitted 
+	List of jobs Submitted: 1-5 
+
+2015-08-04 14:01:29,096 [INFO] 	You can also follow the status of this task on :
+	CMS Dashboard: http://dashb-cms-job-task.cern.ch/taskmon.html#task=molszews_crab_0_150804_133330_9mw5o2
+	Your task name is: molszews_crab_0_150804_133330_9mw5o2 
+
+2015-08-04 14:01:29,097 [DEBUG] 	Status Time: 3.50483703613
+2015-08-04 14:10:38,329 [DEBUG] 	/afs/cern.ch/cms/ccs/wm/scripts/Crab/CRAB_2_11_1_patch1/python/crab.py -status
+
+2015-08-04 14:10:38,331 [INFO] 	Version 2.11.1_patch1 running on Tue Aug  4 14:10:38 2015 CET (12:10:38 UTC)
+
+crab. Working options:
+	scheduler           remoteGlidein
+	job type            CMSSW
+	server              OFF
+	working directory   /afs/cern.ch/work/m/molszews/CMSSW/tautau/M2N/CMSSW_7_4_5/src/m2n/maxi2ntuples/python/crab_0_150804_133330/
+
+2015-08-04 14:10:38,332 [DEBUG] 	Downloading file [http://cmsdoc.cern.ch/cms/LCG/crab/config/] to [/afs/cern.ch/user/m/molszews/.cms_crab/allowed_releases.conf].
+2015-08-04 14:10:38,467 [DEBUG] 	Input whitelist: 
+2015-08-04 14:10:38,467 [DEBUG] 	Input blacklist: 
+2015-08-04 14:10:38,467 [DEBUG] 	Converted whitelist: 
+2015-08-04 14:10:38,467 [DEBUG] 	Converted blacklist: 
+2015-08-04 14:10:41,292 [DEBUG] 	Downloading file [http://cmsdoc.cern.ch/cms/LCG/crab/config/] to [/afs/cern.ch/user/m/molszews/.cms_crab/site_black_list.conf].
+2015-08-04 14:10:41,292 [DEBUG] 	Enforced black list: TAPE,srm-cms.cern.ch,cmssrm.fnal.gov,T1_RU,T1_TW,cmseos.fnal.gov,cmsdca2.fnal.gov,T2_PK_NCP,T3_US_Vanderbilt_EC2
+ 
+2015-08-04 14:10:43,853 [DEBUG] 	Downloading file [http://cmsdoc.cern.ch/cms/LCG/crab/config/] to [/afs/cern.ch/user/m/molszews/.cms_crab/site_black_list.conf].
+2015-08-04 14:10:43,854 [DEBUG] 	Enforced black list: TAPE,srm-cms.cern.ch,cmssrm.fnal.gov,T1_RU,T1_TW,cmseos.fnal.gov,cmsdca2.fnal.gov,T2_PK_NCP,T3_US_Vanderbilt_EC2 
+2015-08-04 14:10:43,854 [INFO] 	PSN black list: TAPE,srm-cms.cern.ch,cmssrm.fnal.gov,T1_RU,T1_TW,cmseos.fnal.gov,cmsdca2.fnal.gov,T2_PK_NCP,T3_US_Vanderbilt_EC2
+2015-08-04 14:10:43,860 [DEBUG] 	Status::run() called
+2015-08-04 14:10:43,860 [INFO] 	Checking the status of all jobs: please wait
+2015-08-04 14:10:43,901 [INFO] 	contacting remote host submit-6.t2.ucsd.edu
+2015-08-04 14:10:45,092 [DEBUG] 	Execute command :
+eval `scram unsetenv -sh`;  gsissh  -o ControlMaster=auto -o ControlPath=/tmp/molszews/.ssh/ssh-link-819340738-submit-6.t2.ucsd.edu -o BatchMode=yes -o StrictHostKeyChecking=no -o ForwardX11=no submit-6.t2.ucsd.edu  "sleep 3600"
+2015-08-04 14:10:45,096 [DEBUG] 	Execute command :
+gsiscp -o ControlMaster=auto -o ControlPath=/tmp/molszews/.ssh/ssh-link-819340738-submit-6.t2.ucsd.edu -o BatchMode=yes -o StrictHostKeyChecking=no -o ForwardX11=no /tmp/x509up_u39587 submit-6.t2.ucsd.edu:molszews_crab_0_150804_133330_9mw5o2
+2015-08-04 14:10:46,287 [DEBUG] 	Status,output= 0,
+2015-08-04 14:10:46,288 [DEBUG] 	Execute command :
+eval `scram unsetenv -sh`;  gsissh -o ControlMaster=auto -o ControlPath=/tmp/molszews/.ssh/ssh-link-819340738-submit-6.t2.ucsd.edu -o BatchMode=yes -o StrictHostKeyChecking=no -o ForwardX11=no submit-6.t2.ucsd.edu  "condor_history -userlog molszews_crab_0_150804_133330_9mw5o2/condor.log -xml"
+2015-08-04 14:10:47,003 [INFO] 	
+ID    END STATUS            ACTION       ExeExitCode JobExitCode E_HOST
+----- --- ----------------- ------------  ---------- ----------- ---------
+1     N   Submitted         SubSuccess                           
+2     N   Submitted         SubSuccess                           
+3     N   Submitted         SubSuccess                           
+4     N   Submitted         SubSuccess                           
+5     N   Submitted         SubSuccess                           
+
+2015-08-04 14:10:47,022 [INFO] 	 5 Total Jobs 
+ >>>>>>>>> 5 Jobs Submitted 
+	List of jobs Submitted: 1-5 
+
+2015-08-04 14:10:47,024 [INFO] 	You can also follow the status of this task on :
+	CMS Dashboard: http://dashb-cms-job-task.cern.ch/taskmon.html#task=molszews_crab_0_150804_133330_9mw5o2
+	Your task name is: molszews_crab_0_150804_133330_9mw5o2 
+
+2015-08-04 14:10:47,024 [DEBUG] 	Status Time: 3.16464996338
+2015-08-04 14:33:58,363 [DEBUG] 	/afs/cern.ch/cms/ccs/wm/scripts/Crab/CRAB_2_11_1_patch1/python/crab.py -status
+
+2015-08-04 14:33:58,364 [INFO] 	Version 2.11.1_patch1 running on Tue Aug  4 14:33:58 2015 CET (12:33:58 UTC)
+
+crab. Working options:
+	scheduler           remoteGlidein
+	job type            CMSSW
+	server              OFF
+	working directory   /afs/cern.ch/work/m/molszews/CMSSW/tautau/M2N/CMSSW_7_4_5/src/m2n/maxi2ntuples/python/crab_0_150804_133330/
+
+2015-08-04 14:33:58,370 [DEBUG] 	Downloading file [http://cmsdoc.cern.ch/cms/LCG/crab/config/] to [/afs/cern.ch/user/m/molszews/.cms_crab/allowed_releases.conf].
+2015-08-04 14:33:58,382 [DEBUG] 	/afs/cern.ch/user/m/molszews/.cms_crab/0_GET_allowed_releases.conf expired, refreshing cache
+2015-08-04 14:33:58,382 [DEBUG] 	getData: 
+	url: /cms/LCG/crab/config/allowed_releases.conf
+	data: {}
+2015-08-04 14:34:00,925 [DEBUG] 	Input whitelist: 
+2015-08-04 14:34:00,926 [DEBUG] 	Input blacklist: 
+2015-08-04 14:34:00,926 [DEBUG] 	Converted whitelist: 
+2015-08-04 14:34:00,926 [DEBUG] 	Converted blacklist: 
+2015-08-04 14:34:16,037 [DEBUG] 	Downloading file [http://cmsdoc.cern.ch/cms/LCG/crab/config/] to [/afs/cern.ch/user/m/molszews/.cms_crab/site_black_list.conf].
+2015-08-04 14:34:16,039 [DEBUG] 	/afs/cern.ch/user/m/molszews/.cms_crab/0_GET_site_black_list.conf expired, refreshing cache
+2015-08-04 14:34:16,039 [DEBUG] 	getData: 
+	url: /cms/LCG/crab/config/site_black_list.conf
+	data: {}
+2015-08-04 14:34:16,064 [DEBUG] 	Enforced black list: TAPE,srm-cms.cern.ch,cmssrm.fnal.gov,T1_RU,T1_TW,cmseos.fnal.gov,cmsdca2.fnal.gov,T2_PK_NCP,T3_US_Vanderbilt_EC2
+ 
+2015-08-04 14:34:19,050 [DEBUG] 	Downloading file [http://cmsdoc.cern.ch/cms/LCG/crab/config/] to [/afs/cern.ch/user/m/molszews/.cms_crab/site_black_list.conf].
+2015-08-04 14:34:19,051 [DEBUG] 	Enforced black list: TAPE,srm-cms.cern.ch,cmssrm.fnal.gov,T1_RU,T1_TW,cmseos.fnal.gov,cmsdca2.fnal.gov,T2_PK_NCP,T3_US_Vanderbilt_EC2 
+2015-08-04 14:34:19,051 [INFO] 	PSN black list: TAPE,srm-cms.cern.ch,cmssrm.fnal.gov,T1_RU,T1_TW,cmseos.fnal.gov,cmsdca2.fnal.gov,T2_PK_NCP,T3_US_Vanderbilt_EC2
+2015-08-04 14:34:19,063 [DEBUG] 	Status::run() called
+2015-08-04 14:34:19,063 [INFO] 	Checking the status of all jobs: please wait
+2015-08-04 14:34:19,602 [INFO] 	contacting remote host submit-6.t2.ucsd.edu
+2015-08-04 14:34:20,747 [DEBUG] 	Execute command :
+gsiscp -o ControlMaster=auto -o ControlPath=/tmp/molszews/.ssh/ssh-link-819340738-submit-6.t2.ucsd.edu -o BatchMode=yes -o StrictHostKeyChecking=no -o ForwardX11=no /tmp/x509up_u39587 submit-6.t2.ucsd.edu:molszews_crab_0_150804_133330_9mw5o2
+2015-08-04 14:34:24,907 [DEBUG] 	Status,output= 0,
+2015-08-04 14:34:24,908 [DEBUG] 	Execute command :
+eval `scram unsetenv -sh`;  gsissh -o ControlMaster=auto -o ControlPath=/tmp/molszews/.ssh/ssh-link-819340738-submit-6.t2.ucsd.edu -o BatchMode=yes -o StrictHostKeyChecking=no -o ForwardX11=no submit-6.t2.ucsd.edu  "condor_history -userlog molszews_crab_0_150804_133330_9mw5o2/condor.log -xml"
+2015-08-04 14:34:27,000 [INFO] 	
+ID    END STATUS            ACTION       ExeExitCode JobExitCode E_HOST
+----- --- ----------------- ------------  ---------- ----------- ---------
+1     N   Submitted         SubSuccess                           
+2     N   Submitted         SubSuccess                           
+3     N   Submitted         SubSuccess                           
+4     N   Submitted         SubSuccess                           
+5     N   Submitted         SubSuccess                           
+
+2015-08-04 14:34:27,015 [INFO] 	 5 Total Jobs 
+ >>>>>>>>> 5 Jobs Submitted 
+	List of jobs Submitted: 1-5 
+
+2015-08-04 14:34:27,017 [INFO] 	You can also follow the status of this task on :
+	CMS Dashboard: http://dashb-cms-job-task.cern.ch/taskmon.html#task=molszews_crab_0_150804_133330_9mw5o2
+	Your task name is: molszews_crab_0_150804_133330_9mw5o2 
+
+2015-08-04 14:34:27,021 [DEBUG] 	Status Time: 7.95420193672
