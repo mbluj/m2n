@@ -151,20 +151,19 @@ ChannelSelector::produce(edm::Event& iEvent, const edm::EventSetup& iSetup)
         if(l1->isMuon())
             leg += "mu";
         else if(l1->isElectron())
-            leg += "el";
+            leg += "e";
         else
             leg += "tau";
         
         if(l2->isMuon())
             leg_ += "mu";
         else if(l2->isElectron())
-            leg_ += "el";
+            leg_ += "e";
         else
             leg_ += "tau";
         
         if( !(channel == leg + leg_ || channel == leg_ + leg))
             continue;
-
         selectedPair->push_back(lP);
     }
     iEvent.put(std::move(selectedPair));

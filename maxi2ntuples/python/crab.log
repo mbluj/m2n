@@ -348,3 +348,178 @@ Traceback (most recent call last):
     raise ConfigException("Working area '%s' already exists \nPlease change the requestName in the config file" % fullpath)
 ConfigException: Working area '/afs/cern.ch/work/m/molszews/CMSSW/tautau/M2N/CMSSW_7_4_5/src/m2n/maxi2ntuples/python/test/crab_m2n' already exists 
 Please change the requestName in the config file
+DEBUG 2015-08-14 10:33:43,907: 	 Executing command: 'submit'
+DEBUG 2015-08-14 10:33:43,908: 	 Found CRAB cache file /afs/cern.ch/user/m/molszews/.crab3
+DEBUG 2015-08-14 10:33:43,953: 	 Checking credentials
+DEBUG 2015-08-14 10:33:43,953: 	 Proxy file /tmp/x509up_u39587 not found
+DEBUG 2015-08-14 10:33:43,953: 	 Creating new proxy for 24:00 hours with VO group '' and VO role 'NULL'.
+DEBUG 2015-08-14 10:33:49,782: 	 Executing : 
+ command : voms-proxy-init -voms cms:/cms -valid 24:00 -rfc
+ output : None
+ error: None
+ retcode : 0
+DEBUG 2015-08-14 10:33:50,291: 	 Executing : 
+ command : voms-proxy-info -file /tmp/x509up_u39587 -timeleft
+ output : 86398
+
+ error: 
+ retcode : 0
+DEBUG 2015-08-14 10:33:50,797: 	 Executing : 
+ command : voms-proxy-info -file /tmp/x509up_u39587 -actimeleft
+ output : 86398
+
+ error: 
+ retcode : 0
+DEBUG 2015-08-14 10:33:51,305: 	 Executing : 
+ command : env X509_USER_PROXY=/tmp/x509up_u39587 voms-proxy-info -fqan
+ output : /cms/Role=NULL/Capability=NULL
+
+ error: 
+ retcode : 0
+DEBUG 2015-08-14 10:33:51,306: 	 Proxy created.
+INFO 2015-08-14 10:33:51,306: 	 Will use CRAB configuration file crab_config.py
+DEBUG 2015-08-14 10:33:51,306: 	 Loading CRAB configuration file.
+DEBUG 2015-08-14 10:33:51,327: 	 Will use CRAB Analysis plugin (i.e. will run an analysis job type).
+ERROR 2015-08-14 10:33:51,328: 	 Working area '/afs/cern.ch/work/m/molszews/CMSSW/tautau/M2N/CMSSW_7_4_5/src/m2n/maxi2ntuples/python/test/crab_m2n' already exists 
+Please change the requestName in the config file
+ERROR 2015-08-14 10:33:51,328: 	 Caught exception
+Traceback (most recent call last):
+  File "/cvmfs/cms.cern.ch/crab3/slc6_amd64_gcc481/cms/crabclient/3.3.1507-comp/bin/crab", line 133, in <module>
+    client()
+  File "/cvmfs/cms.cern.ch/crab3/slc6_amd64_gcc481/cms/crabclient/3.3.1507-comp/bin/crab", line 119, in __call__
+    self.cmd = sub_cmd(self.logger, args[1:])
+  File "/cvmfs/cms.cern.ch/crab3/slc6_amd64_gcc481/cms/crabclient/3.3.1507-comp/lib/python2.6/site-packages/CRABClient/Commands/submit.py", line 40, in __init__
+    SubCommand.__init__(self, logger, cmdargs, disable_interspersed_args = True)
+  File "/cvmfs/cms.cern.ch/crab3/slc6_amd64_gcc481/cms/crabclient/3.3.1507-comp/lib/python2.6/site-packages/CRABClient/Commands/SubCommand.py", line 298, in __init__
+    getattr(self.configuration.General, 'requestName', None))
+  File "/cvmfs/cms.cern.ch/crab3/slc6_amd64_gcc481/cms/crabclient/3.3.1507-comp/lib/python2.6/site-packages/CRABClient/ClientUtilities.py", line 387, in createWorkArea
+    raise ConfigException("Working area '%s' already exists \nPlease change the requestName in the config file" % fullpath)
+ConfigException: Working area '/afs/cern.ch/work/m/molszews/CMSSW/tautau/M2N/CMSSW_7_4_5/src/m2n/maxi2ntuples/python/test/crab_m2n' already exists 
+Please change the requestName in the config file
+DEBUG 2015-08-17 16:12:08,586: 	 Executing command: 'submit'
+DEBUG 2015-08-17 16:12:08,587: 	 Found CRAB cache file /afs/cern.ch/user/m/molszews/.crab3
+DEBUG 2015-08-17 16:12:08,600: 	 Checking credentials
+DEBUG 2015-08-17 16:12:08,601: 	 Found proxy file /tmp/x509up_u39587
+DEBUG 2015-08-17 16:12:08,601: 	 Getting proxy life time left
+DEBUG 2015-08-17 16:12:09,214: 	 Executing : 
+ command : voms-proxy-info -file /tmp/x509up_u39587 -timeleft
+ output : 71038
+
+ error: 
+ retcode : 0
+DEBUG 2015-08-17 16:12:10,021: 	 Executing : 
+ command : voms-proxy-info -file /tmp/x509up_u39587 -actimeleft
+ output : 71038
+
+ error: 
+ retcode : 0
+DEBUG 2015-08-17 16:12:10,021: 	 Proxy valid for 19:43:58 hours
+INFO 2015-08-17 16:12:10,022: 	 Will use CRAB configuration file crab.py
+DEBUG 2015-08-17 16:12:10,022: 	 Loading CRAB configuration file.
+DEBUG 2015-08-17 16:12:10,023: 	 Will use CRAB Analysis plugin (i.e. will run an analysis job type).
+ERROR 2015-08-17 16:12:10,024: 	 Working area '/afs/cern.ch/work/m/molszews/CMSSW/tautau/M2N/CMSSW_7_4_5/src/m2n/maxi2ntuples/python/data/crab_m2n' already exists 
+Please change the requestName in the config file
+ERROR 2015-08-17 16:12:10,024: 	 Caught exception
+Traceback (most recent call last):
+  File "/cvmfs/cms.cern.ch/crab3/slc6_amd64_gcc481/cms/crabclient/3.3.1507-comp/bin/crab", line 133, in <module>
+    client()
+  File "/cvmfs/cms.cern.ch/crab3/slc6_amd64_gcc481/cms/crabclient/3.3.1507-comp/bin/crab", line 119, in __call__
+    self.cmd = sub_cmd(self.logger, args[1:])
+  File "/cvmfs/cms.cern.ch/crab3/slc6_amd64_gcc481/cms/crabclient/3.3.1507-comp/lib/python2.6/site-packages/CRABClient/Commands/submit.py", line 40, in __init__
+    SubCommand.__init__(self, logger, cmdargs, disable_interspersed_args = True)
+  File "/cvmfs/cms.cern.ch/crab3/slc6_amd64_gcc481/cms/crabclient/3.3.1507-comp/lib/python2.6/site-packages/CRABClient/Commands/SubCommand.py", line 298, in __init__
+    getattr(self.configuration.General, 'requestName', None))
+  File "/cvmfs/cms.cern.ch/crab3/slc6_amd64_gcc481/cms/crabclient/3.3.1507-comp/lib/python2.6/site-packages/CRABClient/ClientUtilities.py", line 387, in createWorkArea
+    raise ConfigException("Working area '%s' already exists \nPlease change the requestName in the config file" % fullpath)
+ConfigException: Working area '/afs/cern.ch/work/m/molszews/CMSSW/tautau/M2N/CMSSW_7_4_5/src/m2n/maxi2ntuples/python/data/crab_m2n' already exists 
+Please change the requestName in the config file
+DEBUG 2015-08-19 12:16:15,315: 	 Executing command: 'submit'
+DEBUG 2015-08-19 12:16:15,316: 	 Found CRAB cache file /afs/cern.ch/user/m/molszews/.crab3
+DEBUG 2015-08-19 12:16:15,333: 	 Checking credentials
+DEBUG 2015-08-19 12:16:15,334: 	 Found proxy file /tmp/x509up_u39587
+DEBUG 2015-08-19 12:16:15,334: 	 Getting proxy life time left
+DEBUG 2015-08-19 12:16:15,941: 	 Executing : 
+ command : voms-proxy-info -file /tmp/x509up_u39587 -timeleft
+ output : 84725
+
+ error: 
+ retcode : 0
+DEBUG 2015-08-19 12:16:16,549: 	 Executing : 
+ command : voms-proxy-info -file /tmp/x509up_u39587 -actimeleft
+ output : 84724
+
+ error: 
+ retcode : 0
+DEBUG 2015-08-19 12:16:16,549: 	 Proxy valid for 23:32:05 hours
+INFO 2015-08-19 12:16:16,549: 	 Will use CRAB configuration file crab.py
+DEBUG 2015-08-19 12:16:16,550: 	 Loading CRAB configuration file.
+DEBUG 2015-08-19 12:16:16,557: 	 Will use CRAB Analysis plugin (i.e. will run an analysis job type).
+ERROR 2015-08-19 12:16:16,557: 	 Working area '/afs/cern.ch/work/m/molszews/CMSSW/tautau/M2N/CMSSW_7_4_5/src/m2n/maxi2ntuples/python/data/crab_m2n' already exists 
+Please change the requestName in the config file
+ERROR 2015-08-19 12:16:16,557: 	 Caught exception
+Traceback (most recent call last):
+  File "/cvmfs/cms.cern.ch/crab3/slc6_amd64_gcc481/cms/crabclient/3.3.1507-comp/bin/crab", line 133, in <module>
+    client()
+  File "/cvmfs/cms.cern.ch/crab3/slc6_amd64_gcc481/cms/crabclient/3.3.1507-comp/bin/crab", line 119, in __call__
+    self.cmd = sub_cmd(self.logger, args[1:])
+  File "/cvmfs/cms.cern.ch/crab3/slc6_amd64_gcc481/cms/crabclient/3.3.1507-comp/lib/python2.6/site-packages/CRABClient/Commands/submit.py", line 40, in __init__
+    SubCommand.__init__(self, logger, cmdargs, disable_interspersed_args = True)
+  File "/cvmfs/cms.cern.ch/crab3/slc6_amd64_gcc481/cms/crabclient/3.3.1507-comp/lib/python2.6/site-packages/CRABClient/Commands/SubCommand.py", line 298, in __init__
+    getattr(self.configuration.General, 'requestName', None))
+  File "/cvmfs/cms.cern.ch/crab3/slc6_amd64_gcc481/cms/crabclient/3.3.1507-comp/lib/python2.6/site-packages/CRABClient/ClientUtilities.py", line 387, in createWorkArea
+    raise ConfigException("Working area '%s' already exists \nPlease change the requestName in the config file" % fullpath)
+ConfigException: Working area '/afs/cern.ch/work/m/molszews/CMSSW/tautau/M2N/CMSSW_7_4_5/src/m2n/maxi2ntuples/python/data/crab_m2n' already exists 
+Please change the requestName in the config file
+DEBUG 2015-08-25 16:53:26,560: 	 Executing command: 'status'
+DEBUG 2015-08-25 16:53:26,561: 	 Found CRAB cache file /afs/cern.ch/user/m/molszews/.crab3
+ERROR 2015-08-25 16:53:26,566: 	 Error: VBF/crab_m2n/ is not a valid CRAB project directory.
+ERROR 2015-08-25 16:53:26,566: 	 Caught exception
+Traceback (most recent call last):
+  File "/cvmfs/cms.cern.ch/crab3/slc6_amd64_gcc481/cms/crabclient/3.3.1507-comp/bin/crab", line 133, in <module>
+    client()
+  File "/cvmfs/cms.cern.ch/crab3/slc6_amd64_gcc481/cms/crabclient/3.3.1507-comp/bin/crab", line 119, in __call__
+    self.cmd = sub_cmd(self.logger, args[1:])
+  File "/cvmfs/cms.cern.ch/crab3/slc6_amd64_gcc481/cms/crabclient/3.3.1507-comp/lib/python2.6/site-packages/CRABClient/Commands/SubCommand.py", line 253, in __init__
+    self.validateOptions()
+  File "/cvmfs/cms.cern.ch/crab3/slc6_amd64_gcc481/cms/crabclient/3.3.1507-comp/lib/python2.6/site-packages/CRABClient/Commands/status.py", line 731, in validateOptions
+    SubCommand.validateOptions(self)
+  File "/cvmfs/cms.cern.ch/crab3/slc6_amd64_gcc481/cms/crabclient/3.3.1507-comp/lib/python2.6/site-packages/CRABClient/Commands/SubCommand.py", line 563, in validateOptions
+    raise ConfigurationException(msg)
+ConfigurationException: [91mError[0m: VBF/crab_m2n/ is not a valid CRAB project directory.
+DEBUG 2015-08-27 09:50:54,165: 	 Executing command: 'submit'
+DEBUG 2015-08-27 09:50:54,165: 	 Found CRAB cache file /afs/cern.ch/user/m/molszews/.crab3
+DEBUG 2015-08-27 09:50:54,176: 	 Checking credentials
+DEBUG 2015-08-27 09:50:54,177: 	 Found proxy file /tmp/x509up_u39587
+DEBUG 2015-08-27 09:50:54,177: 	 Getting proxy life time left
+DEBUG 2015-08-27 09:50:54,688: 	 Executing : 
+ command : voms-proxy-info -file /tmp/x509up_u39587 -timeleft
+ output : 84434
+
+ error: 
+ retcode : 0
+DEBUG 2015-08-27 09:50:55,296: 	 Executing : 
+ command : voms-proxy-info -file /tmp/x509up_u39587 -actimeleft
+ output : 84432
+
+ error: 
+ retcode : 0
+DEBUG 2015-08-27 09:50:55,296: 	 Proxy valid for 23:27:14 hours
+INFO 2015-08-27 09:50:55,296: 	 Will use CRAB configuration file crab.py
+DEBUG 2015-08-27 09:50:55,296: 	 Loading CRAB configuration file.
+DEBUG 2015-08-27 09:50:55,522: 	 Will use CRAB Analysis plugin (i.e. will run an analysis job type).
+ERROR 2015-08-27 09:50:55,522: 	 Working area '/afs/cern.ch/work/m/molszews/CMSSW/tautau/M2N/CMSSW_7_4_5/src/m2n/maxi2ntuples/python/vbf_synch_o1/crab_m2n' already exists 
+Please change the requestName in the config file
+ERROR 2015-08-27 09:50:55,522: 	 Caught exception
+Traceback (most recent call last):
+  File "/cvmfs/cms.cern.ch/crab3/slc6_amd64_gcc481/cms/crabclient/3.3.1507-comp/bin/crab", line 133, in <module>
+    client()
+  File "/cvmfs/cms.cern.ch/crab3/slc6_amd64_gcc481/cms/crabclient/3.3.1507-comp/bin/crab", line 119, in __call__
+    self.cmd = sub_cmd(self.logger, args[1:])
+  File "/cvmfs/cms.cern.ch/crab3/slc6_amd64_gcc481/cms/crabclient/3.3.1507-comp/lib/python2.6/site-packages/CRABClient/Commands/submit.py", line 40, in __init__
+    SubCommand.__init__(self, logger, cmdargs, disable_interspersed_args = True)
+  File "/cvmfs/cms.cern.ch/crab3/slc6_amd64_gcc481/cms/crabclient/3.3.1507-comp/lib/python2.6/site-packages/CRABClient/Commands/SubCommand.py", line 298, in __init__
+    getattr(self.configuration.General, 'requestName', None))
+  File "/cvmfs/cms.cern.ch/crab3/slc6_amd64_gcc481/cms/crabclient/3.3.1507-comp/lib/python2.6/site-packages/CRABClient/ClientUtilities.py", line 387, in createWorkArea
+    raise ConfigException("Working area '%s' already exists \nPlease change the requestName in the config file" % fullpath)
+ConfigException: Working area '/afs/cern.ch/work/m/molszews/CMSSW/tautau/M2N/CMSSW_7_4_5/src/m2n/maxi2ntuples/python/vbf_synch_o1/crab_m2n' already exists 
+Please change the requestName in the config file

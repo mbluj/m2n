@@ -1,13 +1,12 @@
 import FWCore.ParameterSet.Config as cms
 import sys
-import conf
+import os
 
 process = cms.Process("maxi2ntuples")
 
 process.load("FWCore.MessageService.MessageLogger_cfi")
 
 process.load('Configuration.StandardSequences.Services_cff')                                                                                                   
-process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_cff')
 process.load('JetMETCorrections.Configuration.JetCorrectionProducers_cff')
 process.load('RecoMET.METPUSubtraction.mvaPFMET_cff')
 
@@ -18,11 +17,43 @@ process.load('Configuration.StandardSequences.GeometryRecoDB_cff')
 process.load('Configuration.StandardSequences.MagneticField_38T_cff')
 process.load('Configuration.StandardSequences.EndOfProcess_cff')
 
+
+mc=True; #if MC then true; if data then  false
+vbf=True
+grid=True;
+
+#Directory with input file(s). Do not put ".root" files there that are not maent to be processed.
+directory = '/afs/cern.ch/work/m/molszews/CMSSW/Data/EmAOD_VBF/'
+files = ['VBF.root'];
+
+
+#Directory with outputfile(s). Can be of course the same as the above one, but remember to remove ouput files before another run.
+outputdir = '/afs/cern.ch/work/m/molszews/CMSSW/Data/ntuple_VBF/' 
+outfile = files[0];
+
+def getfiles(directory, files = []):
+    infiles =[];
+    for dirname, dirnames, filenames in os.walk(directory):
+        if not files:
+            for filename in filenames:
+                if '.root' in filename:
+                    infiles.append("file:"+directory+filename);
+        else:
+            for filename in filenames:
+                if any(filename in s for s in files):
+                    infiles.append("file:"+directory+filename);
+    print infiles;
+    return infiles;           
+
+
+process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_cff')
 #process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_condDBv2_cff')
 
-#from Configuration.AlCa.GlobalTag_condDBv2 import GlobalTag
-process.GlobalTag.globaltag = 'PHYS14_25_V1::All'
-#process.GlobalTag.globaltag = '74X_dataRun2_Prompt_v0'
+from Configuration.AlCa.GlobalTag_condDBv2 import GlobalTag
+process.GlobalTag.globaltag = 'PHYS14_25_V1::All'  #phys14 MC;
+#process.GlobalTag.globaltag = '74X_dataRun2_Prompt_v0' #50ns data
+#process.GlobalTag.globaltag = 'MCRUN2_74_V9A'  #spring15 50ns MC;
+#process.GlobalTag.globaltag = 'MCRUN2_74_V9'  #spring15 25ns MC;
 #process.GlobalTag = GlobalTag(process.GlobalTag, 'auto:run2_mc', '')
 
 process.load("Configuration.StandardSequences.GeometryDB_cff")
@@ -35,7 +66,6 @@ process.load("RecoEgamma.ElectronIdentification.egmGsfElectronIDs_cfi")
 process.egmGsfElectronIDs.physicsObjectSrc = cms.InputTag('slimmedElectrons')
 from PhysicsTools.SelectorUtils.centralIDRegistry import central_id_registry
 process.egmGsfElectronIDSequence = cms.Sequence(process.egmGsfElectronIDs)
-
 
 
 process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1) )
@@ -63,24 +93,35 @@ def nadpisanie(plik, tekst):
 
 #nadpisanie(dir+inputFile+'.json', "Number_of_events = "+ str(Number_of_events)+'\n')
 #pisanie(dir+inputFile+'.json', "xSection = "+ str(xSection)+'\n')
-
-process.source = cms.Source("PoolSource",
-    # replace 'myfile.root' with the source file you want to use
-    fileNames = cms.untracked.vstring(
-#        sys.argv[3:]            <.....................
-#        'file:/afs/cern.ch/work/m/molszews/CMSSW/Data/mbluj/Enriched_miniAOD_100_1_qrj.root'
+if grid:
+    process.source = cms.Source("PoolSource", fileNames = cms.untracked.vstring())
+else:
+    process.source = cms.Source("PoolSource",
+        # replace 'myfile.root' with the source file you want to use
+        fileNames = cms.untracked.vstring(
+            getfiles(directory, files)        
+    #        'file:/afs/cern.ch/work/m/molszews/CMSSW/Data/mbluj/Enriched_miniAOD_100_1_qrj.root'
+        )
     )
-)
 
 '''
 process.out = cms.OutputModule("PoolOutputModule",
     fileName = cms.untracked.string('miniAODMVAMET.root'),
 )
 '''
+if grid:
+    process.TFileService = cms.Service("TFileService", fileName = cms.string(outfile))
+else:
+    process.TFileService = cms.Service("TFileService", fileName = cms.string(outputdir+outfile))
 
-#process.TFileService = cms.Service("TFileService", fileName = cms.string(sys.argv[2]))  <.....   
-process.TFileService = cms.Service("TFileService", fileName = cms.string('ntupla.root'))
 ######################################################################################################
+
+
+process.ininfo = cms.EDAnalyzer("ininfo",
+    mc = cms.bool(mc),
+    pairs = cms.InputTag("SVllCand"),
+)
+
 
 ############### JETS ##############################
 process.jetsSelected = cms.EDFilter("PATJetSelector",
@@ -117,7 +158,6 @@ process.pairs = cms.EDProducer("ChannelSelector",
 
 process.clean = cms.EDProducer('PATPairSelector',
     pairs = cms.InputTag("pairs"), 
-#    pairs = cms.InputTag('pairs'), 
     muCut = cms.string(''
 #        'pt > 18. & abs(eta) < 2.1'
         ),
@@ -137,6 +177,13 @@ process.selected = cms.EDProducer("PairBaselineSelection",
     bits = cms.InputTag("TriggerResults","","HLT"),
     prescales = cms.InputTag("patTrigger"),
     objects = cms.InputTag("selectedPatTrigger"),
+    mc = cms.bool(mc),
+    sample = cms.string('phys14')  #options: "phys14", "spring15"
+)
+
+process.bestpair = cms.EDProducer("BestPairSelector",
+    pairs = cms.InputTag("selected"),
+    
 )
 
 process.paircheck = cms.EDFilter("PatPairExistenceFilter",
@@ -161,16 +208,14 @@ process.m2n = cms.EDAnalyzer('ntuple',
     jets = cms.InputTag("jetsSelected"),
     fatjets = cms.InputTag("slimmedJetsAK8"),
     mets = cms.InputTag("slimmedMETs"),
-    pairs = cms.InputTag("selected"),
+    pairs = cms.InputTag("bestpair"),
     bits = cms.InputTag("TriggerResults","","HLT"),
     prescales = cms.InputTag("patTrigger"),
     objects = cms.InputTag("selectedPatTrigger"),
     prunedGenParticles = cms.InputTag("prunedGenParticles"),
     packedGenParticles = cms.InputTag("packedGenParticles"),
-    lheprod = cms.InputTag("source"),
-#    lheprod = cms.InputTag("externalLHEProducer"),
     pileupinfo = cms.InputTag("addPileupInfo"),
-    mc = cms.bool(conf.mc),
+    mc = cms.bool(mc),
 )
 
 process.synchtree = cms.EDAnalyzer('synchronization',
@@ -183,20 +228,26 @@ process.synchtree = cms.EDAnalyzer('synchronization',
     jets = cms.InputTag("jetsSelected"),
     fatjets = cms.InputTag("slimmedJetsAK8"),
     mets = cms.InputTag("slimmedMETs"),
-    pairs = cms.InputTag("selected"),
+    pairs = cms.InputTag("bestpair"),
     bits = cms.InputTag("TriggerResults","","HLT"),
     prescales = cms.InputTag("patTrigger"),
     objects = cms.InputTag("selectedPatTrigger"),
     prunedGenParticles = cms.InputTag("prunedGenParticles"),
     packedGenParticles = cms.InputTag("packedGenParticles"),
-    lheprod = cms.InputTag("source"),
-#    lheprod = cms.InputTag("externalLHEProducer"),
     pileupinfo = cms.InputTag("addPileupInfo"),
+    mc = cms.bool(mc),
 )
 
+if mc and not vbf:
+    process.m2n.lheprod =  cms.InputTag("externalLHEProducer");
+    process.synchtree.lheprod =  cms.InputTag("externalLHEProducer");
+else:
+    process.m2n.lheprod =  cms.InputTag("source");
+    process.synchtree.lheprod =  cms.InputTag("source");
 
 process.p = cms.Path(
-        process.jetsSelected
+        process.ininfo
+        *process.jetsSelected
         *process.pairswithmet
         *process.pairs
 #        *process.hltLevel1GTSeed
@@ -204,6 +255,7 @@ process.p = cms.Path(
         *process.clean
         *process.selected
         *process.paircheck
+        *process.bestpair
         *process.m2n
         *process.synchtree
 )

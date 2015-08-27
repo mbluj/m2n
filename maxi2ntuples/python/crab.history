@@ -20,3 +20,19 @@
 150804_164512: /afs/cern.ch/cms/ccs/wm/scripts/Crab/CRAB_2_11_1_patch1/python/crab.py -status
 150804_184035: /afs/cern.ch/cms/ccs/wm/scripts/Crab/CRAB_2_11_1_patch1/python/crab.py -status
 150805_003105: /afs/cern.ch/cms/ccs/wm/scripts/Crab/CRAB_2_11_1_patch1/python/crab.py -status
+150805_103517: /afs/cern.ch/cms/ccs/wm/scripts/Crab/CRAB_2_11_1_patch1/python/crab.py -status
+150808_154922: /afs/cern.ch/cms/ccs/wm/scripts/Crab/CRAB_2_11_1_patch1/python/crab.py -status
+150813_172929: /afs/cern.ch/cms/ccs/wm/scripts/Crab/CRAB_2_11_1_patch1/python/crab.py -create -cfg crab.cfg
+150813_173236: /afs/cern.ch/cms/ccs/wm/scripts/Crab/CRAB_2_11_1_patch1/python/crab.py submit -c crab_0_150813_172929
+150813_173351: /afs/cern.ch/cms/ccs/wm/scripts/Crab/CRAB_2_11_1_patch1/python/crab.py -submit -c crab_0_150813_172929
+150813_173422: /afs/cern.ch/cms/ccs/wm/scripts/Crab/CRAB_2_11_1_patch1/python/crab.py -create -cfg crab.cfg
+150813_173716: /afs/cern.ch/cms/ccs/wm/scripts/Crab/CRAB_2_11_1_patch1/python/crab.py -create -cfg crab.cfg
+150813_173811: /afs/cern.ch/cms/ccs/wm/scripts/Crab/CRAB_2_11_1_patch1/python/crab.py -create -cfg crab.cfg
+150813_173837: /afs/cern.ch/cms/ccs/wm/scripts/Crab/CRAB_2_11_1_patch1/python/crab.py -create -cfg crab.cfg
+150813_173919: /afs/cern.ch/cms/ccs/wm/scripts/Crab/CRAB_2_11_1_patch1/python/crab.py -submit -c crab_0_150813_173837
+150813_174023: /afs/cern.ch/cms/ccs/wm/scripts/Crab/CRAB_2_11_1_patch1/python/crab.py -status -c crab_0_150813_173837
+150813_174148: /afs/cern.ch/cms/ccs/wm/scripts/Crab/CRAB_2_11_1_patch1/python/crab.py -status -c crab_0_150813_173837
+150813_175137: /afs/cern.ch/cms/ccs/wm/scripts/Crab/CRAB_2_11_1_patch1/python/crab.py -status -c crab_0_150813_173837
+150813_175346: /afs/cern.ch/cms/ccs/wm/scripts/Crab/CRAB_2_11_1_patch1/python/crab.py -status -c crab_0_150813_173837
+150814_101524: /afs/cern.ch/cms/ccs/wm/scripts/Crab/CRAB_2_11_1_patch1/python/crab.py -status -c crab_0_150813_173837
+150814_101653: /afs/cern.ch/cms/ccs/wm/scripts/Crab/CRAB_2_11_1_patch1/python/crab.py -getoutput -c crab_0_150813_173837

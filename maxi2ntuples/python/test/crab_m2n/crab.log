@@ -1,86 +1,86 @@
-DEBUG 2015-08-04 01:31:46,787: 	 Executing command: 'submit'
-DEBUG 2015-08-04 01:31:46,788: 	 Found CRAB cache file /afs/cern.ch/user/m/molszews/.crab3
-DEBUG 2015-08-04 01:31:46,802: 	 Checking credentials
-DEBUG 2015-08-04 01:31:46,804: 	 Found proxy file /tmp/x509up_u39587
-DEBUG 2015-08-04 01:31:46,804: 	 Getting proxy life time left
-DEBUG 2015-08-04 01:31:47,314: 	 Executing : 
+DEBUG 2015-08-14 11:32:29,420: 	 Executing command: 'submit'
+DEBUG 2015-08-14 11:32:29,421: 	 Found CRAB cache file /afs/cern.ch/user/m/molszews/.crab3
+DEBUG 2015-08-14 11:32:29,434: 	 Checking credentials
+DEBUG 2015-08-14 11:32:29,438: 	 Found proxy file /tmp/x509up_u39587
+DEBUG 2015-08-14 11:32:29,438: 	 Getting proxy life time left
+DEBUG 2015-08-14 11:32:30,045: 	 Executing : 
  command : voms-proxy-info -file /tmp/x509up_u39587 -timeleft
- output : 83419
+ output : 82879
 
  error: 
  retcode : 0
-DEBUG 2015-08-04 01:31:47,724: 	 Executing : 
+DEBUG 2015-08-14 11:32:31,132: 	 Executing : 
  command : voms-proxy-info -file /tmp/x509up_u39587 -actimeleft
- output : 83419
+ output : 82877
 
  error: 
  retcode : 0
-DEBUG 2015-08-04 01:31:47,724: 	 Proxy valid for 23:10:19 hours
-INFO 2015-08-04 01:31:47,724: 	 Will use CRAB configuration file crab_config.py
-DEBUG 2015-08-04 01:31:47,724: 	 Loading CRAB configuration file.
-DEBUG 2015-08-04 01:31:47,725: 	 Will use CRAB Analysis plugin (i.e. will run an analysis job type).
-DEBUG 2015-08-04 01:31:47,849: 	 Executing : 
+DEBUG 2015-08-14 11:32:31,133: 	 Proxy valid for 23:01:19 hours
+INFO 2015-08-14 11:32:31,133: 	 Will use CRAB configuration file crab_config.py
+DEBUG 2015-08-14 11:32:31,133: 	 Loading CRAB configuration file.
+DEBUG 2015-08-14 11:32:31,136: 	 Will use CRAB Analysis plugin (i.e. will run an analysis job type).
+DEBUG 2015-08-14 11:32:31,324: 	 Executing : 
  command : openssl x509 -in ~/.globus/usercert.pem -subject -noout
  output : subject= /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=molszews/CN=740841/CN=Michal Olszewski
 
  error: WARNING: can't open config file: /build/dmwmbld/srv/state/dmwmbld/builds/comp_gcc481/w/tmp/BUILDROOT/ef35842be28ecca6d10195ea8182a5ac/build/dmwmbld/srv/state/dmwmbld/builds/comp_gcc481/w/slc6_amd64_gcc481/external/openssl/1.0.1p/ssl/openssl.cnf
 
  retcode : 0
-DEBUG 2015-08-04 01:31:47,849: 	 Checking credentials
-DEBUG 2015-08-04 01:31:47,850: 	 Found proxy file /tmp/x509up_u39587
-DEBUG 2015-08-04 01:31:47,850: 	 Getting proxy life time left
-DEBUG 2015-08-04 01:31:48,253: 	 Executing : 
+DEBUG 2015-08-14 11:32:31,325: 	 Checking credentials
+DEBUG 2015-08-14 11:32:31,325: 	 Found proxy file /tmp/x509up_u39587
+DEBUG 2015-08-14 11:32:31,325: 	 Getting proxy life time left
+DEBUG 2015-08-14 11:32:31,939: 	 Executing : 
  command : voms-proxy-info -file /tmp/x509up_u39587 -timeleft
- output : 83418
+ output : 82877
 
  error: 
  retcode : 0
-DEBUG 2015-08-04 01:31:48,658: 	 Executing : 
+DEBUG 2015-08-14 11:32:32,447: 	 Executing : 
  command : voms-proxy-info -file /tmp/x509up_u39587 -actimeleft
- output : 83418
+ output : 82876
 
  error: 
  retcode : 0
-DEBUG 2015-08-04 01:31:48,658: 	 Proxy valid for 23:10:18 hours
-DEBUG 2015-08-04 01:31:49,162: 	 Executing : 
+DEBUG 2015-08-14 11:32:32,447: 	 Proxy valid for 23:01:17 hours
+DEBUG 2015-08-14 11:32:32,955: 	 Executing : 
  command : env X509_USER_PROXY=/tmp/x509up_u39587 voms-proxy-info -fqan
  output : /cms/Role=NULL/Capability=NULL
 
  error: 
  retcode : 0
-DEBUG 2015-08-04 01:31:49,623: 	 Registering user credentials for server /DC=ch/DC=cern/OU=computers/CN=vocms(045|052|021|031|0118|0119).cern.ch
-DEBUG 2015-08-04 01:31:49,735: 	 Executing : 
+DEBUG 2015-08-14 11:32:33,461: 	 Registering user credentials for server /DC=ch/DC=cern/OU=computers/CN=vocms(045|052|021|031|0118|0119).cern.ch
+DEBUG 2015-08-14 11:32:33,574: 	 Executing : 
  command : openssl x509 -in ~/.globus/usercert.pem -subject -noout
  output : subject= /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=molszews/CN=740841/CN=Michal Olszewski
 
  error: WARNING: can't open config file: /build/dmwmbld/srv/state/dmwmbld/builds/comp_gcc481/w/tmp/BUILDROOT/ef35842be28ecca6d10195ea8182a5ac/build/dmwmbld/srv/state/dmwmbld/builds/comp_gcc481/w/slc6_amd64_gcc481/external/openssl/1.0.1p/ssl/openssl.cnf
 
  retcode : 0
-DEBUG 2015-08-04 01:31:49,735: 	 Getting myproxy life time left for myproxy.cern.ch
-DEBUG 2015-08-04 01:31:49,736: 	 Calculating hash of /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=molszews/CN=740841/CN=Michal Olszewski_cmsweb.cern.ch for credential name
-DEBUG 2015-08-04 01:31:49,940: 	 Executing : 
+DEBUG 2015-08-14 11:32:33,574: 	 Getting myproxy life time left for myproxy.cern.ch
+DEBUG 2015-08-14 11:32:33,574: 	 Calculating hash of /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=molszews/CN=740841/CN=Michal Olszewski_cmsweb.cern.ch for credential name
+DEBUG 2015-08-14 11:32:33,779: 	 Executing : 
  command : myproxy-info -l fe1ecf2a8c8bc4ef8bc29e93b21f837c3ebc3ebb -s myproxy.cern.ch
  output : username: fe1ecf2a8c8bc4ef8bc29e93b21f837c3ebc3ebb
 owner: /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=molszews/CN=740841/CN=Michal Olszewski
   renewal policy: /DC=ch/DC=cern/OU=computers/CN=vocms(045|052|021|031|0118|0119).cern.ch
   trusted retrieval policy: /DC=ch/DC=cern/OU=computers/CN=vocms(045|052|021|031|0118|0119).cern.ch
-  timeleft: 712:41:59  (29.7 days)
+  timeleft: 462:41:15  (19.3 days)
 
  error: 
  retcode : 0
-DEBUG 2015-08-04 01:31:49,942: 	 Myproxy is valid: 2565719
-DEBUG 2015-08-04 01:31:49,942: 	 Command use: submit
-DEBUG 2015-08-04 01:31:49,942: 	 Options use: ['-c', 'crab_config.py']
-DEBUG 2015-08-04 01:31:50,353: 	 CRABClient version: 3.3.1507
-DEBUG 2015-08-04 01:31:50,353: 	 Instance is prod
-DEBUG 2015-08-04 01:31:50,353: 	 Server base url is cmsweb.cern.ch
-DEBUG 2015-08-04 01:31:50,353: 	 Command url /crabserver/prod/workflow
-DEBUG 2015-08-04 01:31:50,353: 	 Started submission
-DEBUG 2015-08-04 01:31:50,353: 	 Working on /afs/cern.ch/work/m/molszews/CMSSW/tautau/M2N/CMSSW_7_4_5/src/m2n/maxi2ntuples/python/test/crab_m2n
-DEBUG 2015-08-04 01:31:50,892: 	 Loading required information from the environment
-DEBUG 2015-08-04 01:31:50,892: 	 Found CMSSW_7_4_5 for slc6_amd64_gcc491 with base /afs/cern.ch/work/m/molszews/CMSSW/tautau/M2N/CMSSW_7_4_5
-DEBUG 2015-08-04 01:31:50,911: 	 UNIQUE NAME: tarUUID a90ca0d0-b7ed-4497-af30-852cabdccead 
-DEBUG 2015-08-04 01:31:50,912: 	 self.config: from WMCore.Configuration import Configuration
+DEBUG 2015-08-14 11:32:33,781: 	 Myproxy is valid: 1665675
+DEBUG 2015-08-14 11:32:33,781: 	 Command use: submit
+DEBUG 2015-08-14 11:32:33,781: 	 Options use: ['-c', 'crab_config.py']
+DEBUG 2015-08-14 11:32:34,238: 	 CRABClient version: 3.3.1507
+DEBUG 2015-08-14 11:32:34,238: 	 Instance is prod
+DEBUG 2015-08-14 11:32:34,238: 	 Server base url is cmsweb.cern.ch
+DEBUG 2015-08-14 11:32:34,238: 	 Command url /crabserver/prod/workflow
+DEBUG 2015-08-14 11:32:34,238: 	 Started submission
+DEBUG 2015-08-14 11:32:34,238: 	 Working on /afs/cern.ch/work/m/molszews/CMSSW/tautau/M2N/CMSSW_7_4_5/src/m2n/maxi2ntuples/python/test/crab_m2n
+DEBUG 2015-08-14 11:32:34,836: 	 Loading required information from the environment
+DEBUG 2015-08-14 11:32:34,837: 	 Found CMSSW_7_4_5 for slc6_amd64_gcc491 with base /afs/cern.ch/work/m/molszews/CMSSW/tautau/M2N/CMSSW_7_4_5
+DEBUG 2015-08-14 11:32:34,884: 	 UNIQUE NAME: tarUUID a01d1a29-d785-42a8-ba8b-bc8f4f342225 
+DEBUG 2015-08-14 11:32:34,884: 	 self.config: from WMCore.Configuration import Configuration
 config = Configuration()
 config.section_('General')
 config.General.workArea = './test/'
@@ -90,7 +90,7 @@ config.JobType.psetName = 'maxi2ntuples.py'
 config.JobType.pluginName = 'Analysis'
 config.JobType.allowUndistributedCMSSW = True
 config.section_('Data')
-config.Data.inputDataset = '/DYJetsToLL_M-50_13TeV-madgraph-pythia8/molszews-DYJetsToLL_Phys14_CMSSW_7_2-14021cf92b609bd2cdfd7d04edfc7ab0/USER'
+config.Data.inputDataset = '/SingleMuon/molszews-synch_prms-8e2075ef5c9b4e6dfd1c693c6f35f159/USER'
 config.Data.totalUnits = -1
 config.Data.unitsPerJob = 30
 config.Data.publishDataName = 'synch_test'
@@ -100,114 +100,623 @@ config.Data.outLFNDirBase = '/store/user/molszews/'
 config.Data.publication = False
 config.section_('Site')
 config.Site.blacklist = ['T2_US_Florida']
-config.Site.storageSite = 'T2_PL_Warsaw'
+config.Site.storageSite = 'T2_PL_Swierk'
 config.section_('User')
 config.section_('Debug')
 
-DEBUG 2015-08-04 01:31:50,912: 	 self.config.JobType.psetName: maxi2ntuples.py
-DEBUG 2015-08-04 01:31:50,912: 	 Importing CMSSW configuration maxi2ntuples.py
-DEBUG 2015-08-04 01:31:52,775: 	 Writing CMSSW configuration to /afs/cern.ch/work/m/molszews/CMSSW/tautau/M2N/CMSSW_7_4_5/src/m2n/maxi2ntuples/python/test/crab_m2n/inputs/PSet.py
-DEBUG 2015-08-04 01:31:53,383: 	 The following EDM output files will be collected: []
-DEBUG 2015-08-04 01:31:53,383: 	 The following TFile output files will be collected: ['ntupla.root']
-DEBUG 2015-08-04 01:31:53,383: 	 The following user output files will be collected: []
-DEBUG 2015-08-04 01:31:53,383: 	 Loading required information from the environment
-DEBUG 2015-08-04 01:31:53,384: 	 Found CMSSW_7_4_5 for slc6_amd64_gcc491 with base /afs/cern.ch/work/m/molszews/CMSSW/tautau/M2N/CMSSW_7_4_5
-DEBUG 2015-08-04 01:31:53,384: 	 Making tarball in /afs/cern.ch/work/m/molszews/CMSSW/tautau/M2N/CMSSW_7_4_5/src/m2n/maxi2ntuples/python/test/crab_m2n/inputs/a90ca0d0-b7ed-4497-af30-852cabdcceaddefault.tgz
-DEBUG 2015-08-04 01:31:53,384: 	  checking directory /afs/cern.ch/work/m/molszews/CMSSW/tautau/M2N/CMSSW_7_4_5/lib
-DEBUG 2015-08-04 01:31:53,385: 	  adding directory /afs/cern.ch/work/m/molszews/CMSSW/tautau/M2N/CMSSW_7_4_5/lib to tarball
-DEBUG 2015-08-04 01:31:53,500: 	  checking directory /afs/cern.ch/work/m/molszews/CMSSW/tautau/M2N/CMSSW_7_4_5/biglib
-DEBUG 2015-08-04 01:31:53,500: 	  adding directory /afs/cern.ch/work/m/molszews/CMSSW/tautau/M2N/CMSSW_7_4_5/biglib to tarball
-DEBUG 2015-08-04 01:31:53,566: 	  checking directory /afs/cern.ch/work/m/molszews/CMSSW/tautau/M2N/CMSSW_7_4_5/module
-DEBUG 2015-08-04 01:31:53,682: 	  adding data directory /afs/cern.ch/work/m/molszews/CMSSW/tautau/M2N/CMSSW_7_4_5/src/m2n/maxi2ntuples/interface to tarball
-DEBUG 2015-08-04 01:31:53,836: 	 tgz contents: [('lib', 0, 1438267719, 'molszews'), ('lib/slc6_amd64_gcc491', 0, 1438643937, 'molszews'), ('lib/slc6_amd64_gcc491/pluginm2nmaxi2ntuplesAuto.so', 599434, 1438643936, 'molszews'), ('lib/slc6_amd64_gcc491/m2nmaxi2ntuplesAuto.edmplugin', 36, 1438643936, 'molszews'), ('lib/slc6_amd64_gcc491/.poisonededmplugincache', 0, 1438268279, 'molszews'), ('lib/slc6_amd64_gcc491/.edmplugincache', 1394, 1438643937, 'molszews'), ('biglib', 0, 1438267719, 'molszews'), ('biglib/slc6_amd64_gcc491', 0, 1438267719, 'molszews'), ('src/m2n/maxi2ntuples/interface', 0, 1438267872, 'molszews'), ('src/m2n/maxi2ntuples/interface/utilities.h', 4338, 1438267769, 'molszews'), ('PSet.py', 101, 1438644713, 'molszews'), ('PSet.pkl', 768302, 1438644713, 'molszews'), ('debug/originalPSet.py', 7733, 1438644697, 'molszews'), ('debug/crabConfig.py', 902, 1438644713, 'molszews')]
-DEBUG 2015-08-04 01:31:53,836: 	 MD5 checksum: 9d75e97a1642ddb5fa9b89c98491623f
-DEBUG 2015-08-04 01:31:53,844: 	  uploading archive to cache /afs/cern.ch/work/m/molszews/CMSSW/tautau/M2N/CMSSW_7_4_5/src/m2n/maxi2ntuples/python/test/crab_m2n/inputs/a90ca0d0-b7ed-4497-af30-852cabdcceaddefault.tgz 
-DEBUG 2015-08-04 01:31:54,264: 	 Result uploading input files: ('152622d37da01d9bd470789503c68b68cbf8d376846fc89580947975f46d5192.tar.gz', '9d75e97a1642ddb5fa9b89c98491623f') 
-INFO 2015-08-04 01:31:54,264: 	 Sending the request to the server
-DEBUG 2015-08-04 01:31:54,265: 	 Submitting {'ignorelocality': 0, 'savelogsflag': 0, 'useparent': 0, 'asyncdest': 'T2_PL_Warsaw', 'algoargs': 30, 'cachefilename': '152622d37da01d9bd470789503c68b68cbf8d376846fc89580947975f46d5192.tar.gz', 'addoutputfiles': [], 'generator': 'pythia', 'publishdbsurl': 'https://cmsweb.cern.ch/dbs/prod/phys03/DBSWriter', 'jobsw': 'CMSSW_7_4_5', 'edmoutfiles': [], 'cacheurl': 'https://cmsweb.cern.ch/crabcache', 'inputdata': '/DYJetsToLL_M-50_13TeV-madgraph-pythia8/molszews-DYJetsToLL_Phys14_CMSSW_7_2-14021cf92b609bd2cdfd7d04edfc7ab0/USER', 'lfn': '/store/user/molszews/', 'dryrun': 0, 'workflow': 'crab_m2n', 'adduserfiles': [], 'publishname': 'synch_test-9d75e97a1642ddb5fa9b89c98491623f', 'nonprodsw': 1, 'tfileoutfiles': ['ntupla.root'], 'oneEventMode': 0, 'saveoutput': 1, 'publication': 0, 'jobarch': 'slc6_amd64_gcc491', 'totalunits': -1, 'splitalgo': 'FileBased', 'nonvaliddata': 0, 'dbsurl': 'https://cmsweb.cern.ch/dbs/prod/phys03/DBSReader', 'publishgroupname': 0, 'siteblacklist': ['T2_US_Florida'], 'jobtype': 'Analysis'} 
-DEBUG 2015-08-04 01:31:54,265: 	 Encoded submit request: ignorelocality=0&savelogsflag=0&useparent=0&asyncdest=T2_PL_Warsaw&algoargs=30&cachefilename=152622d37da01d9bd470789503c68b68cbf8d376846fc89580947975f46d5192.tar.gz&generator=pythia&publishdbsurl=https%3A%2F%2Fcmsweb.cern.ch%2Fdbs%2Fprod%2Fphys03%2FDBSWriter&jobsw=CMSSW_7_4_5&cacheurl=https%3A%2F%2Fcmsweb.cern.ch%2Fcrabcache&inputdata=%2FDYJetsToLL_M-50_13TeV-madgraph-pythia8%2Fmolszews-DYJetsToLL_Phys14_CMSSW_7_2-14021cf92b609bd2cdfd7d04edfc7ab0%2FUSER&lfn=%2Fstore%2Fuser%2Fmolszews%2F&dryrun=0&workflow=crab_m2n&publishname=synch_test-9d75e97a1642ddb5fa9b89c98491623f&nonprodsw=1&oneEventMode=0&saveoutput=1&publication=0&jobarch=slc6_amd64_gcc491&totalunits=-1&splitalgo=FileBased&nonvaliddata=0&dbsurl=https%3A%2F%2Fcmsweb.cern.ch%2Fdbs%2Fprod%2Fphys03%2FDBSReader&publishgroupname=0&jobtype=Analysis&siteblacklist=T2_US_Florida&tfileoutfiles=ntupla.root
-DEBUG 2015-08-04 01:31:54,807: 	 Result: {'result': [{'RequestName': '150803_233154:molszews_crab_m2n'}]}
-INFO 2015-08-04 01:31:54,839: 	 Success: Your task has been delivered to the CRAB3 server.
-INFO 2015-08-04 01:31:54,840: 	 Task name: 150803_233154:molszews_crab_m2n
-INFO 2015-08-04 01:31:54,840: 	 Please use 'crab status' to check how the submission process proceeds.
-DEBUG 2015-08-04 01:31:54,840: 	 About to return
-INFO 2015-08-04 01:31:54,843: 	 Log file is /afs/cern.ch/work/m/molszews/CMSSW/tautau/M2N/CMSSW_7_4_5/src/m2n/maxi2ntuples/python/test/crab_m2n/crab.log
-DEBUG 2015-08-04 01:33:57,602: 	 Executing command: 'status'
-DEBUG 2015-08-04 01:33:57,603: 	 Found CRAB cache file /afs/cern.ch/user/m/molszews/.crab3
-DEBUG 2015-08-04 01:33:57,611: 	 Checking credentials
-DEBUG 2015-08-04 01:33:57,613: 	 Found proxy file /tmp/x509up_u39587
-DEBUG 2015-08-04 01:33:57,613: 	 Getting proxy life time left
-DEBUG 2015-08-04 01:33:58,117: 	 Executing : 
+DEBUG 2015-08-14 11:32:34,884: 	 self.config.JobType.psetName: maxi2ntuples.py
+DEBUG 2015-08-14 11:32:34,885: 	 Importing CMSSW configuration maxi2ntuples.py
+DEBUG 2015-08-14 11:32:37,992: 	 Writing CMSSW configuration to /afs/cern.ch/work/m/molszews/CMSSW/tautau/M2N/CMSSW_7_4_5/src/m2n/maxi2ntuples/python/test/crab_m2n/inputs/PSet.py
+DEBUG 2015-08-14 11:32:38,469: 	 The following EDM output files will be collected: []
+DEBUG 2015-08-14 11:32:38,469: 	 The following TFile output files will be collected: ['ntupla.root']
+DEBUG 2015-08-14 11:32:38,469: 	 The following user output files will be collected: []
+DEBUG 2015-08-14 11:32:38,469: 	 Loading required information from the environment
+DEBUG 2015-08-14 11:32:38,469: 	 Found CMSSW_7_4_5 for slc6_amd64_gcc491 with base /afs/cern.ch/work/m/molszews/CMSSW/tautau/M2N/CMSSW_7_4_5
+DEBUG 2015-08-14 11:32:38,469: 	 Making tarball in /afs/cern.ch/work/m/molszews/CMSSW/tautau/M2N/CMSSW_7_4_5/src/m2n/maxi2ntuples/python/test/crab_m2n/inputs/a01d1a29-d785-42a8-ba8b-bc8f4f342225default.tgz
+DEBUG 2015-08-14 11:32:38,470: 	  checking directory /afs/cern.ch/work/m/molszews/CMSSW/tautau/M2N/CMSSW_7_4_5/lib
+DEBUG 2015-08-14 11:32:38,470: 	  adding directory /afs/cern.ch/work/m/molszews/CMSSW/tautau/M2N/CMSSW_7_4_5/lib to tarball
+DEBUG 2015-08-14 11:32:38,604: 	  checking directory /afs/cern.ch/work/m/molszews/CMSSW/tautau/M2N/CMSSW_7_4_5/biglib
+DEBUG 2015-08-14 11:32:38,604: 	  adding directory /afs/cern.ch/work/m/molszews/CMSSW/tautau/M2N/CMSSW_7_4_5/biglib to tarball
+DEBUG 2015-08-14 11:32:38,607: 	  checking directory /afs/cern.ch/work/m/molszews/CMSSW/tautau/M2N/CMSSW_7_4_5/module
+DEBUG 2015-08-14 11:32:39,028: 	  adding data directory /afs/cern.ch/work/m/molszews/CMSSW/tautau/M2N/CMSSW_7_4_5/src/m2n/maxi2ntuples/interface to tarball
+DEBUG 2015-08-14 11:32:39,175: 	 tgz contents: [('lib', 0, 1438267719, 'molszews'), ('lib/slc6_amd64_gcc491', 0, 1438643937, 'molszews'), ('lib/slc6_amd64_gcc491/pluginm2nmaxi2ntuplesAuto.so', 599434, 1438643936, 'molszews'), ('lib/slc6_amd64_gcc491/m2nmaxi2ntuplesAuto.edmplugin', 36, 1438643936, 'molszews'), ('lib/slc6_amd64_gcc491/.poisonededmplugincache', 0, 1438268279, 'molszews'), ('lib/slc6_amd64_gcc491/.edmplugincache', 1394, 1438643937, 'molszews'), ('biglib', 0, 1438267719, 'molszews'), ('biglib/slc6_amd64_gcc491', 0, 1438267719, 'molszews'), ('src/m2n/maxi2ntuples/interface', 0, 1438267872, 'molszews'), ('src/m2n/maxi2ntuples/interface/utilities.h', 4338, 1438267769, 'molszews'), ('PSet.py', 101, 1439544758, 'molszews'), ('PSet.pkl', 768426, 1439544758, 'molszews'), ('debug/originalPSet.py', 7761, 1439479578, 'molszews'), ('debug/crabConfig.py', 857, 1439544759, 'molszews')]
+DEBUG 2015-08-14 11:32:39,175: 	 MD5 checksum: 1f0ed386953508d82fb7e8898920828f
+DEBUG 2015-08-14 11:32:39,186: 	  uploading archive to cache /afs/cern.ch/work/m/molszews/CMSSW/tautau/M2N/CMSSW_7_4_5/src/m2n/maxi2ntuples/python/test/crab_m2n/inputs/a01d1a29-d785-42a8-ba8b-bc8f4f342225default.tgz 
+DEBUG 2015-08-14 11:32:39,639: 	 Result uploading input files: ('4024baafe09f4b79cbad27c1217ca86b9cb41234b499d90d622c498fd7bd8d7d.tar.gz', '1f0ed386953508d82fb7e8898920828f') 
+INFO 2015-08-14 11:32:39,639: 	 Sending the request to the server
+DEBUG 2015-08-14 11:32:39,639: 	 Submitting {'ignorelocality': 0, 'savelogsflag': 0, 'useparent': 0, 'asyncdest': 'T2_PL_Swierk', 'algoargs': 30, 'cachefilename': '4024baafe09f4b79cbad27c1217ca86b9cb41234b499d90d622c498fd7bd8d7d.tar.gz', 'addoutputfiles': [], 'generator': 'pythia', 'publishdbsurl': 'https://cmsweb.cern.ch/dbs/prod/phys03/DBSWriter', 'jobsw': 'CMSSW_7_4_5', 'edmoutfiles': [], 'cacheurl': 'https://cmsweb.cern.ch/crabcache', 'inputdata': '/SingleMuon/molszews-synch_prms-8e2075ef5c9b4e6dfd1c693c6f35f159/USER', 'lfn': '/store/user/molszews/', 'dryrun': 0, 'workflow': 'crab_m2n', 'adduserfiles': [], 'publishname': 'synch_test-1f0ed386953508d82fb7e8898920828f', 'nonprodsw': 1, 'tfileoutfiles': ['ntupla.root'], 'oneEventMode': 0, 'saveoutput': 1, 'publication': 0, 'jobarch': 'slc6_amd64_gcc491', 'totalunits': -1, 'splitalgo': 'FileBased', 'nonvaliddata': 0, 'dbsurl': 'https://cmsweb.cern.ch/dbs/prod/phys03/DBSReader', 'publishgroupname': 0, 'siteblacklist': ['T2_US_Florida'], 'jobtype': 'Analysis'} 
+DEBUG 2015-08-14 11:32:39,639: 	 Encoded submit request: ignorelocality=0&savelogsflag=0&useparent=0&asyncdest=T2_PL_Swierk&algoargs=30&cachefilename=4024baafe09f4b79cbad27c1217ca86b9cb41234b499d90d622c498fd7bd8d7d.tar.gz&generator=pythia&publishdbsurl=https%3A%2F%2Fcmsweb.cern.ch%2Fdbs%2Fprod%2Fphys03%2FDBSWriter&jobsw=CMSSW_7_4_5&cacheurl=https%3A%2F%2Fcmsweb.cern.ch%2Fcrabcache&inputdata=%2FSingleMuon%2Fmolszews-synch_prms-8e2075ef5c9b4e6dfd1c693c6f35f159%2FUSER&lfn=%2Fstore%2Fuser%2Fmolszews%2F&dryrun=0&workflow=crab_m2n&publishname=synch_test-1f0ed386953508d82fb7e8898920828f&nonprodsw=1&oneEventMode=0&saveoutput=1&publication=0&jobarch=slc6_amd64_gcc491&totalunits=-1&splitalgo=FileBased&nonvaliddata=0&dbsurl=https%3A%2F%2Fcmsweb.cern.ch%2Fdbs%2Fprod%2Fphys03%2FDBSReader&publishgroupname=0&jobtype=Analysis&siteblacklist=T2_US_Florida&tfileoutfiles=ntupla.root
+DEBUG 2015-08-14 11:32:40,235: 	 Result: {'result': [{'RequestName': '150814_093240:molszews_crab_m2n'}]}
+INFO 2015-08-14 11:32:40,238: 	 Success: Your task has been delivered to the CRAB3 server.
+INFO 2015-08-14 11:32:40,238: 	 Task name: 150814_093240:molszews_crab_m2n
+INFO 2015-08-14 11:32:40,238: 	 Please use 'crab status' to check how the submission process proceeds.
+DEBUG 2015-08-14 11:32:40,238: 	 About to return
+INFO 2015-08-14 11:32:40,243: 	 Log file is /afs/cern.ch/work/m/molszews/CMSSW/tautau/M2N/CMSSW_7_4_5/src/m2n/maxi2ntuples/python/test/crab_m2n/crab.log
+DEBUG 2015-08-14 11:33:17,718: 	 Executing command: 'status'
+DEBUG 2015-08-14 11:33:17,718: 	 Found CRAB cache file /afs/cern.ch/user/m/molszews/.crab3
+DEBUG 2015-08-14 11:33:17,729: 	 Checking credentials
+DEBUG 2015-08-14 11:33:17,733: 	 Found proxy file /tmp/x509up_u39587
+DEBUG 2015-08-14 11:33:17,733: 	 Getting proxy life time left
+DEBUG 2015-08-14 11:33:18,742: 	 Executing : 
  command : voms-proxy-info -file /tmp/x509up_u39587 -timeleft
- output : 83288
+ output : 82830
 
  error: 
  retcode : 0
-DEBUG 2015-08-04 01:33:58,522: 	 Executing : 
+DEBUG 2015-08-14 11:33:19,353: 	 Executing : 
  command : voms-proxy-info -file /tmp/x509up_u39587 -actimeleft
- output : 83288
+ output : 82829
 
  error: 
  retcode : 0
-DEBUG 2015-08-04 01:33:58,522: 	 Proxy valid for 23:08:08 hours
-DEBUG 2015-08-04 01:33:58,637: 	 Executing : 
+DEBUG 2015-08-14 11:33:19,353: 	 Proxy valid for 23:00:30 hours
+DEBUG 2015-08-14 11:33:19,470: 	 Executing : 
  command : openssl x509 -in ~/.globus/usercert.pem -subject -noout
  output : subject= /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=molszews/CN=740841/CN=Michal Olszewski
 
  error: WARNING: can't open config file: /build/dmwmbld/srv/state/dmwmbld/builds/comp_gcc481/w/tmp/BUILDROOT/ef35842be28ecca6d10195ea8182a5ac/build/dmwmbld/srv/state/dmwmbld/builds/comp_gcc481/w/slc6_amd64_gcc481/external/openssl/1.0.1p/ssl/openssl.cnf
 
  retcode : 0
-DEBUG 2015-08-04 01:33:58,637: 	 Checking credentials
-DEBUG 2015-08-04 01:33:58,637: 	 Found proxy file /tmp/x509up_u39587
-DEBUG 2015-08-04 01:33:58,637: 	 Getting proxy life time left
-DEBUG 2015-08-04 01:33:59,041: 	 Executing : 
+DEBUG 2015-08-14 11:33:19,470: 	 Checking credentials
+DEBUG 2015-08-14 11:33:19,471: 	 Found proxy file /tmp/x509up_u39587
+DEBUG 2015-08-14 11:33:19,471: 	 Getting proxy life time left
+DEBUG 2015-08-14 11:33:19,991: 	 Executing : 
  command : voms-proxy-info -file /tmp/x509up_u39587 -timeleft
- output : 83287
+ output : 82829
 
  error: 
  retcode : 0
-DEBUG 2015-08-04 01:33:59,446: 	 Executing : 
+DEBUG 2015-08-14 11:33:20,697: 	 Executing : 
  command : voms-proxy-info -file /tmp/x509up_u39587 -actimeleft
- output : 83287
+ output : 82828
 
  error: 
  retcode : 0
-DEBUG 2015-08-04 01:33:59,446: 	 Proxy valid for 23:08:07 hours
-DEBUG 2015-08-04 01:34:00,365: 	 Registering user credentials for server /DC=ch/DC=cern/OU=computers/CN=vocms(045|052|021|031|0118|0119).cern.ch
-DEBUG 2015-08-04 01:34:00,475: 	 Executing : 
+DEBUG 2015-08-14 11:33:20,698: 	 Proxy valid for 23:00:29 hours
+DEBUG 2015-08-14 11:33:21,202: 	 Registering user credentials for server /DC=ch/DC=cern/OU=computers/CN=vocms(045|052|021|031|0118|0119).cern.ch
+DEBUG 2015-08-14 11:33:21,323: 	 Executing : 
  command : openssl x509 -in ~/.globus/usercert.pem -subject -noout
  output : subject= /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=molszews/CN=740841/CN=Michal Olszewski
 
  error: WARNING: can't open config file: /build/dmwmbld/srv/state/dmwmbld/builds/comp_gcc481/w/tmp/BUILDROOT/ef35842be28ecca6d10195ea8182a5ac/build/dmwmbld/srv/state/dmwmbld/builds/comp_gcc481/w/slc6_amd64_gcc481/external/openssl/1.0.1p/ssl/openssl.cnf
 
  retcode : 0
-DEBUG 2015-08-04 01:34:00,476: 	 Getting myproxy life time left for myproxy.cern.ch
-DEBUG 2015-08-04 01:34:00,476: 	 Calculating hash of /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=molszews/CN=740841/CN=Michal Olszewski_cmsweb.cern.ch for credential name
-DEBUG 2015-08-04 01:34:00,680: 	 Executing : 
+DEBUG 2015-08-14 11:33:21,324: 	 Getting myproxy life time left for myproxy.cern.ch
+DEBUG 2015-08-14 11:33:21,324: 	 Calculating hash of /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=molszews/CN=740841/CN=Michal Olszewski_cmsweb.cern.ch for credential name
+DEBUG 2015-08-14 11:33:21,529: 	 Executing : 
  command : myproxy-info -l fe1ecf2a8c8bc4ef8bc29e93b21f837c3ebc3ebb -s myproxy.cern.ch
  output : username: fe1ecf2a8c8bc4ef8bc29e93b21f837c3ebc3ebb
 owner: /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=molszews/CN=740841/CN=Michal Olszewski
   renewal policy: /DC=ch/DC=cern/OU=computers/CN=vocms(045|052|021|031|0118|0119).cern.ch
   trusted retrieval policy: /DC=ch/DC=cern/OU=computers/CN=vocms(045|052|021|031|0118|0119).cern.ch
-  timeleft: 712:39:48  (29.7 days)
+  timeleft: 462:40:27  (19.3 days)
 
  error: 
  retcode : 0
-DEBUG 2015-08-04 01:34:00,681: 	 Myproxy is valid: 2565588
-DEBUG 2015-08-04 01:34:00,681: 	 Command use: status
-DEBUG 2015-08-04 01:34:00,681: 	 Options use: ['-d', 'test/crab_m2n/']
-DEBUG 2015-08-04 01:34:01,057: 	 CRABClient version: 3.3.1507
-DEBUG 2015-08-04 01:34:01,057: 	 Instance is prod
-DEBUG 2015-08-04 01:34:01,057: 	 Server base url is cmsweb.cern.ch
-DEBUG 2015-08-04 01:34:01,057: 	 Command url /crabserver/prod/workflow
-DEBUG 2015-08-04 01:34:01,057: 	 Looking up detailed status of task 150803_233154:molszews_crab_m2n
-DEBUG 2015-08-04 01:34:01,494: 	 {'status': 'FAILED', 'schedd': '', 'saveLogs': 'F', 'totalJobdefs': 0, 'jobSetID': '', 'jobsPerStatus': {}, 'taskWarningMsg': [], 'taskFailureMsg': "The CRAB3 server backend refuses to send jobs to the Grid scheduler. No site available for submission of task 150803_233154:molszews_crab_m2n\n\t\t\t\tThe sites available for submission of task 150803_233154:molszews_crab_m2n might be blacklisted.\n\t\t\t\tThis is the list of sites that are blacklisted by CRAB3 server: [u'T2_BR_UERJ', u'T2_TR_METU', u'T2_UA_KIPT', u'T2_PK_NCP', u'T2_RU_PNPI', u'T3_RU_FIAN', u'T2_US_MIT', u'T3_US_UCD', u'T3_UK_London_QMUL', u'T3_TW_NTU_HEP', u'T3_US_NotreDame', u'T3_US_TAMU', u'T2_RU_SINP', u'T2_CH_CERN_AI', u'T2_RU_ITEP', u'T3_US_SDSC', u'T3_IT_Napoli', u'T2_CH_CERN_HLT', u'T2_MY_UPM_BIRUNI', u'T3_US_Princeton_ICSE', u'T3_GR_IASA', u'T3_US_Baylor', u'T2_PL_Warsaw', u'T2_CH_CERN_T0', u'T2_RU_RRC_KI', u'T2_RU_INR', u'T2_PL_Swierk']", 'failedJobdefs': 0, 'jobdefErrors': [], 'collector': '', 'jobList': []}
-INFO 2015-08-04 01:34:01,494: 	 CRAB project directory:		/afs/cern.ch/work/m/molszews/CMSSW/tautau/M2N/CMSSW_7_4_5/src/m2n/maxi2ntuples/python/test/crab_m2n
-INFO 2015-08-04 01:34:01,495: 	 Task name:			150803_233154:molszews_crab_m2n
-INFO 2015-08-04 01:34:01,495: 	 Task status:			FAILED
-ERROR 2015-08-04 01:34:01,495: 	 Error during task injection:	The CRAB3 server backend refuses to send jobs to the Grid scheduler. No site available for submission of task 150803_233154:molszews_crab_m2n
-				The sites available for submission of task 150803_233154:molszews_crab_m2n might be blacklisted.
-				This is the list of sites that are blacklisted by CRAB3 server: [u'T2_BR_UERJ', u'T2_TR_METU', u'T2_UA_KIPT', u'T2_PK_NCP', u'T2_RU_PNPI', u'T3_RU_FIAN', u'T2_US_MIT', u'T3_US_UCD', u'T3_UK_London_QMUL', u'T3_TW_NTU_HEP', u'T3_US_NotreDame', u'T3_US_TAMU', u'T2_RU_SINP', u'T2_CH_CERN_AI', u'T2_RU_ITEP', u'T3_US_SDSC', u'T3_IT_Napoli', u'T2_CH_CERN_HLT', u'T2_MY_UPM_BIRUNI', u'T3_US_Princeton_ICSE', u'T3_GR_IASA', u'T3_US_Baylor', u'T2_PL_Warsaw', u'T2_CH_CERN_T0', u'T2_RU_RRC_KI', u'T2_RU_INR', u'T2_PL_Swierk']
-INFO 2015-08-04 01:34:01,495: 	 
-No jobs created yet!
-INFO 2015-08-04 01:34:01,497: 	 Log file is /afs/cern.ch/work/m/molszews/CMSSW/tautau/M2N/CMSSW_7_4_5/src/m2n/maxi2ntuples/python/test/crab_m2n/crab.log
+DEBUG 2015-08-14 11:33:21,530: 	 Myproxy is valid: 1665627
+DEBUG 2015-08-14 11:33:21,530: 	 Command use: status
+DEBUG 2015-08-14 11:33:21,530: 	 Options use: ['-d', 'test/crab_m2n/', '--long']
+DEBUG 2015-08-14 11:33:21,913: 	 CRABClient version: 3.3.1507
+DEBUG 2015-08-14 11:33:21,913: 	 Instance is prod
+DEBUG 2015-08-14 11:33:21,913: 	 Server base url is cmsweb.cern.ch
+DEBUG 2015-08-14 11:33:21,913: 	 Command url /crabserver/prod/workflow
+DEBUG 2015-08-14 11:33:21,913: 	 Looking up detailed status of task 150814_093240:molszews_crab_m2n
+INFO 2015-08-14 11:33:24,400: 	 Error contacting the server.
+INFO 2015-08-14 11:33:24,401: 	 Server answered with: Execution error
+INFO 2015-08-14 11:33:24,401: 	 Reason is: Cannot get jobs log file. Retry in a minute if you just submitted the task
+DEBUG 2015-08-14 11:33:24,401: 	 ERROR:  (500):  '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"></meta>
+    <title>500 Internal Server Error</title>
+    <style type="text/css">
+    #powered_by {
+        margin-top: 20px;
+        border-top: 2px solid black;
+        font-style: italic;
+    }
+
+    #traceback {
+        color: red;
+    }
+    </style>
+</head>
+    <body>
+        <h2>500 Internal Server Error</h2>
+        <p>Execution error</p>
+        <pre id="traceback"></pre>
+    <div id="powered_by">
+    <span>Powered by <a href="http://www.cherrypy.org">CherryPy 3.2.2</a></span>
+    </div>
+    </body>
+</html>
+'
+DEBUG 2015-08-14 11:33:24,401: 	 Command failed with URI: https://cmsweb.cern.ch/crabserver/prod/workflow
+DEBUG 2015-08-14 11:33:24,401: 	      Input data: {'verbose': 1, 'workflow': '150814_093240:molszews_crab_m2n'}
+DEBUG 2015-08-14 11:33:24,401: 	      Request headers: {'Content-Length': '726', 'X-Error-Http': '500', 'X-Rest-Time': '2128432.989 us', 'Server': 'CherryPy/3.2.2', 'Connection': 'close', 'X-Error-Detail': 'Execution error', 'CMS-Server-Time': 'D=2134214 t=1439544802263874', 'X-Rest-Status': '403', 'Date': 'Fri, 14 Aug 2015 09:33:22 GMT', 'Content-Type': 'text/html;charset=utf-8', 'X-Error-Info': 'Cannot get jobs log file. Retry in a minute if you just submitted the task', 'X-Error-Id': '0f9deaffcd31cb10797dfa602813ad1c'}
+ERROR 2015-08-14 11:33:24,401: 	 Caught exception
+Traceback (most recent call last):
+  File "/cvmfs/cms.cern.ch/crab3/slc6_amd64_gcc481/cms/crabclient/3.3.1507-comp/bin/crab", line 133, in <module>
+    client()
+  File "/cvmfs/cms.cern.ch/crab3/slc6_amd64_gcc481/cms/crabclient/3.3.1507-comp/bin/crab", line 121, in __call__
+    self.cmd()
+  File "/cvmfs/cms.cern.ch/crab3/slc6_amd64_gcc481/cms/crabclient/3.3.1507-comp/lib/python2.6/site-packages/CRABClient/Commands/status.py", line 70, in __call__
+    dictresult, status, reason = server.get(self.uri, data = { 'workflow' : self.cachedinfo['RequestName'], 'verbose': verbose })
+  File "/cvmfs/cms.cern.ch/crab3/slc6_amd64_gcc481/cms/crabclient/3.3.1507-comp/lib/python2.6/site-packages/RESTInteractions.py", line 63, in get
+    return self.makeRequest(uri = uri, data = data, verb = 'GET')
+  File "/cvmfs/cms.cern.ch/crab3/slc6_amd64_gcc481/cms/crabclient/3.3.1507-comp/lib/python2.6/site-packages/RESTInteractions.py", line 113, in makeRequest
+    capath=caCertPath)#, verbose=True)# for debug
+  File "/cvmfs/cms.cern.ch/crab3/slc6_amd64_gcc481/cms/crabclient/3.3.1507-comp/lib/python2.6/site-packages/WMCore/Services/pycurl_manager.py", line 172, in request
+    raise exc
+HTTPException
+INFO 2015-08-14 11:33:24,433: 	 Log file is /afs/cern.ch/work/m/molszews/CMSSW/tautau/M2N/CMSSW_7_4_5/src/m2n/maxi2ntuples/python/test/crab_m2n/crab.log
+DEBUG 2015-08-14 11:36:45,708: 	 Executing command: 'status'
+DEBUG 2015-08-14 11:36:45,717: 	 Found CRAB cache file /afs/cern.ch/user/m/molszews/.crab3
+DEBUG 2015-08-14 11:36:46,477: 	 Checking credentials
+DEBUG 2015-08-14 11:36:46,479: 	 Found proxy file /tmp/x509up_u39587
+DEBUG 2015-08-14 11:36:46,479: 	 Getting proxy life time left
+DEBUG 2015-08-14 11:36:48,811: 	 Executing : 
+ command : voms-proxy-info -file /tmp/x509up_u39587 -timeleft
+ output : 82620
+
+ error: 
+ retcode : 0
+DEBUG 2015-08-14 11:36:51,532: 	 Executing : 
+ command : voms-proxy-info -file /tmp/x509up_u39587 -actimeleft
+ output : 82617
+
+ error: 
+ retcode : 0
+DEBUG 2015-08-14 11:36:51,533: 	 Proxy valid for 22:57:00 hours
+DEBUG 2015-08-14 11:36:51,671: 	 Executing : 
+ command : openssl x509 -in ~/.globus/usercert.pem -subject -noout
+ output : subject= /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=molszews/CN=740841/CN=Michal Olszewski
+
+ error: WARNING: can't open config file: /build/dmwmbld/srv/state/dmwmbld/builds/comp_gcc481/w/tmp/BUILDROOT/ef35842be28ecca6d10195ea8182a5ac/build/dmwmbld/srv/state/dmwmbld/builds/comp_gcc481/w/slc6_amd64_gcc481/external/openssl/1.0.1p/ssl/openssl.cnf
+
+ retcode : 0
+DEBUG 2015-08-14 11:36:51,671: 	 Checking credentials
+DEBUG 2015-08-14 11:36:51,672: 	 Found proxy file /tmp/x509up_u39587
+DEBUG 2015-08-14 11:36:51,672: 	 Getting proxy life time left
+DEBUG 2015-08-14 11:36:52,383: 	 Executing : 
+ command : voms-proxy-info -file /tmp/x509up_u39587 -timeleft
+ output : 82616
+
+ error: 
+ retcode : 0
+DEBUG 2015-08-14 11:36:52,922: 	 Executing : 
+ command : voms-proxy-info -file /tmp/x509up_u39587 -actimeleft
+ output : 82616
+
+ error: 
+ retcode : 0
+DEBUG 2015-08-14 11:36:52,926: 	 Proxy valid for 22:56:56 hours
+DEBUG 2015-08-14 11:36:53,329: 	 Registering user credentials for server /DC=ch/DC=cern/OU=computers/CN=vocms(045|052|021|031|0118|0119).cern.ch
+DEBUG 2015-08-14 11:36:53,440: 	 Executing : 
+ command : openssl x509 -in ~/.globus/usercert.pem -subject -noout
+ output : subject= /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=molszews/CN=740841/CN=Michal Olszewski
+
+ error: WARNING: can't open config file: /build/dmwmbld/srv/state/dmwmbld/builds/comp_gcc481/w/tmp/BUILDROOT/ef35842be28ecca6d10195ea8182a5ac/build/dmwmbld/srv/state/dmwmbld/builds/comp_gcc481/w/slc6_amd64_gcc481/external/openssl/1.0.1p/ssl/openssl.cnf
+
+ retcode : 0
+DEBUG 2015-08-14 11:36:53,441: 	 Getting myproxy life time left for myproxy.cern.ch
+DEBUG 2015-08-14 11:36:53,441: 	 Calculating hash of /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=molszews/CN=740841/CN=Michal Olszewski_cmsweb.cern.ch for credential name
+DEBUG 2015-08-14 11:36:54,052: 	 Executing : 
+ command : myproxy-info -l fe1ecf2a8c8bc4ef8bc29e93b21f837c3ebc3ebb -s myproxy.cern.ch
+ output : username: fe1ecf2a8c8bc4ef8bc29e93b21f837c3ebc3ebb
+owner: /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=molszews/CN=740841/CN=Michal Olszewski
+  renewal policy: /DC=ch/DC=cern/OU=computers/CN=vocms(045|052|021|031|0118|0119).cern.ch
+  trusted retrieval policy: /DC=ch/DC=cern/OU=computers/CN=vocms(045|052|021|031|0118|0119).cern.ch
+  timeleft: 462:36:54  (19.3 days)
+
+ error: 
+ retcode : 0
+DEBUG 2015-08-14 11:36:54,054: 	 Myproxy is valid: 1665414
+DEBUG 2015-08-14 11:36:54,054: 	 Command use: status
+DEBUG 2015-08-14 11:36:54,054: 	 Options use: ['-d', 'test/crab_m2n/', '--long']
+DEBUG 2015-08-14 11:36:54,605: 	 CRABClient version: 3.3.1507
+DEBUG 2015-08-14 11:36:54,605: 	 Instance is prod
+DEBUG 2015-08-14 11:36:54,605: 	 Server base url is cmsweb.cern.ch
+DEBUG 2015-08-14 11:36:54,605: 	 Command url /crabserver/prod/workflow
+DEBUG 2015-08-14 11:36:54,605: 	 Looking up detailed status of task 150814_093240:molszews_crab_m2n
+DEBUG 2015-08-14 11:36:55,806: 	 {'status': 'SUBMITTED', 'schedd': 'crab3test-2@vocms095.cern.ch', 'saveLogs': 'F', 'jobsPerStatus': {'idle': 1}, 'jobs': {'1': {'Retries': 0, 'WallDurations': [0], 'StartTimes': [], 'SubmitTimes': [1439544855.0], 'JobIds': ['9876108.0'], 'EndTimes': [], 'Restarts': 0, 'RecordedSite': False, 'State': 'idle', 'ResidentSetSize': [0], 'TotalUserCpuTimeHistory': [0.0], 'SiteHistory': ['Unknown'], 'TotalSysCpuTimeHistory': [0.0]}}, 'publication': {'disabled': []}, 'taskWarningMsg': [], 'outdatasets': None, 'taskFailureMsg': '', 'failedJobdefs': 0, 'ASOURL': 'https://cmsweb.cern.ch/couchdb', 'totalJobdefs': 0, 'jobSetID': '150814_093240:molszews_crab_m2n', 'jobdefErrors': [], 'collector': 'vocms097.cern.ch,vocms099.cern.ch', 'jobList': [['idle', 1]]}
+INFO 2015-08-14 11:36:55,806: 	 CRAB project directory:		/afs/cern.ch/work/m/molszews/CMSSW/tautau/M2N/CMSSW_7_4_5/src/m2n/maxi2ntuples/python/test/crab_m2n
+INFO 2015-08-14 11:36:55,806: 	 Task name:			150814_093240:molszews_crab_m2n
+INFO 2015-08-14 11:36:55,806: 	 Task status:			SUBMITTED
+INFO 2015-08-14 11:36:55,807: 	 Glidemon monitoring URL:	http://glidemon.web.cern.ch/glidemon/jobs.php?taskname=150814_093240%3Amolszews_crab_m2n
+INFO 2015-08-14 11:36:55,807: 	 Dashboard monitoring URL:	http://dashb-cms-job.cern.ch/dashboard/templates/task-analysis/#user=crab&refresh=0&table=Jobs&p=1&records=25&activemenu=2&status=&site=&tid=150814_093240%3Amolszews_crab_m2n
+INFO 2015-08-14 11:36:55,807: 	 Details:			idle          100.0% (1/1)
+INFO 2015-08-14 11:36:55,807: 	 
+No publication information (publication has been disabled in the CRAB configuration file)
+INFO 2015-08-14 11:36:55,807: 	 
+Extended Job Status Table:
+
+ Job State        Most Recent Site        Runtime   Mem (MB)      CPU %    Retries   Restarts      Waste       Exit Code
+   1 idle         Unknown                 0:00:00          0    Unknown          0          0    0:00:00         Unknown
+DEBUG 2015-08-14 11:36:55,807: 	 
+ Job Cluster Id
+   1 ['9876108.0']
+INFO 2015-08-14 11:36:55,810: 	 
+Summary:
+ * Memory: 0MB min, 0MB max, 0MB ave
+ * Runtime: 0:00:00 min, 0:00:00 max, 0:00:00 ave
+
+INFO 2015-08-14 11:36:55,820: 	 Log file is /afs/cern.ch/work/m/molszews/CMSSW/tautau/M2N/CMSSW_7_4_5/src/m2n/maxi2ntuples/python/test/crab_m2n/crab.log
+DEBUG 2015-08-14 11:39:09,413: 	 Executing command: 'status'
+DEBUG 2015-08-14 11:39:09,416: 	 Found CRAB cache file /afs/cern.ch/user/m/molszews/.crab3
+DEBUG 2015-08-14 11:39:09,426: 	 Checking credentials
+DEBUG 2015-08-14 11:39:09,427: 	 Found proxy file /tmp/x509up_u39587
+DEBUG 2015-08-14 11:39:09,427: 	 Getting proxy life time left
+DEBUG 2015-08-14 11:39:10,140: 	 Executing : 
+ command : voms-proxy-info -file /tmp/x509up_u39587 -timeleft
+ output : 82478
+
+ error: 
+ retcode : 0
+DEBUG 2015-08-14 11:39:10,646: 	 Executing : 
+ command : voms-proxy-info -file /tmp/x509up_u39587 -actimeleft
+ output : 82478
+
+ error: 
+ retcode : 0
+DEBUG 2015-08-14 11:39:10,647: 	 Proxy valid for 22:54:38 hours
+DEBUG 2015-08-14 11:39:10,763: 	 Executing : 
+ command : openssl x509 -in ~/.globus/usercert.pem -subject -noout
+ output : subject= /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=molszews/CN=740841/CN=Michal Olszewski
+
+ error: WARNING: can't open config file: /build/dmwmbld/srv/state/dmwmbld/builds/comp_gcc481/w/tmp/BUILDROOT/ef35842be28ecca6d10195ea8182a5ac/build/dmwmbld/srv/state/dmwmbld/builds/comp_gcc481/w/slc6_amd64_gcc481/external/openssl/1.0.1p/ssl/openssl.cnf
+
+ retcode : 0
+DEBUG 2015-08-14 11:39:10,763: 	 Checking credentials
+DEBUG 2015-08-14 11:39:10,763: 	 Found proxy file /tmp/x509up_u39587
+DEBUG 2015-08-14 11:39:10,763: 	 Getting proxy life time left
+DEBUG 2015-08-14 11:39:11,269: 	 Executing : 
+ command : voms-proxy-info -file /tmp/x509up_u39587 -timeleft
+ output : 82477
+
+ error: 
+ retcode : 0
+DEBUG 2015-08-14 11:39:11,775: 	 Executing : 
+ command : voms-proxy-info -file /tmp/x509up_u39587 -actimeleft
+ output : 82477
+
+ error: 
+ retcode : 0
+DEBUG 2015-08-14 11:39:11,775: 	 Proxy valid for 22:54:37 hours
+DEBUG 2015-08-14 11:39:12,210: 	 Registering user credentials for server /DC=ch/DC=cern/OU=computers/CN=vocms(045|052|021|031|0118|0119).cern.ch
+DEBUG 2015-08-14 11:39:12,322: 	 Executing : 
+ command : openssl x509 -in ~/.globus/usercert.pem -subject -noout
+ output : subject= /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=molszews/CN=740841/CN=Michal Olszewski
+
+ error: WARNING: can't open config file: /build/dmwmbld/srv/state/dmwmbld/builds/comp_gcc481/w/tmp/BUILDROOT/ef35842be28ecca6d10195ea8182a5ac/build/dmwmbld/srv/state/dmwmbld/builds/comp_gcc481/w/slc6_amd64_gcc481/external/openssl/1.0.1p/ssl/openssl.cnf
+
+ retcode : 0
+DEBUG 2015-08-14 11:39:12,322: 	 Getting myproxy life time left for myproxy.cern.ch
+DEBUG 2015-08-14 11:39:12,322: 	 Calculating hash of /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=molszews/CN=740841/CN=Michal Olszewski_cmsweb.cern.ch for credential name
+DEBUG 2015-08-14 11:39:12,528: 	 Executing : 
+ command : myproxy-info -l fe1ecf2a8c8bc4ef8bc29e93b21f837c3ebc3ebb -s myproxy.cern.ch
+ output : username: fe1ecf2a8c8bc4ef8bc29e93b21f837c3ebc3ebb
+owner: /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=molszews/CN=740841/CN=Michal Olszewski
+  renewal policy: /DC=ch/DC=cern/OU=computers/CN=vocms(045|052|021|031|0118|0119).cern.ch
+  trusted retrieval policy: /DC=ch/DC=cern/OU=computers/CN=vocms(045|052|021|031|0118|0119).cern.ch
+  timeleft: 462:34:36  (19.3 days)
+
+ error: 
+ retcode : 0
+DEBUG 2015-08-14 11:39:12,529: 	 Myproxy is valid: 1665276
+DEBUG 2015-08-14 11:39:12,529: 	 Command use: status
+DEBUG 2015-08-14 11:39:12,529: 	 Options use: ['-d', 'test/crab_m2n/', '--long']
+DEBUG 2015-08-14 11:39:12,965: 	 CRABClient version: 3.3.1507
+DEBUG 2015-08-14 11:39:12,966: 	 Instance is prod
+DEBUG 2015-08-14 11:39:12,966: 	 Server base url is cmsweb.cern.ch
+DEBUG 2015-08-14 11:39:12,966: 	 Command url /crabserver/prod/workflow
+DEBUG 2015-08-14 11:39:12,966: 	 Looking up detailed status of task 150814_093240:molszews_crab_m2n
+DEBUG 2015-08-14 11:39:14,999: 	 {'status': 'SUBMITTED', 'schedd': 'crab3test-2@vocms095.cern.ch', 'saveLogs': 'F', 'jobsPerStatus': {'idle': 1}, 'jobs': {'1': {'Retries': 0, 'WallDurations': [0], 'StartTimes': [], 'SubmitTimes': [1439544855.0], 'JobIds': ['9876108.0'], 'EndTimes': [], 'Restarts': 0, 'RecordedSite': False, 'State': 'idle', 'ResidentSetSize': [0], 'TotalUserCpuTimeHistory': [0.0], 'SiteHistory': ['Unknown'], 'TotalSysCpuTimeHistory': [0.0]}}, 'publication': {'disabled': []}, 'taskWarningMsg': [], 'outdatasets': None, 'taskFailureMsg': '', 'failedJobdefs': 0, 'ASOURL': 'https://cmsweb.cern.ch/couchdb', 'totalJobdefs': 0, 'jobSetID': '150814_093240:molszews_crab_m2n', 'jobdefErrors': [], 'collector': 'vocms097.cern.ch,vocms099.cern.ch', 'jobList': [['idle', 1]]}
+INFO 2015-08-14 11:39:15,000: 	 CRAB project directory:		/afs/cern.ch/work/m/molszews/CMSSW/tautau/M2N/CMSSW_7_4_5/src/m2n/maxi2ntuples/python/test/crab_m2n
+INFO 2015-08-14 11:39:15,000: 	 Task name:			150814_093240:molszews_crab_m2n
+INFO 2015-08-14 11:39:15,000: 	 Task status:			SUBMITTED
+INFO 2015-08-14 11:39:15,001: 	 Glidemon monitoring URL:	http://glidemon.web.cern.ch/glidemon/jobs.php?taskname=150814_093240%3Amolszews_crab_m2n
+INFO 2015-08-14 11:39:15,001: 	 Dashboard monitoring URL:	http://dashb-cms-job.cern.ch/dashboard/templates/task-analysis/#user=crab&refresh=0&table=Jobs&p=1&records=25&activemenu=2&status=&site=&tid=150814_093240%3Amolszews_crab_m2n
+INFO 2015-08-14 11:39:15,001: 	 Details:			idle          100.0% (1/1)
+INFO 2015-08-14 11:39:15,001: 	 
+No publication information (publication has been disabled in the CRAB configuration file)
+INFO 2015-08-14 11:39:15,001: 	 
+Extended Job Status Table:
+
+ Job State        Most Recent Site        Runtime   Mem (MB)      CPU %    Retries   Restarts      Waste       Exit Code
+   1 idle         Unknown                 0:00:00          0    Unknown          0          0    0:00:00         Unknown
+DEBUG 2015-08-14 11:39:15,001: 	 
+ Job Cluster Id
+   1 ['9876108.0']
+INFO 2015-08-14 11:39:15,001: 	 
+Summary:
+ * Memory: 0MB min, 0MB max, 0MB ave
+ * Runtime: 0:00:00 min, 0:00:00 max, 0:00:00 ave
+
+INFO 2015-08-14 11:39:15,004: 	 Log file is /afs/cern.ch/work/m/molszews/CMSSW/tautau/M2N/CMSSW_7_4_5/src/m2n/maxi2ntuples/python/test/crab_m2n/crab.log
+DEBUG 2015-08-14 11:47:49,475: 	 Executing command: 'status'
+DEBUG 2015-08-14 11:47:49,475: 	 Found CRAB cache file /afs/cern.ch/user/m/molszews/.crab3
+DEBUG 2015-08-14 11:47:49,496: 	 Checking credentials
+DEBUG 2015-08-14 11:47:49,497: 	 Found proxy file /tmp/x509up_u39587
+DEBUG 2015-08-14 11:47:49,497: 	 Getting proxy life time left
+DEBUG 2015-08-14 11:47:50,107: 	 Executing : 
+ command : voms-proxy-info -file /tmp/x509up_u39587 -timeleft
+ output : 81958
+
+ error: 
+ retcode : 0
+DEBUG 2015-08-14 11:47:50,612: 	 Executing : 
+ command : voms-proxy-info -file /tmp/x509up_u39587 -actimeleft
+ output : 81958
+
+ error: 
+ retcode : 0
+DEBUG 2015-08-14 11:47:50,612: 	 Proxy valid for 22:45:58 hours
+DEBUG 2015-08-14 11:47:50,744: 	 Executing : 
+ command : openssl x509 -in ~/.globus/usercert.pem -subject -noout
+ output : subject= /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=molszews/CN=740841/CN=Michal Olszewski
+
+ error: WARNING: can't open config file: /build/dmwmbld/srv/state/dmwmbld/builds/comp_gcc481/w/tmp/BUILDROOT/ef35842be28ecca6d10195ea8182a5ac/build/dmwmbld/srv/state/dmwmbld/builds/comp_gcc481/w/slc6_amd64_gcc481/external/openssl/1.0.1p/ssl/openssl.cnf
+
+ retcode : 0
+DEBUG 2015-08-14 11:47:50,745: 	 Checking credentials
+DEBUG 2015-08-14 11:47:50,747: 	 Found proxy file /tmp/x509up_u39587
+DEBUG 2015-08-14 11:47:50,747: 	 Getting proxy life time left
+DEBUG 2015-08-14 11:47:51,257: 	 Executing : 
+ command : voms-proxy-info -file /tmp/x509up_u39587 -timeleft
+ output : 81957
+
+ error: 
+ retcode : 0
+DEBUG 2015-08-14 11:47:51,771: 	 Executing : 
+ command : voms-proxy-info -file /tmp/x509up_u39587 -actimeleft
+ output : 81957
+
+ error: 
+ retcode : 0
+DEBUG 2015-08-14 11:47:51,771: 	 Proxy valid for 22:45:57 hours
+DEBUG 2015-08-14 11:47:52,198: 	 Registering user credentials for server /DC=ch/DC=cern/OU=computers/CN=vocms(045|052|021|031|0118|0119).cern.ch
+DEBUG 2015-08-14 11:47:52,308: 	 Executing : 
+ command : openssl x509 -in ~/.globus/usercert.pem -subject -noout
+ output : subject= /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=molszews/CN=740841/CN=Michal Olszewski
+
+ error: WARNING: can't open config file: /build/dmwmbld/srv/state/dmwmbld/builds/comp_gcc481/w/tmp/BUILDROOT/ef35842be28ecca6d10195ea8182a5ac/build/dmwmbld/srv/state/dmwmbld/builds/comp_gcc481/w/slc6_amd64_gcc481/external/openssl/1.0.1p/ssl/openssl.cnf
+
+ retcode : 0
+DEBUG 2015-08-14 11:47:52,309: 	 Getting myproxy life time left for myproxy.cern.ch
+DEBUG 2015-08-14 11:47:52,309: 	 Calculating hash of /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=molszews/CN=740841/CN=Michal Olszewski_cmsweb.cern.ch for credential name
+DEBUG 2015-08-14 11:47:52,714: 	 Executing : 
+ command : myproxy-info -l fe1ecf2a8c8bc4ef8bc29e93b21f837c3ebc3ebb -s myproxy.cern.ch
+ output : username: fe1ecf2a8c8bc4ef8bc29e93b21f837c3ebc3ebb
+owner: /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=molszews/CN=740841/CN=Michal Olszewski
+  renewal policy: /DC=ch/DC=cern/OU=computers/CN=vocms(045|052|021|031|0118|0119).cern.ch
+  trusted retrieval policy: /DC=ch/DC=cern/OU=computers/CN=vocms(045|052|021|031|0118|0119).cern.ch
+  timeleft: 462:25:56  (19.3 days)
+
+ error: 
+ retcode : 0
+DEBUG 2015-08-14 11:47:52,715: 	 Myproxy is valid: 1664756
+DEBUG 2015-08-14 11:47:52,715: 	 Command use: status
+DEBUG 2015-08-14 11:47:52,715: 	 Options use: ['-d', 'test/crab_m2n/', '--long']
+DEBUG 2015-08-14 11:47:53,096: 	 CRABClient version: 3.3.1507
+DEBUG 2015-08-14 11:47:53,096: 	 Instance is prod
+DEBUG 2015-08-14 11:47:53,096: 	 Server base url is cmsweb.cern.ch
+DEBUG 2015-08-14 11:47:53,096: 	 Command url /crabserver/prod/workflow
+DEBUG 2015-08-14 11:47:53,096: 	 Looking up detailed status of task 150814_093240:molszews_crab_m2n
+DEBUG 2015-08-14 11:47:54,648: 	 {'status': 'SUBMITTED', 'schedd': 'crab3test-2@vocms095.cern.ch', 'saveLogs': 'F', 'jobsPerStatus': {'transferred': 1}, 'jobs': {'1': {'Retries': 0, 'WallDurations': [114.0], 'StartTimes': [1439545236.0], 'SubmitTimes': [1439544855.0], 'JobIds': ['9876108.0'], 'EndTimes': [1439545350.0], 'Restarts': 0, 'RecordedSite': True, 'State': 'transferred', 'ResidentSetSize': [2524], 'TotalUserCpuTimeHistory': [24], 'SiteHistory': ['T2_PL_Swierk'], 'TotalSysCpuTimeHistory': [7]}}, 'publication': {'disabled': []}, 'taskWarningMsg': [], 'outdatasets': None, 'taskFailureMsg': '', 'failedJobdefs': 0, 'ASOURL': 'https://cmsweb.cern.ch/couchdb', 'totalJobdefs': 0, 'jobSetID': '150814_093240:molszews_crab_m2n', 'jobdefErrors': [], 'collector': 'vocms097.cern.ch,vocms099.cern.ch', 'jobList': [['transferred', 1]]}
+INFO 2015-08-14 11:47:54,648: 	 CRAB project directory:		/afs/cern.ch/work/m/molszews/CMSSW/tautau/M2N/CMSSW_7_4_5/src/m2n/maxi2ntuples/python/test/crab_m2n
+INFO 2015-08-14 11:47:54,648: 	 Task name:			150814_093240:molszews_crab_m2n
+INFO 2015-08-14 11:47:54,648: 	 Task status:			SUBMITTED
+INFO 2015-08-14 11:47:54,648: 	 Glidemon monitoring URL:	http://glidemon.web.cern.ch/glidemon/jobs.php?taskname=150814_093240%3Amolszews_crab_m2n
+INFO 2015-08-14 11:47:54,649: 	 Dashboard monitoring URL:	http://dashb-cms-job.cern.ch/dashboard/templates/task-analysis/#user=crab&refresh=0&table=Jobs&p=1&records=25&activemenu=2&status=&site=&tid=150814_093240%3Amolszews_crab_m2n
+INFO 2015-08-14 11:47:54,649: 	 Details:			transferred   100.0% (1/1)
+INFO 2015-08-14 11:47:54,649: 	 
+No publication information (publication has been disabled in the CRAB configuration file)
+INFO 2015-08-14 11:47:54,649: 	 
+Extended Job Status Table:
+
+ Job State        Most Recent Site        Runtime   Mem (MB)      CPU %    Retries   Restarts      Waste       Exit Code
+   1 transferred  T2_PL_Swierk            0:01:54          2         27          0          0    0:00:00         Unknown
+DEBUG 2015-08-14 11:47:54,649: 	 
+ Job Cluster Id
+   1 ['9876108.0']
+INFO 2015-08-14 11:47:54,649: 	 
+Summary:
+ * Memory: 2MB min, 2MB max, 2MB ave
+ * Runtime: 0:01:54 min, 0:01:54 max, 0:01:54 ave
+ * CPU eff: 27% min, 27% max, 27% ave
+ * Waste: 0:00:00 (0% of total)
+
+INFO 2015-08-14 11:47:54,658: 	 Log file is /afs/cern.ch/work/m/molszews/CMSSW/tautau/M2N/CMSSW_7_4_5/src/m2n/maxi2ntuples/python/test/crab_m2n/crab.log
+DEBUG 2015-08-14 11:48:10,306: 	 Executing command: 'status'
+DEBUG 2015-08-14 11:48:10,306: 	 Found CRAB cache file /afs/cern.ch/user/m/molszews/.crab3
+DEBUG 2015-08-14 11:48:10,313: 	 Checking credentials
+DEBUG 2015-08-14 11:48:10,314: 	 Found proxy file /tmp/x509up_u39587
+DEBUG 2015-08-14 11:48:10,314: 	 Getting proxy life time left
+DEBUG 2015-08-14 11:48:10,919: 	 Executing : 
+ command : voms-proxy-info -file /tmp/x509up_u39587 -timeleft
+ output : 81938
+
+ error: 
+ retcode : 0
+DEBUG 2015-08-14 11:48:11,424: 	 Executing : 
+ command : voms-proxy-info -file /tmp/x509up_u39587 -actimeleft
+ output : 81937
+
+ error: 
+ retcode : 0
+DEBUG 2015-08-14 11:48:11,424: 	 Proxy valid for 22:45:38 hours
+DEBUG 2015-08-14 11:48:11,632: 	 Executing : 
+ command : openssl x509 -in ~/.globus/usercert.pem -subject -noout
+ output : subject= /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=molszews/CN=740841/CN=Michal Olszewski
+
+ error: WARNING: can't open config file: /build/dmwmbld/srv/state/dmwmbld/builds/comp_gcc481/w/tmp/BUILDROOT/ef35842be28ecca6d10195ea8182a5ac/build/dmwmbld/srv/state/dmwmbld/builds/comp_gcc481/w/slc6_amd64_gcc481/external/openssl/1.0.1p/ssl/openssl.cnf
+
+ retcode : 0
+DEBUG 2015-08-14 11:48:11,632: 	 Checking credentials
+DEBUG 2015-08-14 11:48:11,634: 	 Found proxy file /tmp/x509up_u39587
+DEBUG 2015-08-14 11:48:11,634: 	 Getting proxy life time left
+DEBUG 2015-08-14 11:48:12,141: 	 Executing : 
+ command : voms-proxy-info -file /tmp/x509up_u39587 -timeleft
+ output : 81936
+
+ error: 
+ retcode : 0
+DEBUG 2015-08-14 11:48:12,548: 	 Executing : 
+ command : voms-proxy-info -file /tmp/x509up_u39587 -actimeleft
+ output : 81936
+
+ error: 
+ retcode : 0
+DEBUG 2015-08-14 11:48:12,549: 	 Proxy valid for 22:45:36 hours
+DEBUG 2015-08-14 11:48:12,915: 	 Registering user credentials for server /DC=ch/DC=cern/OU=computers/CN=vocms(045|052|021|031|0118|0119).cern.ch
+DEBUG 2015-08-14 11:48:13,025: 	 Executing : 
+ command : openssl x509 -in ~/.globus/usercert.pem -subject -noout
+ output : subject= /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=molszews/CN=740841/CN=Michal Olszewski
+
+ error: WARNING: can't open config file: /build/dmwmbld/srv/state/dmwmbld/builds/comp_gcc481/w/tmp/BUILDROOT/ef35842be28ecca6d10195ea8182a5ac/build/dmwmbld/srv/state/dmwmbld/builds/comp_gcc481/w/slc6_amd64_gcc481/external/openssl/1.0.1p/ssl/openssl.cnf
+
+ retcode : 0
+DEBUG 2015-08-14 11:48:13,025: 	 Getting myproxy life time left for myproxy.cern.ch
+DEBUG 2015-08-14 11:48:13,025: 	 Calculating hash of /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=molszews/CN=740841/CN=Michal Olszewski_cmsweb.cern.ch for credential name
+DEBUG 2015-08-14 11:48:13,232: 	 Executing : 
+ command : myproxy-info -l fe1ecf2a8c8bc4ef8bc29e93b21f837c3ebc3ebb -s myproxy.cern.ch
+ output : username: fe1ecf2a8c8bc4ef8bc29e93b21f837c3ebc3ebb
+owner: /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=molszews/CN=740841/CN=Michal Olszewski
+  renewal policy: /DC=ch/DC=cern/OU=computers/CN=vocms(045|052|021|031|0118|0119).cern.ch
+  trusted retrieval policy: /DC=ch/DC=cern/OU=computers/CN=vocms(045|052|021|031|0118|0119).cern.ch
+  timeleft: 462:25:35  (19.3 days)
+
+ error: 
+ retcode : 0
+DEBUG 2015-08-14 11:48:13,234: 	 Myproxy is valid: 1664735
+DEBUG 2015-08-14 11:48:13,234: 	 Command use: status
+DEBUG 2015-08-14 11:48:13,234: 	 Options use: ['-d', 'test/crab_m2n/', '--long']
+DEBUG 2015-08-14 11:48:13,655: 	 CRABClient version: 3.3.1507
+DEBUG 2015-08-14 11:48:13,655: 	 Instance is prod
+DEBUG 2015-08-14 11:48:13,655: 	 Server base url is cmsweb.cern.ch
+DEBUG 2015-08-14 11:48:13,655: 	 Command url /crabserver/prod/workflow
+DEBUG 2015-08-14 11:48:13,656: 	 Looking up detailed status of task 150814_093240:molszews_crab_m2n
+DEBUG 2015-08-14 11:48:14,921: 	 {'status': 'COMPLETED', 'schedd': 'crab3test-2@vocms095.cern.ch', 'saveLogs': 'F', 'jobsPerStatus': {'finished': 1}, 'jobs': {'1': {'Retries': 0, 'WallDurations': [114.0], 'StartTimes': [1439545236.0], 'SubmitTimes': [1439544855.0], 'JobIds': ['9876108.0'], 'EndTimes': [1439545350.0], 'Restarts': 0, 'RecordedSite': True, 'State': 'finished', 'ResidentSetSize': [2524], 'TotalUserCpuTimeHistory': [24], 'SiteHistory': ['T2_PL_Swierk'], 'TotalSysCpuTimeHistory': [7]}}, 'publication': {'disabled': []}, 'taskWarningMsg': [], 'outdatasets': None, 'taskFailureMsg': '', 'failedJobdefs': 0, 'ASOURL': 'https://cmsweb.cern.ch/couchdb', 'totalJobdefs': 0, 'jobSetID': '150814_093240:molszews_crab_m2n', 'jobdefErrors': [], 'collector': 'vocms097.cern.ch,vocms099.cern.ch', 'jobList': [['finished', 1]]}
+INFO 2015-08-14 11:48:14,921: 	 CRAB project directory:		/afs/cern.ch/work/m/molszews/CMSSW/tautau/M2N/CMSSW_7_4_5/src/m2n/maxi2ntuples/python/test/crab_m2n
+INFO 2015-08-14 11:48:14,921: 	 Task name:			150814_093240:molszews_crab_m2n
+INFO 2015-08-14 11:48:14,921: 	 Task status:			COMPLETED
+INFO 2015-08-14 11:48:14,921: 	 Glidemon monitoring URL:	http://glidemon.web.cern.ch/glidemon/jobs.php?taskname=150814_093240%3Amolszews_crab_m2n
+INFO 2015-08-14 11:48:14,921: 	 Dashboard monitoring URL:	http://dashb-cms-job.cern.ch/dashboard/templates/task-analysis/#user=crab&refresh=0&table=Jobs&p=1&records=25&activemenu=2&status=&site=&tid=150814_093240%3Amolszews_crab_m2n
+INFO 2015-08-14 11:48:14,921: 	 Details:			finished      100.0% (1/1)
+INFO 2015-08-14 11:48:14,921: 	 
+No publication information (publication has been disabled in the CRAB configuration file)
+INFO 2015-08-14 11:48:14,922: 	 
+Extended Job Status Table:
+
+ Job State        Most Recent Site        Runtime   Mem (MB)      CPU %    Retries   Restarts      Waste       Exit Code
+   1 finished     T2_PL_Swierk            0:01:54          2         27          0          0    0:00:00               0
+DEBUG 2015-08-14 11:48:14,922: 	 
+ Job Cluster Id
+   1 ['9876108.0']
+INFO 2015-08-14 11:48:14,922: 	 
+Summary:
+ * Memory: 2MB min, 2MB max, 2MB ave
+ * Runtime: 0:01:54 min, 0:01:54 max, 0:01:54 ave
+ * CPU eff: 27% min, 27% max, 27% ave
+ * Waste: 0:00:00 (0% of total)
+
+INFO 2015-08-14 11:48:14,924: 	 Log file is /afs/cern.ch/work/m/molszews/CMSSW/tautau/M2N/CMSSW_7_4_5/src/m2n/maxi2ntuples/python/test/crab_m2n/crab.log
+DEBUG 2015-08-14 11:48:35,822: 	 Executing command: 'getoutput'
+DEBUG 2015-08-14 11:48:35,823: 	 Found CRAB cache file /afs/cern.ch/user/m/molszews/.crab3
+DEBUG 2015-08-14 11:48:35,831: 	 Checking credentials
+DEBUG 2015-08-14 11:48:35,832: 	 Found proxy file /tmp/x509up_u39587
+DEBUG 2015-08-14 11:48:35,832: 	 Getting proxy life time left
+DEBUG 2015-08-14 11:48:36,439: 	 Executing : 
+ command : voms-proxy-info -file /tmp/x509up_u39587 -timeleft
+ output : 81912
+
+ error: 
+ retcode : 0
+DEBUG 2015-08-14 11:48:36,945: 	 Executing : 
+ command : voms-proxy-info -file /tmp/x509up_u39587 -actimeleft
+ output : 81912
+
+ error: 
+ retcode : 0
+DEBUG 2015-08-14 11:48:36,945: 	 Proxy valid for 22:45:12 hours
+DEBUG 2015-08-14 11:48:36,947: 	 Using VO group '' and VO role 'NULL' as written in the request cache file for this task.
+DEBUG 2015-08-14 11:48:37,059: 	 Executing : 
+ command : openssl x509 -in ~/.globus/usercert.pem -subject -noout
+ output : subject= /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=molszews/CN=740841/CN=Michal Olszewski
+
+ error: WARNING: can't open config file: /build/dmwmbld/srv/state/dmwmbld/builds/comp_gcc481/w/tmp/BUILDROOT/ef35842be28ecca6d10195ea8182a5ac/build/dmwmbld/srv/state/dmwmbld/builds/comp_gcc481/w/slc6_amd64_gcc481/external/openssl/1.0.1p/ssl/openssl.cnf
+
+ retcode : 0
+DEBUG 2015-08-14 11:48:37,060: 	 Checking credentials
+DEBUG 2015-08-14 11:48:37,061: 	 Found proxy file /tmp/x509up_u39587
+DEBUG 2015-08-14 11:48:37,061: 	 Getting proxy life time left
+DEBUG 2015-08-14 11:48:37,570: 	 Executing : 
+ command : voms-proxy-info -file /tmp/x509up_u39587 -timeleft
+ output : 81911
+
+ error: 
+ retcode : 0
+DEBUG 2015-08-14 11:48:38,079: 	 Executing : 
+ command : voms-proxy-info -file /tmp/x509up_u39587 -actimeleft
+ output : 81910
+
+ error: 
+ retcode : 0
+DEBUG 2015-08-14 11:48:38,079: 	 Proxy valid for 22:45:11 hours
+DEBUG 2015-08-14 11:48:38,594: 	 Executing : 
+ command : env X509_USER_PROXY=/tmp/x509up_u39587 voms-proxy-info -fqan
+ output : /cms/Role=NULL/Capability=NULL
+
+ error: 
+ retcode : 0
+DEBUG 2015-08-14 11:48:39,019: 	 Registering user credentials for server /DC=ch/DC=cern/OU=computers/CN=vocms(045|052|021|031|0118|0119).cern.ch
+DEBUG 2015-08-14 11:48:39,131: 	 Executing : 
+ command : openssl x509 -in ~/.globus/usercert.pem -subject -noout
+ output : subject= /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=molszews/CN=740841/CN=Michal Olszewski
+
+ error: WARNING: can't open config file: /build/dmwmbld/srv/state/dmwmbld/builds/comp_gcc481/w/tmp/BUILDROOT/ef35842be28ecca6d10195ea8182a5ac/build/dmwmbld/srv/state/dmwmbld/builds/comp_gcc481/w/slc6_amd64_gcc481/external/openssl/1.0.1p/ssl/openssl.cnf
+
+ retcode : 0
+DEBUG 2015-08-14 11:48:39,132: 	 Getting myproxy life time left for myproxy.cern.ch
+DEBUG 2015-08-14 11:48:39,132: 	 Calculating hash of /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=molszews/CN=740841/CN=Michal Olszewski_cmsweb.cern.ch for credential name
+DEBUG 2015-08-14 11:48:39,536: 	 Executing : 
+ command : myproxy-info -l fe1ecf2a8c8bc4ef8bc29e93b21f837c3ebc3ebb -s myproxy.cern.ch
+ output : username: fe1ecf2a8c8bc4ef8bc29e93b21f837c3ebc3ebb
+owner: /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=molszews/CN=740841/CN=Michal Olszewski
+  renewal policy: /DC=ch/DC=cern/OU=computers/CN=vocms(045|052|021|031|0118|0119).cern.ch
+  trusted retrieval policy: /DC=ch/DC=cern/OU=computers/CN=vocms(045|052|021|031|0118|0119).cern.ch
+  timeleft: 462:25:09  (19.3 days)
+
+ error: 
+ retcode : 0
+DEBUG 2015-08-14 11:48:39,538: 	 Myproxy is valid: 1664709
+DEBUG 2015-08-14 11:48:39,538: 	 Command use: getoutput
+DEBUG 2015-08-14 11:48:39,538: 	 Options use: ['-d', 'test/crab_m2n/']
+DEBUG 2015-08-14 11:48:39,947: 	 CRABClient version: 3.3.1507
+DEBUG 2015-08-14 11:48:39,947: 	 Instance is prod
+DEBUG 2015-08-14 11:48:39,947: 	 Server base url is cmsweb.cern.ch
+DEBUG 2015-08-14 11:48:39,947: 	 Command url /crabserver/prod/workflow
+DEBUG 2015-08-14 11:48:40,308: 	 Server result: {'result': ['150814_093240:molszews_crab_m2n', '-1', 'SUBMITTED', '2015-08-14 09:32:40.222669', 'None', '2015-08-14 09:33:17.050390', 'None', 'CMSSW_7_4_5', 'slc6_amd64_gcc491', '/SingleMuon/molszews-synch_prms-8e2075ef5c9b4e6dfd1c693c6f35f159/USER', '[]', "['T2_US_Florida']", 'FileBased', "{'splitOnRun': False, 'halt_job_on_file_boundaries': False, 'files_per_job': 30, 'runs': [], 'lumis': []}", '-1', '4024baafe09f4b79cbad27c1217ca86b9cb41234b499d90d622c498fd7bd8d7d.tar.gz', 'https://cmsweb.cern.ch/crabcache', 'molszews', '/DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=molszews/CN=740841/CN=Michal Olszewski', 'cms', 'None', 'None', 'synch_test-1f0ed386953508d82fb7e8898920828f', 'T2_PL_Swierk', 'https://cmsweb.cern.ch/dbs/prod/phys03/DBSReader', 'https://cmsweb.cern.ch/dbs/prod/phys03/DBSWriter', 'F', 'Analysis', '{}', '[]', 'F', 'vocms052', '[]', '1315', '1', '2000', '10', 'None', 'http://vocms095.cern.ch/mon/cms994/150814_093240:molszews_crab_m2n', 'None', 'None', '[]', '[]', '[]', 'pythia', '[]', "['ntupla.root']", '[]', 'https://cmsweb.cern.ch/couchdb', 'None', '0', 'vocms097.cern.ch,vocms099.cern.ch', 'crab3test-2@vocms095.cern.ch', 'F', '[]', 'T', '/store/user/molszews/', 'F', 'None', 'F', 'F', 'F'], 'desc': {'columns': ['tm_taskname', 'panda_jobset_id', 'tm_task_status', 'tm_start_time', 'tm_start_injection', 'tm_end_injection', 'tm_task_failure', 'tm_job_sw', 'tm_job_arch', 'tm_input_dataset', 'tm_site_whitelist', 'tm_site_blacklist', 'tm_split_algo', 'tm_split_args', 'tm_totalunits', 'tm_user_sandbox', 'tm_cache_url', 'tm_username', 'tm_user_dn', 'tm_user_vo', 'tm_user_role', 'tm_user_group', 'tm_publish_name', 'tm_asyncdest', 'tm_dbs_url', 'tm_publish_dbs_url', 'tm_publication', 'tm_job_type', 'tm_arguments', 'panda_resubmitted_jobs', 'tm_save_logs', 'tw_name', 'tm_user_infiles', 'tm_maxjobruntime', 'tm_numcores', 'tm_maxmemory', 'tm_priority', 'tm_output_dataset', 'tm_user_webdir', 'tm_activity', 'tm_scriptexe', 'tm_scriptargs', 'tm_extrajdl', 'tm_task_warnings', 'tm_generator', 'tm_outfiles', 'tm_tfile_outfiles', 'tm_edm_outfiles', 'tm_asourl', 'tm_events_per_lumi', 'tm_use_parent', 'tm_collector', 'tm_schedd', 'tm_dry_run', 'tm_user_files', 'tm_transfer_outputs', 'tm_output_lfn', 'tm_ignore_locality', 'tm_fail_limit', 'tm_one_event_mode', 'tm_publish_groupname', 'tm_nonvalid_input_dataset']}}
+DEBUG 2015-08-14 11:48:40,308: 	 Retrieving locations for task 150814_093240:molszews_crab_m2n
+DEBUG 2015-08-14 11:48:40,308: 	 Retrieving all file locations
+DEBUG 2015-08-14 11:48:43,479: 	 Server result: {'result': [{'checksum': {'adler32': '40b19ddf', 'cksum': 1552871235, 'md5': '40b19ddf'}, 'pfn': 'srm://se.cis.gov.pl:8446/srm/managerv2?SFN=/dpm/cis.gov.pl/home/cms/store/user/molszews/SingleMuon/synch_test/150814_093240/0000/ntupla_1.root', 'lfn': '/store/user/molszews/SingleMuon/synch_test/150814_093240/0000/ntupla_1.root', 'jobid': 1, 'size': 17866}], 'desc': {'columns': ['tm_taskname', 'panda_jobset_id', 'tm_task_status', 'tm_user_role', 'tm_user_group', 'tm_task_failure', 'tm_split_args', 'panda_resubmitted_jobs', 'tm_save_logs', 'tm_username', 'tm_user_dn', 'tm_arguments', 'tm_input_dataset', 'tm_dbs_url', 'tm_task_warnings', 'tm_publication', 'tm_user_webdir', 'tm_asourl', 'tm_output_dataset', 'tm_collector', 'tm_schedd', 'tm_dry_run']}}
+INFO 2015-08-14 11:48:43,481: 	 Setting the destination to /afs/cern.ch/work/m/molszews/CMSSW/tautau/M2N/CMSSW_7_4_5/src/m2n/maxi2ntuples/python/test/crab_m2n/results 
+INFO 2015-08-14 11:48:43,481: 	 Retrieving 1 files
+DEBUG 2015-08-14 11:48:43,481: 	 Executing command: 'remote_copy'
+DEBUG 2015-08-14 11:48:43,481: 	 Found CRAB cache file /afs/cern.ch/user/m/molszews/.crab3
+DEBUG 2015-08-14 11:48:43,567: 	 Skipping proxy creation
+DEBUG 2015-08-14 11:48:43,568: 	 Command use: remote_copy
+DEBUG 2015-08-14 11:48:43,568: 	 Options use: ['--destination', '/afs/cern.ch/work/m/molszews/CMSSW/tautau/M2N/CMSSW_7_4_5/src/m2n/maxi2ntuples/python/test/crab_m2n/results', '--input', [{'checksum': {'adler32': '40b19ddf', 'cksum': 1552871235, 'md5': '40b19ddf'}, 'pfn': 'srm://se.cis.gov.pl:8446/srm/managerv2?SFN=/dpm/cis.gov.pl/home/cms/store/user/molszews/SingleMuon/synch_test/150814_093240/0000/ntupla_1.root', 'lfn': '/store/user/molszews/SingleMuon/synch_test/150814_093240/0000/ntupla_1.root', 'jobid': 1, 'size': 17866}], '--dir', 'test/crab_m2n/', '--proxy', '/tmp/x509up_u39587', '--parallel', None, '--wait', None]
+DEBUG 2015-08-14 11:48:43,971: 	 CRABClient version: 3.3.1507
+DEBUG 2015-08-14 11:48:43,971: 	 Instance is prod
+DEBUG 2015-08-14 11:48:43,972: 	 Server base url is cmsweb.cern.ch
+DEBUG 2015-08-14 11:48:43,972: 	 Command url /crabserver/prod/workflow
+INFO 2015-08-14 11:48:43,984: 	 Will use `gfal-copy` command for file transfers
+DEBUG 2015-08-14 11:48:44,036: 	 Starting ChildProcess with 10 ChildProcess
+INFO 2015-08-14 11:48:44,106: 	 Placing file 'ntupla_1.root' in retrieval queue 
+INFO 2015-08-14 11:48:44,107: 	 Please wait
+DEBUG 2015-08-14 11:48:44,107: 	 stopchildproc() method has been called
+INFO 2015-08-14 11:48:53,451: 	 Success: All files successfully retrieved
+INFO 2015-08-14 11:48:53,464: 	 Log file is /afs/cern.ch/work/m/molszews/CMSSW/tautau/M2N/CMSSW_7_4_5/src/m2n/maxi2ntuples/python/test/crab_m2n/crab.log

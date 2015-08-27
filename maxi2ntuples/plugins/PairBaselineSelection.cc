@@ -94,10 +94,10 @@ class PairBaselineSelection : public edm::EDProducer {
 
       bool tautau(const reco::Vertex &, edm::Handle<edm::TriggerResults>&, edm::Handle<pat::TriggerObjectStandAloneCollection>&, edm::Handle<pat::PackedTriggerPrescales>&,const edm::TriggerNames &  ,const pat::Tau*, const pat::Tau*);
       bool mutau(const reco::Vertex &,const L1GtTriggerMenu*, edm::Handle<edm::TriggerResults>&, edm::Handle<pat::TriggerObjectStandAloneCollection>&, edm::Handle<pat::PackedTriggerPrescales>&, const edm::TriggerNames &, const pat::Muon*, const pat::Tau*);
-      bool eltau(const reco::Vertex &, edm::Handle<edm::TriggerResults>&, edm::Handle<pat::TriggerObjectStandAloneCollection>&, edm::Handle<pat::PackedTriggerPrescales>&,const edm::TriggerNames &,const pat::Electron*, const pat::Tau*);
+      bool etau(const reco::Vertex &, edm::Handle<edm::TriggerResults>&, edm::Handle<pat::TriggerObjectStandAloneCollection>&, edm::Handle<pat::PackedTriggerPrescales>&,const edm::TriggerNames &,const pat::Electron*, const pat::Tau*);
       bool mumu(const pat::Muon*, const pat::Muon*);
-      bool elel(const pat::Electron*, const pat::Electron*);
-      bool elmu(const pat::Electron*,const pat::Muon* );
+      bool ee(const pat::Electron*, const pat::Electron*);
+      bool emu(const reco::Vertex &, edm::Handle<edm::TriggerResults>&, edm::Handle<pat::TriggerObjectStandAloneCollection>&, edm::Handle<pat::PackedTriggerPrescales>&, const edm::TriggerNames &, const pat::Electron*,const pat::Muon* );
 
       //virtual void beginRun(edm::Run const&, edm::EventSetup const&) override;
       //virtual void endRun(edm::Run const&, edm::EventSetup const&) override;
@@ -112,6 +112,8 @@ class PairBaselineSelection : public edm::EDProducer {
       edm::EDGetTokenT<edm::TriggerResults> triggerBits_;
       edm::EDGetTokenT<pat::TriggerObjectStandAloneCollection> triggerObjects_;
       edm::EDGetTokenT<pat::PackedTriggerPrescales> triggerPrescales_;
+      const bool mc;
+      const std::string sample;
 };
 
 //
@@ -133,7 +135,10 @@ PairBaselineSelection::PairBaselineSelection(const edm::ParameterSet& iConfig):
     electronToken_(consumes<pat::ElectronCollection>(iConfig.getParameter<edm::InputTag>("electrons"))),
     triggerBits_(consumes<edm::TriggerResults>(iConfig.getParameter<edm::InputTag>("bits"))),
     triggerObjects_(consumes<pat::TriggerObjectStandAloneCollection>(iConfig.getParameter<edm::InputTag>("objects"))),
-    triggerPrescales_(consumes<pat::PackedTriggerPrescales>(iConfig.getParameter<edm::InputTag>("prescales")))
+    triggerPrescales_(consumes<pat::PackedTriggerPrescales>(iConfig.getParameter<edm::InputTag>("prescales"))),
+    mc(iConfig.getParameter<bool>("mc")),
+    sample(iConfig.getParameter<std::string>("sample"))
+    
 {
    //register your products
 /* Examples
@@ -229,7 +234,7 @@ PairBaselineSelection::produce(edm::Event& iEvent, const edm::EventSetup& iSetup
             //std::cout << "muon-electron channel" <<std::endl;
             const pat::Muon *mu  = dynamic_cast<const pat::Muon*>(l1->masterClone().get());
             const pat::Electron *el = dynamic_cast<const pat::Electron*>(l2->masterClone().get());
-            pass =  elmu(el, mu);
+            pass =  emu(PV, triggerBits,triggerObjects,  triggerPrescales, names, el, mu);
         }
         else {
             //std::cout << "muon-tau channell" <<std::endl;
@@ -243,19 +248,19 @@ PairBaselineSelection::produce(edm::Event& iEvent, const edm::EventSetup& iSetup
             //std::cout << "muon-electron channel" <<std::endl;
             const pat::Electron *el = dynamic_cast<const pat::Electron*>(l1->masterClone().get());
             const pat::Muon *mu = dynamic_cast<const pat::Muon*>(l2->masterClone().get());
-            pass = elmu(el,mu);
+            pass = emu(PV, triggerBits, triggerObjects, triggerPrescales, names, el, mu);
         }
         else if(l2->isElectron()){
             //std::cout << "electron-electron channel" <<std::endl;
             const pat::Electron *el = dynamic_cast<const pat::Electron*>(l1->masterClone().get());
             const pat::Electron *el_ = dynamic_cast<const pat::Electron*>(l2->masterClone().get());
-            pass = elel(el,el_);
+            pass = ee(el,el_);
         }
         else {
             //std::cout << "electron-tau channel" <<std::endl;
             const pat::Electron *el = dynamic_cast<const pat::Electron*>(l1->masterClone().get());
             const pat::Tau *tau  = dynamic_cast<const pat::Tau*>(l2->masterClone().get());
-            pass = eltau(PV, triggerBits, triggerObjects, triggerPrescales,names ,el,tau);
+            pass = etau(PV, triggerBits, triggerObjects, triggerPrescales,names ,el,tau);
         }
     }
     else {
@@ -269,7 +274,7 @@ PairBaselineSelection::produce(edm::Event& iEvent, const edm::EventSetup& iSetup
             //std::cout << "electron-tau channel" <<std::endl;
             const pat::Tau *tau  = dynamic_cast<const pat::Tau*>(l1->masterClone().get());
             const pat::Electron *el = dynamic_cast<const pat::Electron*>(l2->masterClone().get());
-            pass = eltau(PV, triggerBits, triggerObjects, triggerPrescales,names ,el,tau);
+            pass = etau(PV, triggerBits, triggerObjects, triggerPrescales,names ,el,tau);
         }
         else {
             //std::cout << "tau-tau channel" <<std::endl;
@@ -304,57 +309,96 @@ bool PairBaselineSelection::tautau(const reco::Vertex &PV, edm::Handle<edm::Trig
 
     pat::PackedCandidate const* packedLeadTauCand = dynamic_cast<pat::PackedCandidate const*>(tau->leadChargedHadrCand().get());
     pat::PackedCandidate const* packedTrailTauCand = dynamic_cast<pat::PackedCandidate const*>(tau_->leadChargedHadrCand().get());
-    if( 
-        tau_->tauID("decayModeFindingNewDMs") <= 0.5 || 
-        //!(tau->tauID("decayModeFindingNewDMs") > 0.5 || tau->tauID("decayModeFinding") > 0.5) ||
-        abs(packedLeadTauCand->dz()) >= 0.2 ||
-        //tau->vertex().z() != PV.z() ||
-        tau->pt() <= 45. ||
-        abs(tau->eta()) >= 2.1  ||
-        tau_->tauID("decayModeFindingNewDMs") <= 0.5 || 
-        //!(tau_->tauID("decayModeFindingNewDMs") > 0.5 || tau_->tauID("decayModeFinding") > 0.5) ||
-        abs(packedTrailTauCand->dz()) >= 0.2 ||
-        //tau_->vertex().z() != PV.z() ||
-        tau_->pt() <= 45. || 
-        abs(tau_->eta()) >= 2.1 
+    if(sample.find("spring15") != std::string::npos){
+        if( 
+            tau_->tauID("decayModeFindingNewDMs") <= 0.5 || 
+            abs(packedLeadTauCand->dz()) >= 0.2 ||
+            //tau->vertex().z() != PV.z() ||
+            tau->pt() <= 45. ||
+            abs(tau->eta()) >= 2.1  ||
+            tau_->tauID("decayModeFindingNewDMs") <= 0.5 || 
+            abs(packedTrailTauCand->dz()) >= 0.2 ||
+            //tau_->vertex().z() != PV.z() ||
+            tau_->pt() <= 45. || 
+            abs(tau_->eta()) >= 3.1 
 
-      ) return false;
+            || deltaR(tau->p4(), tau_->p4()) <= 0.5
 
-    std::string path = "";
-    for (unsigned int i = 0, n = triggerBits->size(); i < n; ++i) {
-        if(triggerBits->accept(i)){
-            path += names.triggerName(i);
+          ) return false;
+
+        std::string path = "";
+        for (unsigned int i = 0, n = triggerBits->size(); i < n; ++i) {
+            if(triggerBits->accept(i)){
+                path += names.triggerName(i);
+            }
         }
-    }
-    if (path.find("HLT_DoubleMediumIsoPFTau40_Trk1_eta2p1_Reg_v1") == std::string::npos 
-          //  && path.find("HLT_LooseIsoPFTau50_Trk30_eta2p1_MET120_v1") == std::string::npos
-    )  return false;
 
-    for (pat::TriggerObjectStandAlone obj : *triggerObjects) {
-        obj.unpackPathNames(names);
-//                   for (unsigned h = 0; h < obj.filterLabels().size(); ++h) std::cout << obj.filterLabels()[h]  << std::endl;
-        if( deltaR( obj.triggerObject().p4(), tau->p4()) < 0.5 && (
-       //     std::find(obj.filterLabels().begin(), obj.filterLabels().end(), "hltL1sDoubleTauJet36erORDoubleTauJet68er")!=obj.filterLabels().end() ||
-       //     std::find(obj.filterLabels().begin(), obj.filterLabels().end(), "hltDoubleL2IsoTau35eta2p1")!=obj.filterLabels().end() ||
-       //     std::find(obj.filterLabels().begin(), obj.filterLabels().end(), "hltDoublePFTau40TrackPt1MediumIsolationDz02Reg")!=obj.filterLabels().end() )){
-            std::find(obj.filterLabels().begin(), obj.filterLabels().end(), "hltDoublePFTau40TrackPt1MediumIsolationDz02Reg")!=obj.filterLabels().end() )){
-            for (pat::TriggerObjectStandAlone obj_ : *triggerObjects) {
-                obj_.unpackPathNames(names);
-                if(
-                    deltaR(obj_.triggerObject().p4(), tau_->p4()) < 0.5 && (
-                 //   std::find(obj_.filterLabels().begin(), obj_.filterLabels().end(), "hltL1sDoubleTauJet36erORDoubleTauJet68er")!=obj_.filterLabels().end() ||
-                  //  std::find(obj_.filterLabels().begin(), obj_.filterLabels().end(), "hltDoubleL2IsoTau35eta2p1")!=obj_.filterLabels().end() ||
-                  //  std::find(obj_.filterLabels().begin(), obj_.filterLabels().end(), "hltDoublePFTau40TrackPt1MediumIsolationDz02Reg")!=obj_.filterLabels().end() )
-                    std::find(obj_.filterLabels().begin(), obj_.filterLabels().end(), "hltDoublePFTau40TrackPt1MediumIsolationDz02Reg")!=obj_.filterLabels().end() )
+        if (path.find("HLT_DoubleMediumIsoPFTau40_Trk1_eta2p1_Reg_v1") != std::string::npos){ 
+            for (pat::TriggerObjectStandAlone obj : *triggerObjects) {
+                obj.unpackPathNames(names);
+                // for (unsigned h = 0; h < obj.filterLabels().size(); ++h) std::cout << obj.filterLabels()[h]  << std::endl;
+                if( 
+                    deltaR( obj.triggerObject().p4(), tau->p4()) < 0.5 
+                    && (std::find(obj.filterLabels().begin(), obj.filterLabels().end(), "hltDoublePFTau40TrackPt1MediumIsolationDz02Reg")!=obj.filterLabels().end())
                 ){
-                    return true;
+                    for (pat::TriggerObjectStandAlone obj_ : *triggerObjects) {
+                        obj_.unpackPathNames(names);
+                        if(
+                            deltaR(obj_.triggerObject().p4(), tau_->p4()) < 0.5 
+                            && (std::find(obj.filterLabels().begin(), obj.filterLabels().end(), "hltDoublePFTau40TrackPt1MediumIsolationDz02Reg")!=obj.filterLabels().end())
+                        ) return true;
+                    }
                     break;
                 }
-            
-            }
-            break;
-        }       
+            } 
+        }
     }
+
+    if(sample.find("phys14") != std::string::npos){
+        if( 
+            (tau->tauID("decayModeFindingNewDMs") <= 0.5 && tau->tauID("decayModeFinding") <= 0.5)
+            //|| tau->vertex().z() != PV.z()
+            || abs(tau->vertex().z() - PV.z()) < 0.2 
+            || tau->pt() <= 45. 
+            || abs(tau->eta()) >= 2.1 
+
+            || (tau_->tauID("decayModeFindingNewDMs") <= 0.5 && tau_->tauID("decayModeFinding") <= 0.5)
+            || tau_->vertex().z() != PV.z()
+            ||tau_->pt() <= 45. 
+            || abs(tau_->eta()) >= 2.1 
+
+            || deltaR(tau->p4(), tau_->p4()) <= 0.5
+
+          ) return false;
+
+        std::string path = "";
+        for (unsigned int i = 0, n = triggerBits->size(); i < n; ++i) {
+            if(triggerBits->accept(i)){
+                path += names.triggerName(i);
+            }
+        }
+
+        if (path.find("HLT_DoubleMediumIsoPFTau40_Trk1_eta2p1_Reg_v1") != std::string::npos){ 
+            for (pat::TriggerObjectStandAlone obj : *triggerObjects) {
+                obj.unpackPathNames(names);
+                // for (unsigned h = 0; h < obj.filterLabels().size(); ++h) std::cout << obj.filterLabels()[h]  << std::endl;
+                if( 
+                    deltaR( obj.triggerObject().p4(), tau->p4()) < 0.5 
+                    && (std::find(obj.filterLabels().begin(), obj.filterLabels().end(), "hltDoublePFTau40TrackPt1MediumIsolationDz02Reg")!=obj.filterLabels().end())
+                ){
+                    for (pat::TriggerObjectStandAlone obj_ : *triggerObjects) {
+                        obj_.unpackPathNames(names);
+                        if(
+                            deltaR(obj_.triggerObject().p4(), tau_->p4()) < 0.5 
+                            && (std::find(obj.filterLabels().begin(), obj.filterLabels().end(), "hltDoublePFTau40TrackPt1MediumIsolationDz02Reg")!=obj.filterLabels().end())
+                        ) return true;
+                    }
+                    break;
+                }
+            } 
+        }
+    }
+
     return false;
 }
 
@@ -363,104 +407,135 @@ bool PairBaselineSelection::tautau(const reco::Vertex &PV, edm::Handle<edm::Trig
 bool PairBaselineSelection::mutau(const reco::Vertex &PV, const L1GtTriggerMenu* menu, edm::Handle<edm::TriggerResults>& triggerBits, edm::Handle<pat::TriggerObjectStandAloneCollection>& triggerObjects, edm::Handle<pat::PackedTriggerPrescales>& triggerPrescales,const edm::TriggerNames &names, const pat::Muon* mu, const pat::Tau* tau){
 
     pat::PackedCandidate const* packedLeadTauCand = dynamic_cast<pat::PackedCandidate const*>(tau->leadChargedHadrCand().get());
-    if(
-        //mu
-        mu->pt() <= 18. ||
-        abs(mu->eta()) >= 2.1 ||
-        abs(mu->innerTrack()->dxy( PV.position()) )  >= 0.045 || 
-        abs(mu->innerTrack()->dz(PV.position())) >= 0.2  ||
-        //!utilities::heppymuonID(*mu, "POG_ID_Medium") || 
-        //utilities::relIso(*mu, 0.5) >= 0.1 || 
-        
-        //tau
-        tau->pt() <= 20. || 
-        abs(tau->eta()) >= 2.3 ||
-        tau->tauID("decayModeFindingNewDMs") <= 0.5 ||  
-        abs(packedLeadTauCand->dz()) >= 0.2
-        //abs(tau->vertex().z() - PV.z()) < 0.2 
-    ) return false;
+    //Phys'14 MC samples
+    if(sample.find("phys14") != std::string::npos){
+        if(
+            //mu
+            mu->pt() <= 18. ||
+            abs(mu->eta()) >= 2.1 ||
+            abs(mu->innerTrack()->dxy( PV.position()) )  >= 0.045 || 
+            abs(mu->innerTrack()->dz(PV.position())) >= 0.2  
+            || !mu->isMediumMuon()
 
-    std::string path = "";
-    for (unsigned int i = 0, n = triggerBits->size(); i < n; ++i) {
-        if(triggerBits->accept(i)){
-            path += names.triggerName(i);
-    //        std::cout <<  names.triggerName(i) << std::endl;
+            //!utilities::heppymuonID(*mu, "POG_ID_Medium") || 
+            //utilities::relIso(*mu, 0.5) >= 0.1 || 
+            
+            //tau
+            || tau->pt() <= 20. 
+            || abs(tau->eta()) >= 2.3 
+            || (tau->tauID("decayModeFindingNewDMs") <= 0.5 && tau->tauID("decayModeFinding") <= 0.5)
+ //           || abs(tau->vertex().z() - PV.z()) > 0.2 
+
+            //abs(packedLeadTauCand->dz()) >= 0.2
+            
+            || deltaR(mu->p4(), tau->p4()) <=0.5
+        ) return false;
+
+        std::string path = "";
+        for (unsigned int i = 0, n = triggerBits->size(); i < n; ++i) {
+            if(triggerBits->accept(i)){
+                path += names.triggerName(i);
+                //std::cout <<  names.triggerName(i) << std::endl;
+            }
+        }
+
+        std::string hlta = mc ? "HLT_IsoMu17_eta2p1_LooseIsoPFTau20_v1" : "HLT_IsoMu17_eta2p1_LooseIsoPFTau20_v2";
+        if (path.find(hlta) != std::string::npos){ 
+            for (pat::TriggerObjectStandAlone obj : *triggerObjects) {
+                obj.unpackPathNames(names);
+                // for (unsigned h = 0; h < obj.filterLabels().size(); ++h) std::cout << obj.filterLabels()[h]  << std::endl;
+                if( 
+                    deltaR( obj.triggerObject().p4(), mu->p4()) < 0.5 && 
+                    std::find(obj.filterLabels().begin(), obj.filterLabels().end(), "hltOverlapFilterIsoMu17LooseIsoPFTau20")!=obj.filterLabels().end() 
+                ){
+                    for (pat::TriggerObjectStandAlone obj_ : *triggerObjects) {
+                        obj_.unpackPathNames(names);
+                        if(
+                            deltaR(obj_.triggerObject().p4(), tau->p4()) < 0.5 && 
+                            (std::find(obj_.filterLabels().begin(), obj_.filterLabels().end(), "hltL1sMu16erTauJet20er ")!=obj_.filterLabels().end() ||
+                            std::find(obj_.filterLabels().begin(), obj_.filterLabels().end(), "hltOverlapFilterIsoMu17LooseIsoPFTau20")!=obj_.filterLabels().end() )
+                        ) return true;
+                    }
+                    break;
+                }
+            } 
+        }
+        if (path.find("HLT_IsoMu24_eta2p1_IterTrk02_v1") != std::string::npos  ){
+            for (pat::TriggerObjectStandAlone obj : *triggerObjects) {
+                obj.unpackPathNames(names);
+                if( 
+                    deltaR( obj.triggerObject().p4(), mu->p4()) < 0.5 && 
+                    std::find(obj.filterLabels().begin(), obj.filterLabels().end(), "hltL3crIsoL1sMu20Eta2p1L1f0L2f20QL3f24QL3crIsoRhoFiltered0p15IterTrk02")!=obj.filterLabels().end() 
+                ) return true;
+            } 
         }
     }
-    
-    /*
-    //std::string seed = "";
-    for (CItAlgo algo = menu->gtAlgorithmMap().begin(); algo!=menu->gtAlgorithmMap().end(); ++algo) {
-       // std::cout << "Name: " << (algo->second).algoName() << " Alias: " << (algo->second).algoAlias() << std::endl;
-       //seed += (algo->second).algoName();
-    }
-    */
 
-    //Phys'14 MC samples
-    
-    if (path.find("HLT_IsoMu17_eta2p1_LooseIsoPFTau20_v2") != std::string::npos){
-        for (pat::TriggerObjectStandAlone obj : *triggerObjects) {
-            obj.unpackPathNames(names);
-            // for (unsigned h = 0; h < obj.filterLabels().size(); ++h) std::cout << obj.filterLabels()[h]  << std::endl;
-            if( 
-                deltaR( obj.triggerObject().p4(), mu->p4()) < 0.5 && 
-                std::find(obj.filterLabels().begin(), obj.filterLabels().end(), "hltOverlapFilterIsoMu17LooseIsoPFTau20")!=obj.filterLabels().end() 
-            ){
-                for (pat::TriggerObjectStandAlone obj_ : *triggerObjects) {
-                    obj_.unpackPathNames(names);
-                    if(
-                        deltaR(obj_.triggerObject().p4(), tau->p4()) < 0.5 && 
-                        (std::find(obj_.filterLabels().begin(), obj_.filterLabels().end(), "hltL1sMu16erTauJet20er ")!=obj_.filterLabels().end() ||
-                        std::find(obj_.filterLabels().begin(), obj_.filterLabels().end(), "hltOverlapFilterIsoMu17LooseIsoPFTau20")!=obj_.filterLabels().end() )
-                    ) return true;
-                }
-                break;
-            }
-        } 
-    }
-    if (path.find("HLT_IsoMu24_eta2p1_IterTrk02_v1") != std::string::npos  ){
-        for (pat::TriggerObjectStandAlone obj : *triggerObjects) {
-            obj.unpackPathNames(names);
-            if( 
-                deltaR( obj.triggerObject().p4(), mu->p4()) < 0.5 && 
-                std::find(obj.filterLabels().begin(), obj.filterLabels().end(), "hltL3crIsoL1sMu20Eta2p1L1f0L2f20QL3f24QL3crIsoRhoFiltered0p15IterTrk02")!=obj.filterLabels().end() 
-            ) return true;
-        } 
-    }
-   
     //Spring15 MC samples
-    /*
-    if (path.find("HLT_IsoMu17_eta2p1_LooseIsoPFTau20_v1") != std::string::npos){
-        for (pat::TriggerObjectStandAlone obj : *triggerObjects) {
-            obj.unpackPathNames(names);
-            // for (unsigned h = 0; h < obj.filterLabels().size(); ++h) std::cout << obj.filterLabels()[h]  << std::endl;
-            if( 
-                deltaR( obj.triggerObject().p4(), mu->p4()) < 0.5 
-                && std::find(obj.filterLabels().begin(), obj.filterLabels().end(), "hltOverlapFilterIsoMu17LooseIsoPFTau20")!=obj.filterLabels().end() 
-                && std::find(obj.filterLabels().begin(), obj.filterLabels().end(), "hltL3crIsoL1sMu16erTauJet20erL1f0L2f10QL3f17QL3trkIsoFiltered0p09 ")!=obj.filterLabels().end() 
-            ){
-                for (pat::TriggerObjectStandAlone obj_ : *triggerObjects) {
-                    obj_.unpackPathNames(names);
-                    if(
-                        deltaR(obj_.triggerObject().p4(), tau->p4()) < 0.5 
-                        && std::find(obj_.filterLabels().begin(), obj_.filterLabels().end(), "hltPFTau20TrackLooseIsoAgainstMuon")!=obj_.filterLabels().end() 
-                        && std::find(obj_.filterLabels().begin(), obj_.filterLabels().end(), "hltOverlapFilterIsoMu17LooseIsoPFTau20")!=obj_.filterLabels().end() 
-                    ) return true;
-                }
-                break;
+    if(sample.find("spring15") != std::string::npos){
+        if(
+            //mu
+            mu->pt() <= 18.
+            || abs(mu->eta()) >= 2.1 
+            || abs(mu->muonBestTrack()->dxy( PV.position()) )  >= 0.045 
+            || abs(mu->muonBestTrack()->dz(PV.position())) >= 0.2  
+            || !mu->isMediumMuon()
+            //!utilities::heppymuonID(*mu, "POG_ID_Medium") || 
+            //utilities::relIso(*mu, 0.5) >= 0.1 || 
+            
+            //tau
+            || tau->pt() <= 20. 
+            || abs(tau->eta()) >= 2.3 
+            || tau->tauID("decayModeFindingNewDMs") <= 0.5 
+            || abs(packedLeadTauCand->dz()) >= 0.2
+            //abs(tau->vertex().z() - PV.z()) < 0.2 
+            || abs(tau->charge()) != 1
+
+            || deltaR(mu->p4(), tau->p4()) <= 0.5 
+        ) return false;
+
+        std::string path = "";
+        for (unsigned int i = 0, n = triggerBits->size(); i < n; ++i) {
+            if(triggerBits->accept(i)){
+                path += names.triggerName(i);
+                //std::cout <<  names.triggerName(i) << std::endl;
             }
-        } 
+        }
+
+        std::string hlta = mc ? "HLT_IsoMu17_eta2p1_LooseIsoPFTau20_v1" : "HLT_IsoMu17_eta2p1_LooseIsoPFTau20_v2";
+        std::string hltb = mc ? "HLT_IsoMu27_v1" : "HLT_IsoMu24_eta2p1_v2";
+        if (path.find(hlta) != std::string::npos){
+            for (pat::TriggerObjectStandAlone obj : *triggerObjects) {
+                obj.unpackPathNames(names);
+                // for (unsigned h = 0; h < obj.filterLabels().size(); ++h) std::cout << obj.filterLabels()[h]  << std::endl;
+                if( 
+                    deltaR( obj.triggerObject().p4(), mu->p4()) < 0.5 
+                    && std::find(obj.filterLabels().begin(), obj.filterLabels().end(), "hltOverlapFilterIsoMu17LooseIsoPFTau20")!=obj.filterLabels().end() 
+                    && std::find(obj.filterLabels().begin(), obj.filterLabels().end(), "hltL3crIsoL1sMu16erTauJet20erL1f0L2f10QL3f17QL3trkIsoFiltered0p09 ")!=obj.filterLabels().end() 
+                ){
+                    for (pat::TriggerObjectStandAlone obj_ : *triggerObjects) {
+                        obj_.unpackPathNames(names);
+                        if(
+                            deltaR(obj_.triggerObject().p4(), tau->p4()) < 0.5 
+                            && std::find(obj_.filterLabels().begin(), obj_.filterLabels().end(), "hltPFTau20TrackLooseIsoAgainstMuon")!=obj_.filterLabels().end() 
+                            && std::find(obj_.filterLabels().begin(), obj_.filterLabels().end(), "hltOverlapFilterIsoMu17LooseIsoPFTau20")!=obj_.filterLabels().end() 
+                        ) return true;
+                    }
+                    break;
+                }
+            } 
+        }
+        if (path.find(hltb) != std::string::npos  ){
+            for (pat::TriggerObjectStandAlone obj : *triggerObjects) {
+                obj.unpackPathNames(names);
+                if(
+                    deltaR( obj.triggerObject().p4(), mu->p4()) < 0.5 
+                    && std::find(obj.filterLabels().begin(), obj.filterLabels().end(), "hltL3crIsoL1sMu20Eta2p1L1f0L2f10QL3f24QL3trkIsoFiltered0p09")!=obj.filterLabels().end() 
+                    && mu->pt() > 25.
+                ) return true;
+            }
+        }
     }
-    if (path.find("HLT_IsoMu24_eta2p1_v1") != std::string::npos  ){
-        for (pat::TriggerObjectStandAlone obj : *triggerObjects) {
-            obj.unpackPathNames(names);
-            if( 
-                deltaR( obj.triggerObject().p4(), mu->p4()) < 0.5 && 
-                std::find(obj.filterLabels().begin(), obj.filterLabels().end(), "hltL3crIsoL1sMu20Eta2p1L1f0L2f10QL3f24QL3trkIsoFiltered0p09")!=obj.filterLabels().end() 
-            ) return true;
-        } 
-    }
-    */
 
     return false;
 
@@ -503,76 +578,214 @@ bool PairBaselineSelection::mutau(const reco::Vertex &PV, const L1GtTriggerMenu*
     }
     */
 }
-bool PairBaselineSelection::eltau(const reco::Vertex &PV, edm::Handle<edm::TriggerResults>& triggerBits, edm::Handle<pat::TriggerObjectStandAloneCollection>& triggerObjects, edm::Handle<pat::PackedTriggerPrescales>& triggerPrescales,const edm::TriggerNames &names, const pat::Electron* el, const pat::Tau* tau){
+bool PairBaselineSelection::etau(const reco::Vertex &PV, edm::Handle<edm::TriggerResults>& triggerBits, edm::Handle<pat::TriggerObjectStandAloneCollection>& triggerObjects, edm::Handle<pat::PackedTriggerPrescales>& triggerPrescales,const edm::TriggerNames &names, const pat::Electron* e, const pat::Tau* tau){
 
     pat::PackedCandidate const* packedLeadTauCand = dynamic_cast<pat::PackedCandidate const*>(tau->leadChargedHadrCand().get());
 
-    if(
-        el->pt() <= 23. || abs(el->eta()) >= 2.5       
-        || abs(el->gsfTrack()->dxy(PV.position()))  >= 0.045 || abs(el->gsfTrack()->dz(PV.position())) >= 0.2
-        || tau->pt() <= 20 
-        ||  abs(tau->eta()) >= 2.3
-        || tau->tauID("decayModeFindingNewDMs") <= 0.5      
-        || abs(packedLeadTauCand->dz()) >= 0.2 
-    ) return false;
+    if(sample.find("spring15") != std::string::npos){
+        if(
+            e->pt() <= 23. || abs(e->eta()) >= 2.1       
+            || abs(e->gsfTrack()->dxy(PV.position()))  >= 0.045 || abs(e->gsfTrack()->dz(PV.position())) >= 0.2
+            || e->gsfTrack()->hitPattern().numberOfHits(reco::HitPattern::MISSING_INNER_HITS) > 1
+            || e->passConversionVeto()
 
-    std::string path = "";
-    for (unsigned int i = 0, n = triggerBits->size(); i < n; ++i) {
-        if(triggerBits->accept(i)){
-            path += names.triggerName(i);
+            || tau->pt() <= 20 
+            || abs(tau->eta()) >= 2.3
+            || tau->tauID("decayModeFindingNewDMs") <= 0.5      
+            || abs(packedLeadTauCand->dz()) >= 0.2 
+
+            || deltaR(e->p4(), tau->p4()) <= 0.5
+        ) return false;
+
+        std::string path = "";
+        for (unsigned int i = 0, n = triggerBits->size(); i < n; ++i) {
+            if(triggerBits->accept(i)){
+                path += names.triggerName(i);
+            }
+        }
+        
+        /*
+        //std::string seed = "";
+        for (CItAlgo algo = menu->gtAlgorithmMap().begin(); algo!=menu->gtAlgorithmMap().end(); ++algo) {
+           // std::cout << "Name: " << (algo->second).algoName() << " Alias: " << (algo->second).algoAlias() << std::endl;
+           //seed += (algo->second).algoName();
+        }
+        */
+        if(mc){
+            if (path.find("HLT_Ele22_eta2p1_WP75_Gsf_LooseIsoPFTau20_v1") != std::string::npos){
+                for (pat::TriggerObjectStandAlone obj : *triggerObjects) {
+                    obj.unpackPathNames(names);
+                    // for (unsigned h = 0; h < obj.filterLabels().size(); ++h) std::cout << obj.filterLabels()[h]  << std::endl;
+                    if( 
+                        deltaR( obj.triggerObject().p4(), e->p4()) < 0.5  
+                        && std::find(obj.filterLabels().begin(), obj.filterLabels().end(), "hltEle22WP75L1IsoEG20erTau20erGsfTrackIsoFilter ")!=obj.filterLabels().end() 
+                        && std::find(obj.filterLabels().begin(), obj.filterLabels().end(), "hltOverlapFilterIsoEle22WP75GsfLooseIsoPFTau20")!=obj.filterLabels().end() 
+                    ){
+                        for (pat::TriggerObjectStandAlone obj_ : *triggerObjects) {
+                            obj_.unpackPathNames(names);
+                            if(
+                                deltaR(obj_.triggerObject().p4(), tau->p4()) < 0.5 && 
+                                (std::find(obj_.filterLabels().begin(), obj_.filterLabels().end(), "hltPFTau20TrackLooseIso")!=obj_.filterLabels().end() 
+                                && std::find(obj_.filterLabels().begin(), obj_.filterLabels().end(), "hltOverlapFilterIsoEle22WP75GsfLooseIsoPFTau20")!=obj_.filterLabels().end() )
+                            ) return true;
+                        }
+                        break;
+                    }
+                } 
+            }
+            if (path.find("HLT_Ele32_eta2p1_WP75_Gsf_v1") != std::string::npos  ){
+                for (pat::TriggerObjectStandAlone obj : *triggerObjects) {
+                    obj.unpackPathNames(names);
+                    if( 
+                        deltaR( obj.triggerObject().p4(), e->p4()) < 0.5 
+                        && std::find(obj.filterLabels().begin(), obj.filterLabels().end(), "hltEle32WP75GsfTrackIsoFilter")!=obj.filterLabels().end() 
+                        && e->pt() > 33.
+                    ) return true;
+                } 
+            }
+        }
+        else {
+            if (path.find("HLT_Ele22_eta2p1_WPLoose_Gsf_LooseIsoPFTau20_v1") != std::string::npos){
+                for (pat::TriggerObjectStandAlone obj : *triggerObjects) {
+                    obj.unpackPathNames(names);
+                    // for (unsigned h = 0; h < obj.filterLabels().size(); ++h) std::cout << obj.filterLabels()[h]  << std::endl;
+                    if( 
+                        deltaR( obj.triggerObject().p4(), e->p4()) < 0.5  
+                        && std::find(obj.filterLabels().begin(), obj.filterLabels().end(), "hltSingleEle22WPLooseGsfTrackIsoFilter")!=obj.filterLabels().end() 
+                        && std::find(obj.filterLabels().begin(), obj.filterLabels().end(), "hltOverlapFilterIsoEle22WPLooseGsfLooseIsoPFTau20")!=obj.filterLabels().end() 
+                    ){
+                        for (pat::TriggerObjectStandAlone obj_ : *triggerObjects) {
+                            obj_.unpackPathNames(names);
+                            if(
+                                deltaR(obj_.triggerObject().p4(), tau->p4()) < 0.5 && 
+                                (std::find(obj_.filterLabels().begin(), obj_.filterLabels().end(), "hltPFTau20TrackLooseIso")!=obj_.filterLabels().end() 
+                                && std::find(obj_.filterLabels().begin(), obj_.filterLabels().end(), "hltOverlapFilterIsoEle22WPLooseGsfLooseIsoPFTau20")!=obj_.filterLabels().end() )
+                            ) return true;
+                        }
+                        break;
+                    }
+                }
+            }
+            if (path.find("HLT_Ele32_eta2p1_WPTight_Gsf_v1") != std::string::npos  ){
+                for (pat::TriggerObjectStandAlone obj : *triggerObjects) {
+                    obj.unpackPathNames(names);
+                    if( 
+                        deltaR( obj.triggerObject().p4(), e->p4()) < 0.5 
+                        && std::find(obj.filterLabels().begin(), obj.filterLabels().end(), "hltEle32WPTightGsfTrackIsoFilter")!=obj.filterLabels().end() 
+                        && e->pt() > 33.
+                    ) return true;
+                } 
+            }
         }
     }
-    
-    /*
-    //std::string seed = "";
-    for (CItAlgo algo = menu->gtAlgorithmMap().begin(); algo!=menu->gtAlgorithmMap().end(); ++algo) {
-       // std::cout << "Name: " << (algo->second).algoName() << " Alias: " << (algo->second).algoAlias() << std::endl;
-       //seed += (algo->second).algoName();
-    }
-    */
+    if(sample.find("phys14") != std::string::npos){
+        if(
+            e->pt() <= 23. || abs(e->eta()) >= 2.5 
+            || abs(e->gsfTrack()->dxy(PV.position()))  >= 0.045 || abs(e->gsfTrack()->dz(PV.position())) >= 0.2
+            || (abs(e->eta()) < 0.8 && e->electronID("POG_MVA_ID_Run2_NonTrig_Tight") <= 0.73)
+            || (abs(e->eta()) < 1.479 && abs(e->eta()) >= 0.8 && e->electronID("POG_MVA_ID_Run2_NonTrig_Tight") <= 0.57)
+            || (abs(e->eta()) >= 1.479  && e->electronID("POG_MVA_ID_Run2_NonTrig_Tight") <= 0.05)
 
-    //Phys'14 MC samples
-    
-    if (path.find("HLT_Ele22_eta2p1_WP75_Gsf_LooseIsoPFTau20_v1") != std::string::npos){
-        for (pat::TriggerObjectStandAlone obj : *triggerObjects) {
-            obj.unpackPathNames(names);
-            // for (unsigned h = 0; h < obj.filterLabels().size(); ++h) std::cout << obj.filterLabels()[h]  << std::endl;
-            if( 
-                deltaR( obj.triggerObject().p4(), el->p4()) < 0.5  
-                && std::find(obj.filterLabels().begin(), obj.filterLabels().end(), "hltEle22WP75L1IsoEG20erTau20erGsfTrackIsoFilter")!=obj.filterLabels().end() 
-                && std::find(obj.filterLabels().begin(), obj.filterLabels().end(), "hltOverlapFilterIsoEle22WP75GsfLooseIsoPFTau20")!=obj.filterLabels().end() 
-            ){
-                for (pat::TriggerObjectStandAlone obj_ : *triggerObjects) {
-                    obj_.unpackPathNames(names);
-                    if(
-                        deltaR(obj_.triggerObject().p4(), tau->p4()) < 0.5 && 
-                        (std::find(obj_.filterLabels().begin(), obj_.filterLabels().end(), "hltPFTau20TrackLooseIso")!=obj_.filterLabels().end() 
-                        && std::find(obj_.filterLabels().begin(), obj_.filterLabels().end(), "hltOverlapFilterIsoEle22WP75GsfLooseIsoPFTau20")!=obj_.filterLabels().end() )
-                    ) return true;
-                }
-                break;
+            || tau->pt() <= 20 
+            || abs(tau->eta()) >= 2.3
+            || (tau->tauID("decayModeFindingNewDMs") <= 0.5 && tau->tauID("decayModeFinding") <= 0.5)
+            || abs(tau->vertex().z() - PV.z()) < 0.2 
+            //|| (tau->zImpact() <= 0.5 && tau->zImpact() >= -1.5)
+            //|| tau->vertex().z() != PV.z()
+
+            || deltaR(e->p4(), tau->p4()) <= 0.5
+        ) return false;
+
+        std::string path = "";
+        for (unsigned int i = 0, n = triggerBits->size(); i < n; ++i) {
+            if(triggerBits->accept(i)){
+                path += names.triggerName(i);
             }
-        } 
+        }
+        
+        /*
+        //std::string seed = "";
+        for (CItAlgo algo = menu->gtAlgorithmMap().begin(); algo!=menu->gtAlgorithmMap().end(); ++algo) {
+           // std::cout << "Name: " << (algo->second).algoName() << " Alias: " << (algo->second).algoAlias() << std::endl;
+           //seed += (algo->second).algoName();
+        }
+        */
+        if(mc){
+            if (path.find("HLT_Ele22_eta2p1_WP85_Gsf_LooseIsoPFTau20_v1") != std::string::npos){
+                for (pat::TriggerObjectStandAlone obj : *triggerObjects) {
+                    obj.unpackPathNames(names);
+                    // for (unsigned h = 0; h < obj.filterLabels().size(); ++h) std::cout << obj.filterLabels()[h]  << std::endl;
+                    if( 
+                        deltaR( obj.triggerObject().p4(), e->p4()) < 0.5  
+                        && std::find(obj.filterLabels().begin(), obj.filterLabels().end(), "hltOverlapFilterIsoEle22WP85GsfLooseIsoPFTau20")!=obj.filterLabels().end() 
+                    ){
+                        for (pat::TriggerObjectStandAlone obj_ : *triggerObjects) {
+                            obj_.unpackPathNames(names);
+                            if(
+                                deltaR(obj_.triggerObject().p4(), tau->p4()) < 0.5 && 
+                                (std::find(obj_.filterLabels().begin(), obj_.filterLabels().end(), "hltL1sL1IsoEG20erTauJet20er")!=obj_.filterLabels().end() 
+                                && std::find(obj_.filterLabels().begin(), obj_.filterLabels().end(), "hltOverlapFilterIsoEle22WP85GsfLooseIsoPFTau20")!=obj_.filterLabels().end() )
+                            ) return true;
+                        }
+                        break;
+                    }
+                } 
+            }
+            if (path.find("HLT_Ele27_eta2p1_WP85_Gsf_v1") != std::string::npos  ){
+                for (pat::TriggerObjectStandAlone obj : *triggerObjects) {
+                    obj.unpackPathNames(names);
+                    if( 
+                        deltaR( obj.triggerObject().p4(), e->p4()) < 0.5 
+                        && std::find(obj.filterLabels().begin(), obj.filterLabels().end(), "hltEle27WP85GsfTrackIsoFilter")!=obj.filterLabels().end() 
+                    ) return true;
+                } 
+            }
+        }
+        else {
+            if (path.find("HLT_Ele22_eta2p1_WPLoose_Gsf_LooseIsoPFTau20_v1") != std::string::npos){
+                for (pat::TriggerObjectStandAlone obj : *triggerObjects) {
+                    obj.unpackPathNames(names);
+                    // for (unsigned h = 0; h < obj.filterLabels().size(); ++h) std::cout << obj.filterLabels()[h]  << std::endl;
+                    if( 
+                        deltaR( obj.triggerObject().p4(), e->p4()) < 0.5  
+                        && std::find(obj.filterLabels().begin(), obj.filterLabels().end(), "hltSingleEle22WPLooseGsfTrackIsoFilter")!=obj.filterLabels().end() 
+                        && std::find(obj.filterLabels().begin(), obj.filterLabels().end(), "hltOverlapFilterIsoEle22WPLooseGsfLooseIsoPFTau20")!=obj.filterLabels().end() 
+                    ){
+                        for (pat::TriggerObjectStandAlone obj_ : *triggerObjects) {
+                            obj_.unpackPathNames(names);
+                            if(
+                                deltaR(obj_.triggerObject().p4(), tau->p4()) < 0.5 && 
+                                (std::find(obj_.filterLabels().begin(), obj_.filterLabels().end(), "hltPFTau20TrackLooseIso")!=obj_.filterLabels().end() 
+                                && std::find(obj_.filterLabels().begin(), obj_.filterLabels().end(), "hltOverlapFilterIsoEle22WPLooseGsfLooseIsoPFTau20")!=obj_.filterLabels().end() )
+                            ) return true;
+                        }
+                        break;
+                    }
+                }
+            }
+            if (path.find("HLT_Ele32_eta2p1_WPTight_Gsf_v1") != std::string::npos  ){
+                for (pat::TriggerObjectStandAlone obj : *triggerObjects) {
+                    obj.unpackPathNames(names);
+                    if( 
+                        deltaR( obj.triggerObject().p4(), e->p4()) < 0.5 
+                        && std::find(obj.filterLabels().begin(), obj.filterLabels().end(), "hltEle32WPTightGsfTrackIsoFilter")!=obj.filterLabels().end() 
+                        && e->pt() > 33.
+                    ) return true;
+                } 
+            }
+        }
     }
-    if (path.find("HLT_Ele32_eta2p1_WP75_Gsf_v1") != std::string::npos  ){
-        for (pat::TriggerObjectStandAlone obj : *triggerObjects) {
-            obj.unpackPathNames(names);
-            if( 
-                deltaR( obj.triggerObject().p4(), el->p4()) < 0.5 && 
-                std::find(obj.filterLabels().begin(), obj.filterLabels().end(), "hltEle32WP75GsfTrackIsoFilter")!=obj.filterLabels().end() 
-            ) return true;
-        } 
-    }
+
 
 
     /*
-    if(abs(el->gsfTrack()->dxy(PV.position()))  >= 0.045 || abs(el->gsfTrack()->dz(PV.position())) >= 0.2 )
+    if(abs(e->gsfTrack()->dxy(PV.position()))  >= 0.045 || abs(e->gsfTrack()->dz(PV.position())) >= 0.2 )
         continue;
-    if (!el->electronID("POG_MVA_ID_Run2_NonTrig_Tight"))
+    if (!e->electronID("POG_MVA_ID_Run2_NonTrig_Tight"))
         continue;
-    if(utilities::relIso(*el, 0.5) >= 0.1)       
+    if(utilities::relIso(*e, 0.5) >= 0.1)       
         continue;
-    if (el->pt() <= 23. || abs(el->eta()) >= 2.5)
+    if (e->pt() <= 23. || abs(e->eta()) >= 2.5)
         continue;
 
     if( tau->tauID("decayModeFinding") <= 0.5 || 
@@ -589,7 +802,7 @@ bool PairBaselineSelection::eltau(const reco::Vertex &PV, edm::Handle<edm::Trigg
 
     //V E T O
     for (const pat::Electron &vetoel : *electrons) {
-        if (!vetoel.gsfTrack().isNull() && abs(vetoel.px() - el->px()) +  abs(vetoel.py() - el->py()) + abs(vetoel.pz() - el->pz()) > 0.01){
+        if (!vetoel.gsfTrack().isNull() && abs(vetoel.px() - e->px()) +  abs(vetoel.py() - e->py()) + abs(vetoel.pz() - e->pz()) > 0.01){
             if (vetoel.pt() > 10                                     &&
                 abs(vetoel.eta()) < 2.5                              &&
                 abs(vetoel.gsfTrack()->dxy(PV.position())) < 0.045                          &&
@@ -601,7 +814,7 @@ bool PairBaselineSelection::eltau(const reco::Vertex &PV, edm::Handle<edm::Trigg
     }
 
     for (const pat::Muon &vetomu : *muons) {
-        if (!vetomu.innerTrack().isNull() && abs(vetomu.px() - el->px()) +  abs(vetomu.py() - el->py()) + abs(vetomu.pz() - el->pz()) > 0.01){
+        if (!vetomu.innerTrack().isNull() && abs(vetomu.px() - e->px()) +  abs(vetomu.py() - e->py()) + abs(vetomu.pz() - e->pz()) > 0.01){
             if (vetomu.pt() > 10           &&
                 abs(vetomu.eta()) < 2.4    &&
                 utilities::heppymuonID(vetomu, "POG_ID_Medium")   &&
@@ -618,10 +831,137 @@ bool PairBaselineSelection::eltau(const reco::Vertex &PV, edm::Handle<edm::Trigg
 bool PairBaselineSelection::mumu(const pat::Muon* mu, const pat::Muon* mu_){
     return false;   
 }
-bool PairBaselineSelection::elel(const pat::Electron* el, const pat::Electron* el_){
+bool PairBaselineSelection::ee(const pat::Electron* e, const pat::Electron* e_){
     return false;
 }
-bool PairBaselineSelection::elmu(const pat::Electron* el,const pat::Muon* mu){
+bool PairBaselineSelection::emu(const reco::Vertex &PV, edm::Handle<edm::TriggerResults>& triggerBits, edm::Handle<pat::TriggerObjectStandAloneCollection>& triggerObjects, edm::Handle<pat::PackedTriggerPrescales>& triggerPrescales,const edm::TriggerNames &names, const pat::Electron* e,const pat::Muon* mu){
+    if(sample.find("spring15") != std::string::npos){
+
+        if(
+                e->pt() <= 13. || abs(e->eta() >=2.5) 
+                || abs(e->gsfTrack()->dxy(PV.position()))  >= 0.045 || abs(e->gsfTrack()->dz(PV.position()) >= 0.2)
+                || e->gsfTrack()->hitPattern().numberOfHits(reco::HitPattern::MISSING_INNER_HITS) > 1
+                || e->passConversionVeto()
+
+                || mu->pt() <= 10. || abs(mu->eta()) >= 2.4
+                || abs(mu->innerTrack()->dxy( PV.position() ))  >= 0.045 || abs(mu->innerTrack()->dz(PV.position())) >= 0.2
+                || !utilities::heppymuonID(*mu, "POG_ID_Medium") 
+
+                || deltaR(e->p4(), mu->p4()) <= 0.3
+
+                ) return false;
+
+        std::string path = "";
+        for (unsigned int i = 0, n = triggerBits->size(); i < n; ++i) {
+            if(triggerBits->accept(i)){
+                path += names.triggerName(i);
+                //std::cout <<  names.triggerName(i) << std::endl;
+            }
+        }
+        if(mc){
+            if (path.find("HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v1") != std::string::npos){
+                for (pat::TriggerObjectStandAlone obj : *triggerObjects) {
+                    obj.unpackPathNames(names);
+                    // for (unsigned h = 0; h < obj.filterLabels().size(); ++h) std::cout << obj.filterLabels()[h]  << std::endl;
+                    if( 
+                        deltaR( obj.triggerObject().p4(), mu->p4()) < 0.5 
+                        && std::find(obj.filterLabels().begin(), obj.filterLabels().end(), "hltMu23TrkIsoVVLEle12CaloIdLTrackIdLIsoVLMuonlegL3IsoFiltered23")!=obj.filterLabels().end() 
+                    ){
+                        for (pat::TriggerObjectStandAlone obj_ : *triggerObjects) {
+                            obj_.unpackPathNames(names);
+                            if(
+                                deltaR(obj_.triggerObject().p4(), e->p4()) < 0.5 
+                                && std::find(obj_.filterLabels().begin(), obj_.filterLabels().end(), "hltMu23TrkIsoVVLEle12CaloIdLTrackIdLIsoVLElectronlegTrackIsoFilter")!=obj_.filterLabels().end() 
+                            ) return true;
+                        }
+                        break;
+                    }
+                }
+            }
+            if (path.find("HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_v1") != std::string::npos){
+                for (pat::TriggerObjectStandAlone obj : *triggerObjects) {
+                    obj.unpackPathNames(names);
+                    // for (unsigned h = 0; h < obj.filterLabels().size(); ++h) std::cout << obj.filterLabels()[h]  << std::endl;
+                    if( 
+                        deltaR( obj.triggerObject().p4(), mu->p4()) < 0.5 
+                        && std::find(obj.filterLabels().begin(), obj.filterLabels().end(), "hltMu8TrkIsoVVLEle23CaloIdLTrackIdLIsoVLMuonlegL3IsoFiltered8")!=obj.filterLabels().end() 
+                    ){
+                        for (pat::TriggerObjectStandAlone obj_ : *triggerObjects) {
+                            obj_.unpackPathNames(names);
+                            if(
+                                deltaR(obj_.triggerObject().p4(), e->p4()) < 0.5 
+                                && std::find(obj_.filterLabels().begin(), obj_.filterLabels().end(), "hltMu8TrkIsoVVLEle23CaloIdLTrackIdLIsoVLElectronlegTrackIsoFilter")!=obj_.filterLabels().end() 
+                            ) return true;
+                        }
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
+    if(sample.find("phys14") != std::string::npos){
+        if(
+            e->pt() <= 13. || abs(e->eta() >=2.5) 
+            || abs(e->gsfTrack()->dxy(PV.position()))  >= 0.045 || abs(e->gsfTrack()->dz(PV.position()) >= 0.2)
+
+            || mu->pt() <= 9. || abs(mu->eta()) >= 2.4
+            || abs(mu->innerTrack()->dxy( PV.position() ))  >= 0.045 || abs(mu->innerTrack()->dz(PV.position())) >= 0.2
+            || !utilities::heppymuonID(*mu, "POG_ID_Medium") 
+
+            || deltaR(e->p4(), mu->p4()) <= 0.3
+
+        ) return false;
+
+        std::string path = "";
+        for (unsigned int i = 0, n = triggerBits->size(); i < n; ++i) {
+            if(triggerBits->accept(i)){
+                path += names.triggerName(i);
+                //std::cout <<  names.triggerName(i) << std::endl;
+            }
+        }
+        if(mc){
+            if (path.find("HLT_Mu23_TrkIsoVVL_Ele12_Gsf_CaloId_TrackId_Iso_MediumWP_v1") != std::string::npos){
+                for (pat::TriggerObjectStandAlone obj : *triggerObjects) {
+                    obj.unpackPathNames(names);
+                    // for (unsigned h = 0; h < obj.filterLabels().size(); ++h) std::cout << obj.filterLabels()[h]  << std::endl;
+                    if( 
+                        deltaR( obj.triggerObject().p4(), mu->p4()) < 0.5 
+                        && std::find(obj.filterLabels().begin(), obj.filterLabels().end(), "hltL1Mu12EG7L3IsoMuFiltered23")!=obj.filterLabels().end() 
+                    ){
+                        for (pat::TriggerObjectStandAlone obj_ : *triggerObjects) {
+                            obj_.unpackPathNames(names);
+                            if(
+                                deltaR(obj_.triggerObject().p4(), e->p4()) < 0.5 
+                                && std::find(obj_.filterLabels().begin(), obj_.filterLabels().end(), "hltMu23Ele12GsfTrackIsoLegEle12GsfCaloIdTrackIdIsoMediumWPFilter")!=obj_.filterLabels().end() 
+                            ) return true;
+                        }
+                        break;
+                    }
+                }
+            }
+            if (path.find("HLT_Mu8_TrkIsoVVL_Ele23_Gsf_CaloId_TrackId_Iso_MediumWP_v1") != std::string::npos){
+                for (pat::TriggerObjectStandAlone obj : *triggerObjects) {
+                    obj.unpackPathNames(names);
+                    // for (unsigned h = 0; h < obj.filterLabels().size(); ++h) std::cout << obj.filterLabels()[h]  << std::endl;
+                    if( 
+                        deltaR( obj.triggerObject().p4(), mu->p4()) < 0.5 
+                        && std::find(obj.filterLabels().begin(), obj.filterLabels().end(), "hltL1sL1Mu5EG20ORL1Mu5IsoEG18L3IsoFiltered8")!=obj.filterLabels().end() 
+                    ){
+                        for (pat::TriggerObjectStandAlone obj_ : *triggerObjects) {
+                            obj_.unpackPathNames(names);
+                            if(
+                                deltaR(obj_.triggerObject().p4(), e->p4()) < 0.5 
+                                && std::find(obj_.filterLabels().begin(), obj_.filterLabels().end(), "hltMu8Ele23GsfTrackIsoLegEle23GsfCaloIdTrackIdIsoMediumWPFilter")!=obj_.filterLabels().end() 
+                            ) return true;
+                        }
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
     /*
     if(
         (abs(el->gsfTrack()->dxy(PV.position()))  >= 0.045 || abs(el->gsfTrack()->dz(PV.position())) >= 0.2)  ||
@@ -634,7 +974,7 @@ bool PairBaselineSelection::elmu(const pat::Electron* el,const pat::Muon* mu){
         (mu->pt() <= 9 || abs(mu->eta()) >= 2.4)
     ) return true;
     */
-    return false;   
+    return false;
 }
 
 

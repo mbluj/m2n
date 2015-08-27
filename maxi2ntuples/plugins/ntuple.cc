@@ -55,6 +55,7 @@
 
 #include "SimDataFormats/PileupSummaryInfo/interface/PileupSummaryInfo.h"
 #include "SimDataFormats/GeneratorProducts/interface/LHEEventProduct.h"
+#include "SimDataFormats/GeneratorProducts/interface/GenEventInfoProduct.h"
 
 #include "DataFormats/METReco/interface/PFMET.h"
 #include "DataFormats/METReco/interface/PFMETCollection.h"
@@ -75,6 +76,7 @@
 #include "TLorentzVector.h"
 #include "RConfig.h" 
 #include "TObject.h"
+#include "TH1F.h"
 
 //#include "clasadict.h"
 
@@ -129,12 +131,17 @@ class ntuple : public edm::EDAnalyzer {
     TTree * isZ;
     TTree * trigger;
     TNtuple* mu;
+    TNtuple* mu_;
+    TNtuple* e;
+    TNtuple* e_;
     TNtuple* tau;
+    TNtuple* tau_;
     TNtuple* pair;
     TNtuple* met;
     TNtuple* leadingjet;
     TNtuple* trailingjet;
     TNtuple* jetpair;
+    TH1F* events;
 
 
     int  run, lumi, evt, npv, nup, paircount, npu; 
@@ -239,9 +246,6 @@ ntuple::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 
     if(mc){
 
-        edm::Handle<LHEEventProduct> evnt;
-        iEvent.getByToken(lheprodToken_, evnt);
-
         edm::Handle<PileupSummaryInfoCollection> genPileUpInfos;
         iEvent.getByToken(PileupSummaryInfoToken_, genPileUpInfos);
 
@@ -251,10 +255,17 @@ ntuple::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
             int nPU = pusi.getPU_NumInteractions();
             if(bx == 0)
                 npu = nPU;
-    }
+        }
+        try{
+            edm::Handle<LHEEventProduct> evnt;
+            iEvent.getByToken(lheprodToken_, evnt);
+            const lhef::HEPEUP hepeup_ = evnt->hepeup();
+            nup =  hepeup_.NUP;
+        }
+        catch(const std::exception& e){
+            std::cout << "No lheprod collection"; 
+        }
 
-    const lhef::HEPEUP hepeup_ = evnt->hepeup();
-    nup =  hepeup_.NUP;
     }
 
     evt = iEvent.id().event(); 
@@ -263,6 +274,14 @@ ntuple::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     lumi = iEvent.luminosityBlock();
     npv =  vertices->size();
     event->Fill();
+    events->Fill(1.,1.);
+    if(mc){
+        edm::Handle<GenEventInfoProduct> genEvt;
+        iEvent.getByLabel("generator",genEvt);
+       // event weight
+        double weightevt=genEvt->weight(); 
+        events->Fill(2., weightevt);
+    }
 
     isZtt = isZmt = isZet = isZee = isZmm = isZem = isZEE = isZMM = isZLL = false;
     if(mc){
@@ -316,32 +335,8 @@ ntuple::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
                 isZMM = true;
         }
     }
-    /*
-    for (const pat::CompositeCandidate &lP : *pairs){
-        const pat::Muon *muon  = dynamic_cast<const pat::Muon*>(lP.daughter(0)->masterClone().get());
-    }
-    */
+
     const reco::Candidate *mety = (pairs->front()).daughter(2);
-    const pat::Muon *muon  = dynamic_cast<const pat::Muon*>((pairs->front()).daughter(0)->masterClone().get());
-    float muarr[] = {(float)muon->pt(), (float)muon->eta(),(float) muon->phi(),(float) muon->mass(), (float)muon->charge(),(float)(muon->innerTrack()->dxy( PV.position())),
-           (float)(muon->innerTrack()->dz(PV.position())), (float)sqrt(pow((muon->p4()).pt() + (mety->p4()).pt(),2) - pow((muon->p4() + mety->p4()).pt(),2)),
-            (float)muon->isLooseMuon(), (float)muon->isTightMuon(PV), (float)muon->isHighPtMuon(PV),(float)utilities::heppymuonID(*muon, "POG_ID_Medium"), 
-            (float)utilities::heppymuonID(*muon, "POG_ID_TightNoVtx"),  (float)utilities::relIso(*muon, 0.5)};
-    mu->Fill(muarr);
-
-    const pat::Tau *taon  = dynamic_cast<const pat::Tau*>((pairs->front()).daughter(1)->masterClone().get());
-    float tauarr[] = {(float)taon->pt(), (float)taon->eta(), (float)taon->phi(), (float)taon->mass(), (float)taon->charge(), 
-            (float)sqrt(pow((taon->p4()).pt() + (mety->p4()).pt(),2) - pow((taon->p4() + mety->p4()).pt(),2)),
-            (float)taon->tauID("decayModeFinding"), taon->tauID("decayModeFindingNewDMs"), 
-            (float)taon->tauID("byCombinedIsolationDeltaBetaCorrRaw3Hits"), taon->tauID("byLooseCombinedIsolationDeltaBetaCorr3Hits"), 
-            (float)taon->tauID("byMediumCombinedIsolationDeltaBetaCorr3Hits"), taon->tauID("byTightCombinedIsolationDeltaBetaCorr3Hits"), 
-            (float)taon->tauID("chargedIsoPtSum"), taon->tauID("neutralIsoPtSum"), taon->tauID("puCorrPtSum"),taon->tauID("againstMuonLoose3"),
-            (float)taon->tauID("againstMuonTight3"), taon->tauID("againstElectronVLooseMVA5"), taon->tauID("againstElectronLooseMVA5"), 
-            (float)taon->tauID("againstElectronMediumMVA5"), taon->tauID("againstElectronTightMVA5"), taon->tauID("againstElectronVTightMVA5"), 
-            (float)taon->tauID("byIsolationMVA3newDMwoLTraw"), (float)taon->tauID("byIsolationMVA3oldDMwoLTraw"), taon->tauID("byIsolationMVA3newDMwLTraw"), 
-            (float)taon->tauID("byIsolationMVA3oldDMwLTraw")};
-    tau->Fill(tauarr);
-
 
     const pat::CompositeCandidate& lP = pairs->front();
     float pairarr[] = {lP.userFloat("SVfitMass"),(float)((pairs->front()).daughter(0)->charge() * (pairs->front()).daughter(1)->charge()), 
@@ -349,6 +344,68 @@ ntuple::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
         (float)((pairs->front()).daughter(0)->p4() + (pairs->front()).daughter(1)->p4()).pt(), 
         (float)((pairs->front()).daughter(0)->p4() + (pairs->front()).daughter(1)->p4()).mass() };
     pair->Fill(pairarr);
+
+
+    const reco::Candidate * l1 = pairs->front().daughter(0);;
+    if(l1->isMuon()){
+        const pat::Muon *muon  = dynamic_cast<const pat::Muon*>((pairs->front()).daughter(0)->masterClone().get());
+        float muarr[] = {(float)muon->pt(), (float)muon->eta(),(float) muon->phi(),(float) muon->mass(), (float)muon->charge(),(float)(muon->innerTrack()->dxy( PV.position())),
+               (float)(muon->innerTrack()->dz(PV.position())), (float)sqrt(pow((muon->p4()).pt() + (mety->p4()).pt(),2) - pow((muon->p4() + mety->p4()).pt(),2)),
+                (float)muon->isLooseMuon(), (float)muon->isTightMuon(PV), (float)muon->isHighPtMuon(PV),(float)utilities::heppymuonID(*muon, "POG_ID_Medium"), 
+                (float)utilities::heppymuonID(*muon, "POG_ID_TightNoVtx"),  (float)utilities::relIso(*muon, 0.5)};
+        mu->Fill(muarr);
+    }
+    else if(l1->isElectron()){
+        const pat::Electron *electron = dynamic_cast<const pat::Electron*>((pairs->front()).daughter(0)->masterClone().get());
+        float earr[] = {(float)electron->pt(), (float)electron->eta(),(float)electron->phi(),(float)electron->mass(), (float)electron->charge()};
+        e->Fill(earr);
+    }
+    else{
+        const pat::Tau *taon  = dynamic_cast<const pat::Tau*>((pairs->front()).daughter(1)->masterClone().get());
+        float tauarr[] = {(float)taon->pt(), (float)taon->eta(), (float)taon->phi(), (float)taon->mass(), (float)taon->charge(), 
+                (float)sqrt(pow((taon->p4()).pt() + (mety->p4()).pt(),2) - pow((taon->p4() + mety->p4()).pt(),2)),
+                (float)taon->tauID("decayModeFinding"), taon->tauID("decayModeFindingNewDMs"), 
+                (float)taon->tauID("byCombinedIsolationDeltaBetaCorrRaw3Hits"), taon->tauID("byLooseCombinedIsolationDeltaBetaCorr3Hits"), 
+                (float)taon->tauID("byMediumCombinedIsolationDeltaBetaCorr3Hits"), taon->tauID("byTightCombinedIsolationDeltaBetaCorr3Hits"), 
+                (float)taon->tauID("chargedIsoPtSum"), taon->tauID("neutralIsoPtSum"), taon->tauID("puCorrPtSum"),taon->tauID("againstMuonLoose3"),
+                (float)taon->tauID("againstMuonTight3"), taon->tauID("againstElectronVLooseMVA5"), taon->tauID("againstElectronLooseMVA5"), 
+                (float)taon->tauID("againstElectronMediumMVA5"), taon->tauID("againstElectronTightMVA5"), taon->tauID("againstElectronVTightMVA5"), 
+                (float)taon->tauID("byIsolationMVA3newDMwoLTraw"), (float)taon->tauID("byIsolationMVA3oldDMwoLTraw"), taon->tauID("byIsolationMVA3newDMwLTraw"), 
+                (float)taon->tauID("byIsolationMVA3oldDMwLTraw")};
+        tau_->Fill(tauarr);
+    }
+
+    const reco::Candidate * l2 = pairs->front().daughter(1);
+    if(l2->isMuon()){
+        const pat::Muon *muon  = dynamic_cast<const pat::Muon*>((pairs->front()).daughter(0)->masterClone().get());
+        float muarr[] = {(float)muon->pt(), (float)muon->eta(),(float) muon->phi(),(float) muon->mass(), (float)muon->charge(),(float)(muon->innerTrack()->dxy( PV.position())),
+               (float)(muon->innerTrack()->dz(PV.position())), (float)sqrt(pow((muon->p4()).pt() + (mety->p4()).pt(),2) - pow((muon->p4() + mety->p4()).pt(),2)),
+                (float)muon->isLooseMuon(), (float)muon->isTightMuon(PV), (float)muon->isHighPtMuon(PV),(float)utilities::heppymuonID(*muon, "POG_ID_Medium"), 
+                (float)utilities::heppymuonID(*muon, "POG_ID_TightNoVtx"),  (float)utilities::relIso(*muon, 0.5)};
+        mu_->Fill(muarr);
+    
+    }
+    else if(l2->isElectron()){
+        const pat::Electron *electron = dynamic_cast<const pat::Electron*>((pairs->front()).daughter(1)->masterClone().get());
+        float earr[] = {(float)electron->pt(), (float)electron->eta(),(float)electron->phi(),(float)electron->mass(), (float)electron->charge()};
+        e_->Fill(earr);
+    
+    }
+    else{
+        const pat::Tau *taon  = dynamic_cast<const pat::Tau*>((pairs->front()).daughter(1)->masterClone().get());
+        float tauarr[] = {(float)taon->pt(), (float)taon->eta(), (float)taon->phi(), (float)taon->mass(), (float)taon->charge(), 
+                (float)sqrt(pow((taon->p4()).pt() + (mety->p4()).pt(),2) - pow((taon->p4() + mety->p4()).pt(),2)),
+                (float)taon->tauID("decayModeFinding"), taon->tauID("decayModeFindingNewDMs"), 
+                (float)taon->tauID("byCombinedIsolationDeltaBetaCorrRaw3Hits"), taon->tauID("byLooseCombinedIsolationDeltaBetaCorr3Hits"), 
+                (float)taon->tauID("byMediumCombinedIsolationDeltaBetaCorr3Hits"), taon->tauID("byTightCombinedIsolationDeltaBetaCorr3Hits"), 
+                (float)taon->tauID("chargedIsoPtSum"), taon->tauID("neutralIsoPtSum"), taon->tauID("puCorrPtSum"),taon->tauID("againstMuonLoose3"),
+                (float)taon->tauID("againstMuonTight3"), taon->tauID("againstElectronVLooseMVA5"), taon->tauID("againstElectronLooseMVA5"), 
+                (float)taon->tauID("againstElectronMediumMVA5"), taon->tauID("againstElectronTightMVA5"), taon->tauID("againstElectronVTightMVA5"), 
+                (float)taon->tauID("byIsolationMVA3newDMwoLTraw"), (float)taon->tauID("byIsolationMVA3oldDMwoLTraw"), taon->tauID("byIsolationMVA3newDMwLTraw"), 
+                (float)taon->tauID("byIsolationMVA3oldDMwLTraw")};
+        tau->Fill(tauarr);
+    }
+
 
     float metarr[] = {(float)mety->px(), (float)mety->pt(), (float)mety->phi(),// mety->sumEt(),
         lP.userFloat("MEt_cov00"), lP.userFloat("MEt_cov01"), lP.userFloat("MEt_cov10"), lP.userFloat("MEt_cov11") };
@@ -446,8 +503,13 @@ void ntuple::beginJob(){
 
 
    mu = theFileService->make<TNtuple>("mu", "mu", "pt:eta:phi:mass:charge:d0:dz:mt:isLooseMuon:isTightMuon:isHighPtMuon:isMediumMuon:isTightnovtxMuon:iso");
+   mu_ = theFileService->make<TNtuple>("mu_", "mu_", "pt:eta:phi:mass:charge:d0:dz:mt:isLooseMuon:isTightMuon:isHighPtMuon:isMediumMuon:isTightnovtxMuon:iso");
+
+   e = theFileService->make<TNtuple>("e", "e", "pt:eta:phi:mass:charge");
+   e_ = theFileService->make<TNtuple>("e_", "e_", "pt:eta:phi:mass:charge");
 
    tau = theFileService->make<TNtuple>("tau", "tau", "pt:eta:phi:mass:charge:mt:decayModeFinding:decayModeFindingNewDMs:byCombinedIsolationDeltaBetaCorrRaw3Hits:lbyCombinedIsolationDeltaBetaCorrRaw3Hits:mbyCombinedIsolationDeltaBetaCorrRaw3Hits:tbyCombinedIsolationDeltaBetaCorrRaw3Hits:chargedIsoPtSum:neutralIsoPtSum:puCorrPtSum:againstMuonLoose3:againstMuonTight3:againstElectronVLooseMVA5:againstElectronLooseMVA5:againstElectronMediumMVA5:againstElectronTightMVA5:againstElectronVTightMVA5:byIsolationMVA3newDMwoLTraw:byIsolationMVA3oldDMwoLTraw:byIsolationMVA3newDMwLTraw:byIsolationMVA3oldDMwLTraw");
+   tau_ = theFileService->make<TNtuple>("tau_", "tau_", "pt:eta:phi:mass:charge:mt:decayModeFinding:decayModeFindingNewDMs:byCombinedIsolationDeltaBetaCorrRaw3Hits:lbyCombinedIsolationDeltaBetaCorrRaw3Hits:mbyCombinedIsolationDeltaBetaCorrRaw3Hits:tbyCombinedIsolationDeltaBetaCorrRaw3Hits:chargedIsoPtSum:neutralIsoPtSum:puCorrPtSum:againstMuonLoose3:againstMuonTight3:againstElectronVLooseMVA5:againstElectronLooseMVA5:againstElectronMediumMVA5:againstElectronTightMVA5:againstElectronVTightMVA5:byIsolationMVA3newDMwoLTraw:byIsolationMVA3oldDMwoLTraw:byIsolationMVA3newDMwLTraw:byIsolationMVA3oldDMwLTraw");
 
    pair =  theFileService->make<TNtuple>("pair", "pair", "svfit:diq:pth:ptvis:m_vis");
 
@@ -458,6 +520,8 @@ void ntuple::beginJob(){
    trailingjet =  theFileService->make<TNtuple>("trailingjet", "trailingjet", "pt:eta:phi:id:bptag:csvtag:bjet:jecfactor:jetlooseID:pujetetaid");
 
    jetpair = theFileService->make<TNtuple>("jetpair", "jetpair", "mass:pt:phi:deta:dphi:njetingap:hdijetphi:visjeteta");
+
+   events = theFileService->make<TH1F>("hvar","hvar title",10,0,10);
 
 }
 

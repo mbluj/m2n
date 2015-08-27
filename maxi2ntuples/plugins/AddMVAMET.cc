@@ -171,7 +171,28 @@ AddMVAMET::produce(edm::Event& iEvent, const edm::EventSetup& iSetup)
 
         for (const pat::CompositeCandidate &lP : *pairs) {
         
-            pat::CompositeCandidate pair(lP);
+            const reco::Candidate * l1, *l2; 
+            l1 = lP.daughter(0); l2 = lP.daughter(1);
+            pat::CompositeCandidate pair;
+            //set up proper order of pair: mu first in mutau and muel, el first in eltau 
+            if(l2->isMuon()){
+                pair.addDaughter(*l2);
+                pair.addDaughter(*l1);
+            } 
+            else if(l2->isElectron()){
+                if(l1->isMuon()){
+                    pair.addDaughter(*l1);
+                    pair.addDaughter(*l2);
+                
+                }else{
+                    pair.addDaughter(*l2);
+                    pair.addDaughter(*l1);
+                }
+            }
+            else{
+                pair.addDaughter(*l1);
+                pair.addDaughter(*l2);
+            }
             pair.addDaughter(met);
             AddFourMomenta addP4;
             addP4.set(pair);

@@ -44,6 +44,7 @@
 <use name="RecoTracker/TkTrackingRegions"/>
 <use name="SimTracker/TrackerHitAssociation"/>
 <use name="SimDataFormats/TrackerDigiSimLink"/>
+<use name="SimDataFormats/GeneratorProducts"/>
 <use name="CommonTools/UtilAlgos"/>
 <use name="PhysicsTools/UtilAlgos"/>
 <use name="FWCore/PluginManager"/>
