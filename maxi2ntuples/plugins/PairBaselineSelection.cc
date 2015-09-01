@@ -74,8 +74,27 @@
 #include "CondFormats/L1TObjects/interface/L1GtTriggerMenuFwd.h"
 #include "CondFormats/L1TObjects/interface/L1GtTriggerMenu.h"
 #include "CondFormats/DataRecord/interface/L1GtTriggerMenuRcd.h"
-
-
+#include "DataFormats/TrackReco/interface/Track.h"
+#include "DataFormats/GsfTrackReco/interface/GsfTrack.h"
+#include "DataFormats/PatCandidates/interface/Electron.h"
+#include "FWCore/ParameterSet/interface/FileInPath.h"
+#include "TMath.h"
+#include "TMVA/MethodBDT.h"
+#include "FWCore/Framework/interface/Event.h"
+#include "FWCore/Framework/interface/MakerMacros.h"
+#include "FWCore/ParameterSet/interface/ParameterSet.h"
+#include "DataFormats/EgammaCandidates/interface/GsfElectron.h"
+#include "DataFormats/PatCandidates/interface/Electron.h"
+#include "DataFormats/Candidate/interface/Candidate.h"
+#include "DataFormats/HepMCCandidate/interface/GenParticle.h"
+#include "DataFormats/Common/interface/ValueMap.h"
+#include "DataFormats/VertexReco/interface/VertexFwd.h"
+#include "DataFormats/VertexReco/interface/Vertex.h"
+#include "DataFormats/EgammaCandidates/interface/ConversionFwd.h"
+#include "DataFormats/EgammaCandidates/interface/Conversion.h"
+#include "RecoEgamma/EgammaTools/interface/ConversionTools.h"
+#include "FWCore/ServiceRegistry/interface/Service.h"
+#include "CommonTools/UtilAlgos/interface/TFileService.h"
 //
 // class declaration
 //
@@ -93,7 +112,7 @@ class PairBaselineSelection : public edm::EDProducer {
       virtual void endJob() override;
 
       bool tautau(const reco::Vertex &, edm::Handle<edm::TriggerResults>&, edm::Handle<pat::TriggerObjectStandAloneCollection>&, edm::Handle<pat::PackedTriggerPrescales>&,const edm::TriggerNames &  ,const pat::Tau*, const pat::Tau*);
-      bool mutau(const reco::Vertex &,const L1GtTriggerMenu*, edm::Handle<edm::TriggerResults>&, edm::Handle<pat::TriggerObjectStandAloneCollection>&, edm::Handle<pat::PackedTriggerPrescales>&, const edm::TriggerNames &, const pat::Muon*, const pat::Tau*);
+      bool mutau(const reco::Vertex &, edm::Handle<edm::TriggerResults>&, edm::Handle<pat::TriggerObjectStandAloneCollection>&, edm::Handle<pat::PackedTriggerPrescales>&, const edm::TriggerNames &, const pat::Muon*, const pat::Tau*);
       bool etau(const reco::Vertex &, edm::Handle<edm::TriggerResults>&, edm::Handle<pat::TriggerObjectStandAloneCollection>&, edm::Handle<pat::PackedTriggerPrescales>&,const edm::TriggerNames &,const pat::Electron*, const pat::Tau*);
       bool mumu(const pat::Muon*, const pat::Muon*);
       bool ee(const pat::Electron*, const pat::Electron*);
@@ -108,12 +127,14 @@ class PairBaselineSelection : public edm::EDProducer {
       edm::EDGetTokenT<pat::CompositeCandidateCollection> PairToken_;
       edm::EDGetTokenT<reco::VertexCollection> vtxToken_;
       edm::EDGetTokenT<pat::MuonCollection> muonToken_;
-      edm::EDGetTokenT<pat::ElectronCollection> electronToken_;
+      //edm::EDGetTokenT<pat::ElectronCollection> electronToken_;
       edm::EDGetTokenT<edm::TriggerResults> triggerBits_;
       edm::EDGetTokenT<pat::TriggerObjectStandAloneCollection> triggerObjects_;
       edm::EDGetTokenT<pat::PackedTriggerPrescales> triggerPrescales_;
       const bool mc;
       const std::string sample;
+      edm::EDGetToken electronToken_;
+      edm::EDGetTokenT<edm::ValueMap<bool> > eleTightIdMapToken_;
 };
 
 //
@@ -132,14 +153,18 @@ PairBaselineSelection::PairBaselineSelection(const edm::ParameterSet& iConfig):
     PairToken_(consumes<pat::CompositeCandidateCollection>(iConfig.getParameter<edm::InputTag>("pairs"))),
     vtxToken_(consumes<reco::VertexCollection>(iConfig.getParameter<edm::InputTag>("vertices"))),
     muonToken_(consumes<pat::MuonCollection>(iConfig.getParameter<edm::InputTag>("muons"))),
-    electronToken_(consumes<pat::ElectronCollection>(iConfig.getParameter<edm::InputTag>("electrons"))),
+//    electronToken_(consumes<pat::ElectronCollection>(iConfig.getParameter<edm::InputTag>("electrons"))),
     triggerBits_(consumes<edm::TriggerResults>(iConfig.getParameter<edm::InputTag>("bits"))),
     triggerObjects_(consumes<pat::TriggerObjectStandAloneCollection>(iConfig.getParameter<edm::InputTag>("objects"))),
     triggerPrescales_(consumes<pat::PackedTriggerPrescales>(iConfig.getParameter<edm::InputTag>("prescales"))),
     mc(iConfig.getParameter<bool>("mc")),
-    sample(iConfig.getParameter<std::string>("sample"))
+    sample(iConfig.getParameter<std::string>("sample")),
+    eleTightIdMapToken_(consumes<edm::ValueMap<bool> >(iConfig.getParameter<edm::InputTag>("eleTightIdMap")))
     
 {
+    electronToken_ = mayConsume<edm::View<reco::GsfElectron> >
+        (iConfig.getParameter<edm::InputTag>
+         ("electrons"));
    //register your products
 /* Examples
    produces<ExampleData2>();
@@ -200,14 +225,16 @@ PairBaselineSelection::produce(edm::Event& iEvent, const edm::EventSetup& iSetup
     edm::Handle<pat::ElectronCollection> electrons;
     iEvent.getByToken(electronToken_, electrons);
 */
+    edm::Handle<edm::View<reco::GsfElectron> > electrons;
+    iEvent.getByToken(electronToken_,electrons);
+    edm::Handle<edm::ValueMap<bool> > tight_id_decisions;
+    iEvent.getByToken(eleTightIdMapToken_,tight_id_decisions);
+
+
     edm::Handle<pat::CompositeCandidateCollection> leptonPair;
     iEvent.getByToken(PairToken_, leptonPair);
     if (!leptonPair.isValid()) return;
 
-
-      edm::ESHandle<L1GtTriggerMenu> menuRcd;
-      iSetup.get<L1GtTriggerMenuRcd>().get(menuRcd) ;
-      const L1GtTriggerMenu* menu = menuRcd.product();
 
 
 
@@ -233,22 +260,38 @@ PairBaselineSelection::produce(edm::Event& iEvent, const edm::EventSetup& iSetup
         else if(l2->isElectron()){
             //std::cout << "muon-electron channel" <<std::endl;
             const pat::Muon *mu  = dynamic_cast<const pat::Muon*>(l1->masterClone().get());
-            const pat::Electron *el = dynamic_cast<const pat::Electron*>(l2->masterClone().get());
-            pass =  emu(PV, triggerBits,triggerObjects,  triggerPrescales, names, el, mu);
+            const pat::Electron *e = dynamic_cast<const pat::Electron*>(l2->masterClone().get());
+            for (size_t i = 0; i < electrons->size(); ++i){
+                 const auto el = electrons->ptrAt(i);
+                 if(el->p4() == e->p4())
+                    if((*tight_id_decisions)[el]){
+                        pass =  emu(PV, triggerBits,triggerObjects,  triggerPrescales, names, e, mu);
+                        if (pass)
+                            break;
+                    }
+            }
         }
         else {
             //std::cout << "muon-tau channell" <<std::endl;
             const pat::Muon *mu  = dynamic_cast<const pat::Muon*>(l1->masterClone().get());
             const pat::Tau *tau  = dynamic_cast<const pat::Tau*>(l2->masterClone().get());
-            pass = mutau(PV, menu ,triggerBits,triggerObjects,  triggerPrescales, names,  mu,  tau);
+            pass = mutau(PV, triggerBits,triggerObjects,  triggerPrescales, names,  mu,  tau);
         }
     }
     else if(l1->isElectron()){
         if (l2->isMuon()){
             //std::cout << "muon-electron channel" <<std::endl;
-            const pat::Electron *el = dynamic_cast<const pat::Electron*>(l1->masterClone().get());
+            const pat::Electron *e = dynamic_cast<const pat::Electron*>(l1->masterClone().get());
             const pat::Muon *mu = dynamic_cast<const pat::Muon*>(l2->masterClone().get());
-            pass = emu(PV, triggerBits, triggerObjects, triggerPrescales, names, el, mu);
+            for (size_t i = 0; i < electrons->size(); ++i){
+                 const auto el = electrons->ptrAt(i);
+                 if(el->p4() == e->p4())
+                    if((*tight_id_decisions)[el]){
+                        pass =  emu(PV, triggerBits,triggerObjects,  triggerPrescales, names, e, mu);
+                        if (pass)
+                            break;
+                    }
+            }
         }
         else if(l2->isElectron()){
             //std::cout << "electron-electron channel" <<std::endl;
@@ -258,9 +301,18 @@ PairBaselineSelection::produce(edm::Event& iEvent, const edm::EventSetup& iSetup
         }
         else {
             //std::cout << "electron-tau channel" <<std::endl;
-            const pat::Electron *el = dynamic_cast<const pat::Electron*>(l1->masterClone().get());
+            const pat::Electron *e = dynamic_cast<const pat::Electron*>(l1->masterClone().get());
             const pat::Tau *tau  = dynamic_cast<const pat::Tau*>(l2->masterClone().get());
-            pass = etau(PV, triggerBits, triggerObjects, triggerPrescales,names ,el,tau);
+            for (size_t i = 0; i < electrons->size(); ++i){
+                 const auto el = electrons->ptrAt(i);
+                 if(el->p4() == e->p4())
+                    if((*tight_id_decisions)[el]){
+                        pass = etau(PV, triggerBits, triggerObjects, triggerPrescales,names ,e,tau);
+                        if (pass)
+                            break;
+                    }
+            }
+            //std::cout << *el << std::endl;
         }
     }
     else {
@@ -268,13 +320,18 @@ PairBaselineSelection::produce(edm::Event& iEvent, const edm::EventSetup& iSetup
             //std::cout << "muon-tau channel" <<std::endl;
             const pat::Tau *tau  = dynamic_cast<const pat::Tau*>(l1->masterClone().get());
             const pat::Muon *mu = dynamic_cast<const pat::Muon*>(l2->masterClone().get());
-            pass = mutau(PV, menu,triggerBits,triggerObjects,  triggerPrescales, names,  mu,  tau);
+            pass = mutau(PV,triggerBits,triggerObjects,  triggerPrescales, names,  mu,  tau);
         }
         else if(l2->isElectron()){
             //std::cout << "electron-tau channel" <<std::endl;
             const pat::Tau *tau  = dynamic_cast<const pat::Tau*>(l1->masterClone().get());
-            const pat::Electron *el = dynamic_cast<const pat::Electron*>(l2->masterClone().get());
-            pass = etau(PV, triggerBits, triggerObjects, triggerPrescales,names ,el,tau);
+            const pat::Electron *e = dynamic_cast<const pat::Electron*>(l2->masterClone().get());
+            for (size_t i = 0; i < electrons->size(); ++i){
+                 const auto el = electrons->ptrAt(i);
+                 if(el->p4() == e->p4())
+                    if((*tight_id_decisions)[el])
+                        pass = etau(PV, triggerBits, triggerObjects, triggerPrescales,names ,e,tau);
+            }
         }
         else {
             //std::cout << "tau-tau channel" <<std::endl;
@@ -311,16 +368,14 @@ bool PairBaselineSelection::tautau(const reco::Vertex &PV, edm::Handle<edm::Trig
     pat::PackedCandidate const* packedTrailTauCand = dynamic_cast<pat::PackedCandidate const*>(tau_->leadChargedHadrCand().get());
     if(sample.find("spring15") != std::string::npos){
         if( 
-            tau_->tauID("decayModeFindingNewDMs") <= 0.5 || 
-            abs(packedLeadTauCand->dz()) >= 0.2 ||
-            //tau->vertex().z() != PV.z() ||
+            tau->tauID("decayModeFindingNewDMs") <= 0.5 || 
+            fabs(packedLeadTauCand->dz()) >= 0.2 ||
             tau->pt() <= 45. ||
-            abs(tau->eta()) >= 2.1  ||
+            fabs(tau->eta()) >= 2.1  ||
             tau_->tauID("decayModeFindingNewDMs") <= 0.5 || 
-            abs(packedTrailTauCand->dz()) >= 0.2 ||
-            //tau_->vertex().z() != PV.z() ||
+            fabs(packedTrailTauCand->dz()) >= 0.2 ||
             tau_->pt() <= 45. || 
-            abs(tau_->eta()) >= 3.1 
+            fabs(tau_->eta()) >= 2.1 
 
             || deltaR(tau->p4(), tau_->p4()) <= 0.5
 
@@ -333,7 +388,7 @@ bool PairBaselineSelection::tautau(const reco::Vertex &PV, edm::Handle<edm::Trig
             }
         }
 
-        if (path.find("HLT_DoubleMediumIsoPFTau40_Trk1_eta2p1_Reg_v1") != std::string::npos){ 
+        if (path.find("HLT_DoubleMediumIsoPFTau40_Trk1_eta2p1_Reg_v1") != std::string::npos){
             for (pat::TriggerObjectStandAlone obj : *triggerObjects) {
                 obj.unpackPathNames(names);
                 // for (unsigned h = 0; h < obj.filterLabels().size(); ++h) std::cout << obj.filterLabels()[h]  << std::endl;
@@ -345,12 +400,12 @@ bool PairBaselineSelection::tautau(const reco::Vertex &PV, edm::Handle<edm::Trig
                         obj_.unpackPathNames(names);
                         if(
                             deltaR(obj_.triggerObject().p4(), tau_->p4()) < 0.5 
-                            && (std::find(obj.filterLabels().begin(), obj.filterLabels().end(), "hltDoublePFTau40TrackPt1MediumIsolationDz02Reg")!=obj.filterLabels().end())
+                            && (std::find(obj_.filterLabels().begin(), obj_.filterLabels().end(), "hltDoublePFTau40TrackPt1MediumIsolationDz02Reg")!=obj_.filterLabels().end())
                         ) return true;
                     }
                     break;
                 }
-            } 
+            }
         }
     }
 
@@ -358,14 +413,14 @@ bool PairBaselineSelection::tautau(const reco::Vertex &PV, edm::Handle<edm::Trig
         if( 
             (tau->tauID("decayModeFindingNewDMs") <= 0.5 && tau->tauID("decayModeFinding") <= 0.5)
             //|| tau->vertex().z() != PV.z()
-            || abs(tau->vertex().z() - PV.z()) < 0.2 
+            || fabs(tau->vertex().z() - PV.z()) < 0.2 
             || tau->pt() <= 45. 
-            || abs(tau->eta()) >= 2.1 
+            || fabs(tau->eta()) >= 2.1 
 
             || (tau_->tauID("decayModeFindingNewDMs") <= 0.5 && tau_->tauID("decayModeFinding") <= 0.5)
             || tau_->vertex().z() != PV.z()
             ||tau_->pt() <= 45. 
-            || abs(tau_->eta()) >= 2.1 
+            || fabs(tau_->eta()) >= 2.1 
 
             || deltaR(tau->p4(), tau_->p4()) <= 0.5
 
@@ -404,7 +459,7 @@ bool PairBaselineSelection::tautau(const reco::Vertex &PV, edm::Handle<edm::Trig
 
 
 
-bool PairBaselineSelection::mutau(const reco::Vertex &PV, const L1GtTriggerMenu* menu, edm::Handle<edm::TriggerResults>& triggerBits, edm::Handle<pat::TriggerObjectStandAloneCollection>& triggerObjects, edm::Handle<pat::PackedTriggerPrescales>& triggerPrescales,const edm::TriggerNames &names, const pat::Muon* mu, const pat::Tau* tau){
+bool PairBaselineSelection::mutau(const reco::Vertex &PV, edm::Handle<edm::TriggerResults>& triggerBits, edm::Handle<pat::TriggerObjectStandAloneCollection>& triggerObjects, edm::Handle<pat::PackedTriggerPrescales>& triggerPrescales,const edm::TriggerNames &names, const pat::Muon* mu, const pat::Tau* tau){
 
     pat::PackedCandidate const* packedLeadTauCand = dynamic_cast<pat::PackedCandidate const*>(tau->leadChargedHadrCand().get());
     //Phys'14 MC samples
@@ -412,21 +467,22 @@ bool PairBaselineSelection::mutau(const reco::Vertex &PV, const L1GtTriggerMenu*
         if(
             //mu
             mu->pt() <= 18. ||
-            abs(mu->eta()) >= 2.1 ||
-            abs(mu->innerTrack()->dxy( PV.position()) )  >= 0.045 || 
-            abs(mu->innerTrack()->dz(PV.position())) >= 0.2  
+            fabs(mu->eta()) >= 2.1 ||
+            fabs(mu->innerTrack()->dxy( PV.position()) )  >= 0.045 || 
+            fabs(mu->innerTrack()->dz(PV.position())) >= 0.2  
             || !mu->isMediumMuon()
 
-            //!utilities::heppymuonID(*mu, "POG_ID_Medium") || 
+            //|| !utilities::heppymuonID(*mu, "POG_ID_Medium") 
             //utilities::relIso(*mu, 0.5) >= 0.1 || 
             
             //tau
             || tau->pt() <= 20. 
-            || abs(tau->eta()) >= 2.3 
+            || fabs(tau->eta()) >= 2.3 
             || (tau->tauID("decayModeFindingNewDMs") <= 0.5 && tau->tauID("decayModeFinding") <= 0.5)
- //           || abs(tau->vertex().z() - PV.z()) > 0.2 
+            || fabs(tau->leadCand()->vertex().z()-PV.z()) > 0.2
+            //|| packedLeadTauCand->vertex().z() != PV.z() 
 
-            //abs(packedLeadTauCand->dz()) >= 0.2
+            //fabs(packedLeadTauCand->dz()) >= 0.2
             
             || deltaR(mu->p4(), tau->p4()) <=0.5
         ) return false;
@@ -452,8 +508,10 @@ bool PairBaselineSelection::mutau(const reco::Vertex &PV, const L1GtTriggerMenu*
                         obj_.unpackPathNames(names);
                         if(
                             deltaR(obj_.triggerObject().p4(), tau->p4()) < 0.5 && 
-                            (std::find(obj_.filterLabels().begin(), obj_.filterLabels().end(), "hltL1sMu16erTauJet20er ")!=obj_.filterLabels().end() ||
-                            std::find(obj_.filterLabels().begin(), obj_.filterLabels().end(), "hltOverlapFilterIsoMu17LooseIsoPFTau20")!=obj_.filterLabels().end() )
+                            (
+                            //std::find(obj_.filterLabels().begin(), obj_.filterLabels().end(), "hltL1sMu16erTauJet20er ")!=obj_.filterLabels().end() 
+                             std::find(obj_.filterLabels().begin(), obj_.filterLabels().end(), "hltOverlapFilterIsoMu17LooseIsoPFTau20")!=obj_.filterLabels().end() 
+                            )
                         ) return true;
                     }
                     break;
@@ -476,63 +534,58 @@ bool PairBaselineSelection::mutau(const reco::Vertex &PV, const L1GtTriggerMenu*
         if(
             //mu
             mu->pt() <= 18.
-            || abs(mu->eta()) >= 2.1 
-            || abs(mu->muonBestTrack()->dxy( PV.position()) )  >= 0.045 
-            || abs(mu->muonBestTrack()->dz(PV.position())) >= 0.2  
+            || fabs(mu->eta()) >= 2.1 
+            || fabs(mu->muonBestTrack()->dxy( PV.position()) )  >= 0.045 
+            || fabs(mu->muonBestTrack()->dz(PV.position())) >= 0.2  
             || !mu->isMediumMuon()
             //!utilities::heppymuonID(*mu, "POG_ID_Medium") || 
             //utilities::relIso(*mu, 0.5) >= 0.1 || 
             
             //tau
             || tau->pt() <= 20. 
-            || abs(tau->eta()) >= 2.3 
+            || fabs(tau->eta()) >= 2.3 
             || tau->tauID("decayModeFindingNewDMs") <= 0.5 
-            || abs(packedLeadTauCand->dz()) >= 0.2
-            //abs(tau->vertex().z() - PV.z()) < 0.2 
+            || fabs(packedLeadTauCand->dz()) >= 0.2
             || abs(tau->charge()) != 1
 
             || deltaR(mu->p4(), tau->p4()) <= 0.5 
         ) return false;
 
-        std::string path = "";
+        std::string hlta = mc ? "HLT_IsoMu17_eta2p1_LooseIsoPFTau20_v1" : "HLT_IsoMu17_eta2p1_LooseIsoPFTau20_v2";
+        std::string hltb = mc ? "HLT_IsoMu24_eta2p1_v1" : "HLT_IsoMu24_eta2p1_v2";
         for (unsigned int i = 0, n = triggerBits->size(); i < n; ++i) {
             if(triggerBits->accept(i)){
-                path += names.triggerName(i);
                 //std::cout <<  names.triggerName(i) << std::endl;
-            }
-        }
-
-        std::string hlta = mc ? "HLT_IsoMu17_eta2p1_LooseIsoPFTau20_v1" : "HLT_IsoMu17_eta2p1_LooseIsoPFTau20_v2";
-        std::string hltb = mc ? "HLT_IsoMu27_v1" : "HLT_IsoMu24_eta2p1_v2";
-        if (path.find(hlta) != std::string::npos){
-            for (pat::TriggerObjectStandAlone obj : *triggerObjects) {
-                obj.unpackPathNames(names);
-                // for (unsigned h = 0; h < obj.filterLabels().size(); ++h) std::cout << obj.filterLabels()[h]  << std::endl;
-                if( 
-                    deltaR( obj.triggerObject().p4(), mu->p4()) < 0.5 
-                    && std::find(obj.filterLabels().begin(), obj.filterLabels().end(), "hltOverlapFilterIsoMu17LooseIsoPFTau20")!=obj.filterLabels().end() 
-                    && std::find(obj.filterLabels().begin(), obj.filterLabels().end(), "hltL3crIsoL1sMu16erTauJet20erL1f0L2f10QL3f17QL3trkIsoFiltered0p09 ")!=obj.filterLabels().end() 
-                ){
-                    for (pat::TriggerObjectStandAlone obj_ : *triggerObjects) {
-                        obj_.unpackPathNames(names);
+                if (names.triggerName(i) == hlta){
+                    for (pat::TriggerObjectStandAlone obj : *triggerObjects) {
+                        obj.unpackPathNames(names);
+                        // for (unsigned h = 0; h < obj.filterLabels().size(); ++h) std::cout << obj.filterLabels()[h]  << std::endl;
+                        if( 
+                            deltaR( obj.triggerObject().p4(), mu->p4()) < 0.5 
+                            && (std::find(obj.filterLabels().begin(), obj.filterLabels().end(), "hltOverlapFilterIsoMu17LooseIsoPFTau20")!=obj.filterLabels().end() 
+                            || std::find(obj.filterLabels().begin(), obj.filterLabels().end(), "hltL3crIsoL1sMu16erTauJet20erL1f0L2f10QL3f17QL3trkIsoFiltered0p09 ")!=obj.filterLabels().end() )
+                        ){
+                            for (pat::TriggerObjectStandAlone obj_ : *triggerObjects) {
+                                obj_.unpackPathNames(names);
+                                if(
+                                    deltaR(obj_.triggerObject().p4(), tau->p4()) < 0.5 
+                                    && (std::find(obj_.filterLabels().begin(), obj_.filterLabels().end(), "hltPFTau20TrackLooseIsoAgainstMuon")!=obj_.filterLabels().end() 
+                                    || std::find(obj_.filterLabels().begin(), obj_.filterLabels().end(), "hltOverlapFilterIsoMu17LooseIsoPFTau20")!=obj_.filterLabels().end() )
+                                ) return true;
+                            }
+                        }
+                    } 
+                }
+                if (names.triggerName(i) == hltb){
+                    for (pat::TriggerObjectStandAlone obj : *triggerObjects) {
+                        obj.unpackPathNames(names);
                         if(
-                            deltaR(obj_.triggerObject().p4(), tau->p4()) < 0.5 
-                            && std::find(obj_.filterLabels().begin(), obj_.filterLabels().end(), "hltPFTau20TrackLooseIsoAgainstMuon")!=obj_.filterLabels().end() 
-                            && std::find(obj_.filterLabels().begin(), obj_.filterLabels().end(), "hltOverlapFilterIsoMu17LooseIsoPFTau20")!=obj_.filterLabels().end() 
+                            deltaR( obj.triggerObject().p4(), mu->p4()) < 0.5 
+                            && std::find(obj.filterLabels().begin(), obj.filterLabels().end(), "hltL3crIsoL1sMu20Eta2p1L1f0L2f10QL3f24QL3trkIsoFiltered0p09")!=obj.filterLabels().end() 
+                            && mu->pt() > 25.
                         ) return true;
                     }
-                    break;
                 }
-            } 
-        }
-        if (path.find(hltb) != std::string::npos  ){
-            for (pat::TriggerObjectStandAlone obj : *triggerObjects) {
-                obj.unpackPathNames(names);
-                if(
-                    deltaR( obj.triggerObject().p4(), mu->p4()) < 0.5 
-                    && std::find(obj.filterLabels().begin(), obj.filterLabels().end(), "hltL3crIsoL1sMu20Eta2p1L1f0L2f10QL3f24QL3trkIsoFiltered0p09")!=obj.filterLabels().end() 
-                    && mu->pt() > 25.
-                ) return true;
             }
         }
     }
@@ -544,33 +597,33 @@ bool PairBaselineSelection::mutau(const reco::Vertex &PV, const L1GtTriggerMenu*
     // Second lepton veto
     /*
     for (const pat::Muon &vetomu : *muons) {
-        if (abs(vetomu.px() - mu->px()) +  abs(vetomu.py() - mu->py()) + abs(vetomu.pz() - mu->pz()) > 0.01 && !vetomu.innerTrack().isNull()){
+        if (fabs(vetomu.px() - mu->px()) +  fabs(vetomu.py() - mu->py()) + fabs(vetomu.pz() - mu->pz()) > 0.01 && !vetomu.innerTrack().isNull()){
             if (vetomu.charge() != mu->charge()) {
-                if (vetomu.pt() > 15 && abs(vetomu.eta()) < 2.4  && 
+                if (vetomu.pt() > 15 && fabs(vetomu.eta()) < 2.4  && 
                     vetomu.isGlobalMuon() && vetomu.isTrackerMuon() && 
                     vetomu.isPFMuon() &&
-                    abs(vetomu.innerTrack()->dz( PV.position()) ) < 0.2 &&
-                    abs(vetomu.innerTrack()->dxy( PV.position()) ) < 0.045  &&
+                    fabs(vetomu.innerTrack()->dz( PV.position()) ) < 0.2 &&
+                    fabs(vetomu.innerTrack()->dxy( PV.position()) ) < 0.045  &&
                     utilities::relIso(vetomu, 0.5) < 0.3)
                     continue;
             }
             // Third lepton veto : next muon veto
             if (vetomu.pt() > 10           &&
-                abs(vetomu.eta()) < 2.4    &&
+                fabs(vetomu.eta()) < 2.4    &&
                 utilities::heppymuonID(vetomu, "POG_ID_Medium")   &&
-                abs(vetomu.innerTrack()->dxy( PV.position())) < 0.045  &&
-                abs(vetomu.innerTrack()->dz( PV.position())) < 0.2   &&
+                fabs(vetomu.innerTrack()->dxy( PV.position())) < 0.045  &&
+                fabs(vetomu.innerTrack()->dz( PV.position())) < 0.2   &&
                 utilities::relIso(vetomu, 0.5) < 0.3)
                 continue;
         }
     }
     // Third lepton veto: Next electron veto
     for (const pat::Electron &vetoel : *electrons) {
-        if (!vetoel.gsfTrack().isNull() &&  abs(vetoel.px() - mu->px()) +  abs(vetoel.py() - mu->py()) + abs(vetoel.pz() - mu->pz()) > 0.01){
+        if (!vetoel.gsfTrack().isNull() &&  fabs(vetoel.px() - mu->px()) +  fabs(vetoel.py() - mu->py()) + fabs(vetoel.pz() - mu->pz()) > 0.01){
             if (vetoel.pt() > 10                                     &&
-                abs(vetoel.eta()) < 2.5                              &&
-                abs(vetoel.gsfTrack()->dxy(PV.position())) < 0.045                          &&
-                abs(vetoel.gsfTrack()->dz(PV.position())) < 0.2                             &&
+                fabs(vetoel.eta()) < 2.5                              &&
+                fabs(vetoel.gsfTrack()->dxy(PV.position())) < 0.045                          &&
+                fabs(vetoel.gsfTrack()->dz(PV.position())) < 0.2                             &&
            //  FIXME    vetoel.cutBasedId('POG_PHYS14_25ns_v1_Veto')       &&
                 utilities::relIso(vetoel, 0.5) < 0.3 )
                     continue;
@@ -584,15 +637,15 @@ bool PairBaselineSelection::etau(const reco::Vertex &PV, edm::Handle<edm::Trigge
 
     if(sample.find("spring15") != std::string::npos){
         if(
-            e->pt() <= 23. || abs(e->eta()) >= 2.1       
-            || abs(e->gsfTrack()->dxy(PV.position()))  >= 0.045 || abs(e->gsfTrack()->dz(PV.position())) >= 0.2
+            e->pt() <= 23. || fabs(e->eta()) >= 2.1       
+            || fabs(e->gsfTrack()->dxy(PV.position()))  >= 0.045 || fabs(e->gsfTrack()->dz(PV.position())) >= 0.2
             || e->gsfTrack()->hitPattern().numberOfHits(reco::HitPattern::MISSING_INNER_HITS) > 1
-            || e->passConversionVeto()
+            || !(e->passConversionVeto())
 
-            || tau->pt() <= 20 
-            || abs(tau->eta()) >= 2.3
+            || tau->pt() <= 20. 
+            || fabs(tau->eta()) >= 2.3
             || tau->tauID("decayModeFindingNewDMs") <= 0.5      
-            || abs(packedLeadTauCand->dz()) >= 0.2 
+            || fabs(packedLeadTauCand->dz()) >= 0.2 
 
             || deltaR(e->p4(), tau->p4()) <= 0.5
         ) return false;
@@ -604,13 +657,7 @@ bool PairBaselineSelection::etau(const reco::Vertex &PV, edm::Handle<edm::Trigge
             }
         }
         
-        /*
-        //std::string seed = "";
-        for (CItAlgo algo = menu->gtAlgorithmMap().begin(); algo!=menu->gtAlgorithmMap().end(); ++algo) {
-           // std::cout << "Name: " << (algo->second).algoName() << " Alias: " << (algo->second).algoAlias() << std::endl;
-           //seed += (algo->second).algoName();
-        }
-        */
+
         if(mc){
             if (path.find("HLT_Ele22_eta2p1_WP75_Gsf_LooseIsoPFTau20_v1") != std::string::npos){
                 for (pat::TriggerObjectStandAlone obj : *triggerObjects) {
@@ -618,15 +665,15 @@ bool PairBaselineSelection::etau(const reco::Vertex &PV, edm::Handle<edm::Trigge
                     // for (unsigned h = 0; h < obj.filterLabels().size(); ++h) std::cout << obj.filterLabels()[h]  << std::endl;
                     if( 
                         deltaR( obj.triggerObject().p4(), e->p4()) < 0.5  
-                        && std::find(obj.filterLabels().begin(), obj.filterLabels().end(), "hltEle22WP75L1IsoEG20erTau20erGsfTrackIsoFilter ")!=obj.filterLabels().end() 
-                        && std::find(obj.filterLabels().begin(), obj.filterLabels().end(), "hltOverlapFilterIsoEle22WP75GsfLooseIsoPFTau20")!=obj.filterLabels().end() 
+                        && (std::find(obj.filterLabels().begin(), obj.filterLabels().end(), "hltEle22WP75L1IsoEG20erTau20erGsfTrackIsoFilter ")!=obj.filterLabels().end() 
+                        || std::find(obj.filterLabels().begin(), obj.filterLabels().end(), "hltOverlapFilterIsoEle22WP75GsfLooseIsoPFTau20")!=obj.filterLabels().end() )
                     ){
                         for (pat::TriggerObjectStandAlone obj_ : *triggerObjects) {
                             obj_.unpackPathNames(names);
                             if(
                                 deltaR(obj_.triggerObject().p4(), tau->p4()) < 0.5 && 
                                 (std::find(obj_.filterLabels().begin(), obj_.filterLabels().end(), "hltPFTau20TrackLooseIso")!=obj_.filterLabels().end() 
-                                && std::find(obj_.filterLabels().begin(), obj_.filterLabels().end(), "hltOverlapFilterIsoEle22WP75GsfLooseIsoPFTau20")!=obj_.filterLabels().end() )
+                                || std::find(obj_.filterLabels().begin(), obj_.filterLabels().end(), "hltOverlapFilterIsoEle22WP75GsfLooseIsoPFTau20")!=obj_.filterLabels().end() )
                             ) return true;
                         }
                         break;
@@ -680,16 +727,16 @@ bool PairBaselineSelection::etau(const reco::Vertex &PV, edm::Handle<edm::Trigge
     }
     if(sample.find("phys14") != std::string::npos){
         if(
-            e->pt() <= 23. || abs(e->eta()) >= 2.5 
-            || abs(e->gsfTrack()->dxy(PV.position()))  >= 0.045 || abs(e->gsfTrack()->dz(PV.position())) >= 0.2
-            || (abs(e->eta()) < 0.8 && e->electronID("POG_MVA_ID_Run2_NonTrig_Tight") <= 0.73)
-            || (abs(e->eta()) < 1.479 && abs(e->eta()) >= 0.8 && e->electronID("POG_MVA_ID_Run2_NonTrig_Tight") <= 0.57)
-            || (abs(e->eta()) >= 1.479  && e->electronID("POG_MVA_ID_Run2_NonTrig_Tight") <= 0.05)
+            e->pt() <= 23. || fabs(e->eta()) >= 2.5 
+            || fabs(e->gsfTrack()->dxy(PV.position()))  >= 0.045 || fabs(e->gsfTrack()->dz(PV.position())) >= 0.2
+            || (fabs(e->eta()) < 0.8 && e->electronID("POG_MVA_ID_Run2_NonTrig_Tight") <= 0.73)
+            || (fabs(e->eta()) < 1.479 && fabs(e->eta()) >= 0.8 && e->electronID("POG_MVA_ID_Run2_NonTrig_Tight") <= 0.57)
+            || (fabs(e->eta()) >= 1.479  && e->electronID("POG_MVA_ID_Run2_NonTrig_Tight") <= 0.05)
 
             || tau->pt() <= 20 
-            || abs(tau->eta()) >= 2.3
+            || fabs(tau->eta()) >= 2.3
             || (tau->tauID("decayModeFindingNewDMs") <= 0.5 && tau->tauID("decayModeFinding") <= 0.5)
-            || abs(tau->vertex().z() - PV.z()) < 0.2 
+            || fabs(tau->vertex().z() - PV.z()) < 0.2 
             //|| (tau->zImpact() <= 0.5 && tau->zImpact() >= -1.5)
             //|| tau->vertex().z() != PV.z()
 
@@ -779,13 +826,13 @@ bool PairBaselineSelection::etau(const reco::Vertex &PV, edm::Handle<edm::Trigge
 
 
     /*
-    if(abs(e->gsfTrack()->dxy(PV.position()))  >= 0.045 || abs(e->gsfTrack()->dz(PV.position())) >= 0.2 )
+    if(fabs(e->gsfTrack()->dxy(PV.position()))  >= 0.045 || fabs(e->gsfTrack()->dz(PV.position())) >= 0.2 )
         continue;
     if (!e->electronID("POG_MVA_ID_Run2_NonTrig_Tight"))
         continue;
     if(utilities::relIso(*e, 0.5) >= 0.1)       
         continue;
-    if (e->pt() <= 23. || abs(e->eta()) >= 2.5)
+    if (e->pt() <= 23. || fabs(e->eta()) >= 2.5)
         continue;
 
     if( tau->tauID("decayModeFinding") <= 0.5 || 
@@ -797,16 +844,16 @@ bool PairBaselineSelection::etau(const reco::Vertex &PV, edm::Handle<edm::Trigge
         continue;
     if(tau->tauID("byCombinedIsolationDeltaBetaCorrRaw3Hits") >= 1.5)
         continue;
-    if (tau->pt() <= 20 and abs(tau->eta()) >= 2.3)
+    if (tau->pt() <= 20 and fabs(tau->eta()) >= 2.3)
         continue;
 
     //V E T O
     for (const pat::Electron &vetoel : *electrons) {
-        if (!vetoel.gsfTrack().isNull() && abs(vetoel.px() - e->px()) +  abs(vetoel.py() - e->py()) + abs(vetoel.pz() - e->pz()) > 0.01){
+        if (!vetoel.gsfTrack().isNull() && fabs(vetoel.px() - e->px()) +  fabs(vetoel.py() - e->py()) + fabs(vetoel.pz() - e->pz()) > 0.01){
             if (vetoel.pt() > 10                                     &&
-                abs(vetoel.eta()) < 2.5                              &&
-                abs(vetoel.gsfTrack()->dxy(PV.position())) < 0.045                          &&
-                abs(vetoel.gsfTrack()->dz(PV.position())) < 0.2                             &&
+                fabs(vetoel.eta()) < 2.5                              &&
+                fabs(vetoel.gsfTrack()->dxy(PV.position())) < 0.045                          &&
+                fabs(vetoel.gsfTrack()->dz(PV.position())) < 0.2                             &&
            //  FIXME    vetoel.cutBasedId('POG_PHYS14_25ns_v1_Veto')       &&
                 utilities::relIso(vetoel, 0.5) < 0.3 )
                     continue;
@@ -814,12 +861,12 @@ bool PairBaselineSelection::etau(const reco::Vertex &PV, edm::Handle<edm::Trigge
     }
 
     for (const pat::Muon &vetomu : *muons) {
-        if (!vetomu.innerTrack().isNull() && abs(vetomu.px() - e->px()) +  abs(vetomu.py() - e->py()) + abs(vetomu.pz() - e->pz()) > 0.01){
+        if (!vetomu.innerTrack().isNull() && fabs(vetomu.px() - e->px()) +  fabs(vetomu.py() - e->py()) + fabs(vetomu.pz() - e->pz()) > 0.01){
             if (vetomu.pt() > 10           &&
-                abs(vetomu.eta()) < 2.4    &&
+                fabs(vetomu.eta()) < 2.4    &&
                 utilities::heppymuonID(vetomu, "POG_ID_Medium")   &&
-                abs(vetomu.innerTrack()->dxy( PV.position())) < 0.045  &&
-                abs(vetomu.innerTrack()->dz( PV.position())) < 0.2   &&
+                fabs(vetomu.innerTrack()->dxy( PV.position())) < 0.045  &&
+                fabs(vetomu.innerTrack()->dz( PV.position())) < 0.2   &&
                 utilities::relIso(vetomu, 0.5) < 0.3)
                 continue;
         }
@@ -838,19 +885,20 @@ bool PairBaselineSelection::emu(const reco::Vertex &PV, edm::Handle<edm::Trigger
     if(sample.find("spring15") != std::string::npos){
 
         if(
-                e->pt() <= 13. || abs(e->eta() >=2.5) 
-                || abs(e->gsfTrack()->dxy(PV.position()))  >= 0.045 || abs(e->gsfTrack()->dz(PV.position()) >= 0.2)
+                e->pt() <= 13. || fabs(e->eta() >=2.5) 
+                || fabs(e->gsfTrack()->dxy(PV.position()))  >= 0.045 || fabs(e->gsfTrack()->dz(PV.position()) >= 0.2)
                 || e->gsfTrack()->hitPattern().numberOfHits(reco::HitPattern::MISSING_INNER_HITS) > 1
-                || e->passConversionVeto()
+                || !(e->passConversionVeto())
 
-                || mu->pt() <= 10. || abs(mu->eta()) >= 2.4
-                || abs(mu->innerTrack()->dxy( PV.position() ))  >= 0.045 || abs(mu->innerTrack()->dz(PV.position())) >= 0.2
-                || !utilities::heppymuonID(*mu, "POG_ID_Medium") 
+                || mu->pt() <= 10. || fabs(mu->eta()) >= 2.4
+                || fabs(mu->innerTrack()->dxy( PV.position() ))  >= 0.045 || fabs(mu->innerTrack()->dz(PV.position())) >= 0.2
+                || !(mu->isMediumMuon())
+                //|| !utilities::heppymuonID(*mu, "POG_ID_Medium") 
 
                 || deltaR(e->p4(), mu->p4()) <= 0.3
 
                 ) return false;
-
+        
         std::string path = "";
         for (unsigned int i = 0, n = triggerBits->size(); i < n; ++i) {
             if(triggerBits->accept(i)){
@@ -864,7 +912,8 @@ bool PairBaselineSelection::emu(const reco::Vertex &PV, edm::Handle<edm::Trigger
                     obj.unpackPathNames(names);
                     // for (unsigned h = 0; h < obj.filterLabels().size(); ++h) std::cout << obj.filterLabels()[h]  << std::endl;
                     if( 
-                        deltaR( obj.triggerObject().p4(), mu->p4()) < 0.5 
+                        deltaR( obj.triggerObject().p4(), mu->p4()) < 0.5  
+                        && mu->pt() > 24. 
                         && std::find(obj.filterLabels().begin(), obj.filterLabels().end(), "hltMu23TrkIsoVVLEle12CaloIdLTrackIdLIsoVLMuonlegL3IsoFiltered23")!=obj.filterLabels().end() 
                     ){
                         for (pat::TriggerObjectStandAlone obj_ : *triggerObjects) {
@@ -874,7 +923,6 @@ bool PairBaselineSelection::emu(const reco::Vertex &PV, edm::Handle<edm::Trigger
                                 && std::find(obj_.filterLabels().begin(), obj_.filterLabels().end(), "hltMu23TrkIsoVVLEle12CaloIdLTrackIdLIsoVLElectronlegTrackIsoFilter")!=obj_.filterLabels().end() 
                             ) return true;
                         }
-                        break;
                     }
                 }
             }
@@ -890,10 +938,10 @@ bool PairBaselineSelection::emu(const reco::Vertex &PV, edm::Handle<edm::Trigger
                             obj_.unpackPathNames(names);
                             if(
                                 deltaR(obj_.triggerObject().p4(), e->p4()) < 0.5 
+                                && e->pt() > 24.
                                 && std::find(obj_.filterLabels().begin(), obj_.filterLabels().end(), "hltMu8TrkIsoVVLEle23CaloIdLTrackIdLIsoVLElectronlegTrackIsoFilter")!=obj_.filterLabels().end() 
                             ) return true;
                         }
-                        break;
                     }
                 }
             }
@@ -902,11 +950,11 @@ bool PairBaselineSelection::emu(const reco::Vertex &PV, edm::Handle<edm::Trigger
 
     if(sample.find("phys14") != std::string::npos){
         if(
-            e->pt() <= 13. || abs(e->eta() >=2.5) 
-            || abs(e->gsfTrack()->dxy(PV.position()))  >= 0.045 || abs(e->gsfTrack()->dz(PV.position()) >= 0.2)
+            e->pt() <= 13. || fabs(e->eta() >=2.5) 
+            || fabs(e->gsfTrack()->dxy(PV.position()))  >= 0.045 || fabs(e->gsfTrack()->dz(PV.position()) >= 0.2)
 
-            || mu->pt() <= 9. || abs(mu->eta()) >= 2.4
-            || abs(mu->innerTrack()->dxy( PV.position() ))  >= 0.045 || abs(mu->innerTrack()->dz(PV.position())) >= 0.2
+            || mu->pt() <= 9. || fabs(mu->eta()) >= 2.4
+            || fabs(mu->innerTrack()->dxy( PV.position() ))  >= 0.045 || fabs(mu->innerTrack()->dz(PV.position())) >= 0.2
             || !utilities::heppymuonID(*mu, "POG_ID_Medium") 
 
             || deltaR(e->p4(), mu->p4()) <= 0.3
@@ -964,14 +1012,14 @@ bool PairBaselineSelection::emu(const reco::Vertex &PV, edm::Handle<edm::Trigger
 
     /*
     if(
-        (abs(el->gsfTrack()->dxy(PV.position()))  >= 0.045 || abs(el->gsfTrack()->dz(PV.position())) >= 0.2)  ||
+        (fabs(el->gsfTrack()->dxy(PV.position()))  >= 0.045 || fabs(el->gsfTrack()->dz(PV.position())) >= 0.2)  ||
         !el->electronID("POG_MVA_ID_Run2_NonTrig_Tight") ||
         utilities::relIso(*el, 0.5) >= 0.15 ||
-        el->pt() <= 13 || abs(el->eta()) >= 2.5 ||
-        (abs(mu->innerTrack()->dxy( PV.position() ))  >= 0.045 || abs(mu->innerTrack()->dz(PV.position())) >= 0.2 ) ||
+        el->pt() <= 13 || fabs(el->eta()) >= 2.5 ||
+        (fabs(mu->innerTrack()->dxy( PV.position() ))  >= 0.045 || fabs(mu->innerTrack()->dz(PV.position())) >= 0.2 ) ||
         !utilities::heppymuonID(*mu, "POG_ID_Medium") ||
         utilities::relIso(*mu, 0.5) >= 0.15 ||
-        (mu->pt() <= 9 || abs(mu->eta()) >= 2.4)
+        (mu->pt() <= 9 || fabs(mu->eta()) >= 2.4)
     ) return true;
     */
     return false;

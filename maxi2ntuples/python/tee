@@ -1,0 +1,7 @@
+----- Begin Fatal Exception 31-Aug-2015 21:38:31 CEST-----------------------
+An exception of category 'ConfigFileReadError' occurred while
+   [0] Processing the python configuration file named maxi2ntuples.py
+Exception Message:
+python encountered the error: <type 'exceptions.KeyboardInterrupt'>
+
+----- End Fatal Exception -------------------------------------------------

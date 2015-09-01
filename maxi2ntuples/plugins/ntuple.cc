@@ -78,6 +78,7 @@
 #include "TObject.h"
 #include "TH1F.h"
 
+
 //#include "clasadict.h"
 
 //
@@ -263,7 +264,7 @@ ntuple::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
             nup =  hepeup_.NUP;
         }
         catch(const std::exception& e){
-            std::cout << "No lheprod collection"; 
+            //std::cout << "No lheprod collection"; 
         }
 
     }
@@ -339,7 +340,7 @@ ntuple::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     const reco::Candidate *mety = (pairs->front()).daughter(2);
 
     const pat::CompositeCandidate& lP = pairs->front();
-    float pairarr[] = {lP.userFloat("SVfitMass"),(float)((pairs->front()).daughter(0)->charge() * (pairs->front()).daughter(1)->charge()), 
+    float pairarr[] = {(float)lP.userFloat("SVfitMass"),(float)((pairs->front()).daughter(0)->charge() * (pairs->front()).daughter(1)->charge()), 
         (float)((pairs->front()).daughter(0)->p4() + (pairs->front()).daughter(1)->p4() + mety->p4()).pt(), 
         (float)((pairs->front()).daughter(0)->p4() + (pairs->front()).daughter(1)->p4()).pt(), 
         (float)((pairs->front()).daughter(0)->p4() + (pairs->front()).daughter(1)->p4()).mass() };

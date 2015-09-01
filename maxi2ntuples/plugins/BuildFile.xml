@@ -22,6 +22,8 @@
 <use name="CommonTools/CandUtils"/>
 <use name="L1Trigger/Skimmer"/>
 <use name="HLTrigger/HLTfilters"/>
+<use name="RecoEgamma/EgammaTools"/>
+<use name="RecoEgamma/ElectronIdentification"/>
 <use name="root"/>
 <use name="rootcint"/>
 <use name="rootsys"/>

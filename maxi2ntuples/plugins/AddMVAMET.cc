@@ -197,6 +197,22 @@ AddMVAMET::produce(edm::Event& iEvent, const edm::EventSetup& iSetup)
             AddFourMomenta addP4;
             addP4.set(pair);
             //std::cout << "PT: " << pair.pt() << std::endl;
+            pair.addUserFloat("SVfitMass", lP.userFloat("SVfitMass"));
+            pair.addUserFloat("SVfit_pt", lP.userFloat("SVfit_pt"));
+            pair.addUserFloat("SVfit_eta", lP.userFloat("SVfit_eta"));
+            pair.addUserFloat("SVfit_phi", lP.userFloat("SVfit_phi"));
+            pair.addUserFloat("SVfit_ptUnc", lP.userFloat("SVfit_ptUnc"));
+            pair.addUserFloat("SVfit_etaUnc", lP.userFloat("SVfit_etaUnc"));
+            pair.addUserFloat("SVfit_phiUnc", lP.userFloat("SVfit_phiUnc"));
+            pair.addUserFloat("SVfit_METRho", lP.userFloat("SVfit_METRho"));
+            pair.addUserFloat("SVfit_METPhi", lP.userFloat("SVfit_METPhi"));
+            pair.addUserFloat("MEt_px", lP.userFloat("MEt_px"));
+            pair.addUserFloat("MEt_py", lP.userFloat("MEt_py"));
+            pair.addUserFloat("MEt_cov00", lP.userFloat("MEt_cov00"));
+            pair.addUserFloat("MEt_cov01", lP.userFloat("MEt_cov01"));
+            pair.addUserFloat("MEt_cov10", lP.userFloat("MEt_cov10"));
+            pair.addUserFloat("MEt_cov11", lP.userFloat("MEt_cov11"));
+            pair.addUserFloat("MEt_significance", lP.userFloat("MEt_significance"));
             pairsCollection->push_back(pair);
             pair.clearDaughters();
         }
