@@ -306,170 +306,248 @@ synchronization::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup
     
     std::vector<float> arr(synchtree->GetNvar(),0.);
     
-      arr[0] = (float)iEvent.id().run();   //run
-      arr[1] = (float)iEvent.luminosityBlock();   //lumi
-      arr[2] = (float)iEvent.id().event();   //evt
-      arr[3] = (float)isZtt;   //isZtt
-      arr[4] = (float)isZmt;   //isZmt
-      arr[5] = (float)isZet;   //isZet
-      arr[6] = (float)isZee;   //isZee
-      arr[7] = (float)isZmm;   //isZmm
-      arr[8] = (float)isZem;   //isZem
-      arr[9] = (float)isZEE;   //isZEE
-      arr[10] = (float)isZMM;   //isZMM
-      arr[11] = (float)isZLL;   //isZLL
-      arr[12] = (float)0;   //isFake
-      arr[13] = (float)nup;   //NUP
-      arr[14] = (float)0;   //weight
-      arr[15] = (float)0;   //puweight
-      arr[16] = (float)vertices->size();   //npv
-      arr[17] = (float)npu;   //npu
-      arr[18] = (float)0;   //rho
-      arr[19] = (float)l1->pt();   //pt_1
-      arr[20] = (float)l1->phi();   //phi_1
-      arr[21] = (float)l1->eta();   //eta_1
-      arr[22] = (float)l1->mass();   //m_1
-      arr[23] = (float)l1->charge();   //q_1
+    arr[0] = (float)iEvent.id().run();   //run
+    arr[1] = (float)iEvent.luminosityBlock();   //lumi
+    arr[2] = (float)iEvent.id().event();   //evt
+    arr[3] = (float)isZtt;   //isZtt
+    arr[4] = (float)isZmt;   //isZmt
+    arr[5] = (float)isZet;   //isZet
+    arr[6] = (float)isZee;   //isZee
+    arr[7] = (float)isZmm;   //isZmm
+    arr[8] = (float)isZem;   //isZem
+    arr[9] = (float)isZEE;   //isZEE
+    arr[10] = (float)isZMM;   //isZMM
+    arr[11] = (float)isZLL;   //isZLL
+    arr[12] = (float)0;   //isFake
+    arr[13] = (float)nup;   //NUP
+    arr[14] = (float)0;   //weight
+    arr[15] = (float)0;   //puweight
+    arr[16] = (float)vertices->size();   //npv
+    arr[17] = (float)npu;   //npu
+    arr[18] = (float)0;   //rho
+    arr[19] = (float)l1->pt();   //pt_1
+    arr[20] = (float)l1->phi();   //phi_1
+    arr[21] = (float)l1->eta();   //eta_1
+    arr[22] = (float)l1->mass();   //m_1
+    arr[23] = (float)l1->charge();   //q_1
 
-      if(l1->isMuon()){
-          const pat::Muon *mu = dynamic_cast<const pat::Muon*>(l1->masterClone().get());
-          arr[24] = (float) mu->innerTrack()->dxy( PV.position());   //d0_1
-          arr[25] = (float) mu->innerTrack()->dz(PV.position());   //dZ_1
-          arr[27] = (float) utilities::relIso(*mu, 0.5);   //iso_1
-          arr[28] = (float) mu->isLooseMuon();   //id_m_loose_1
-          arr[29] = (float) utilities::heppymuonID(*mu, "POG_ID_Medium");   //id_m_medium_1
-          arr[30] = (float) mu->isTightMuon(PV);   //id_m_tight_1
-          arr[31] = (float) utilities::heppymuonID(*mu, "POG_ID_TightNoVtx");   //id_m_tightnovtx_1
-          arr[32] = (float) mu->isHighPtMuon(PV);   //id_m_highpt_1
-      }
-      arr[26] = (float) sqrt(pow((l1->p4()).pt()+(met->p4()).pt(),2)-pow((l1->p4()+met->p4()).pt(),2));//mt_1
+    arr[27] = -99;
+    if(l1->isMuon()){
+        const pat::Muon *mu = dynamic_cast<const pat::Muon*>(l1->masterClone().get());
+        arr[24] = (float) mu->innerTrack()->dxy( PV.position());   //d0_1
+        arr[25] = (float) mu->innerTrack()->dz(PV.position());   //dZ_1
+        arr[27] = (float) ((mu->pfIsolationR03().sumChargedHadronPt
+                            + std::max( mu->pfIsolationR03().sumNeutralHadronEt + mu->pfIsolationR03().sumPhotonEt - 0.5 * mu->pfIsolationR03().sumPUPt, 0.0)
+                           ) / mu->pt());   //iso_1
+        arr[28] = (float) mu->isLooseMuon();   //id_m_loose_1
+        arr[29] = (float) utilities::heppymuonID(*mu, "POG_ID_Medium");   //id_m_medium_1
+        arr[30] = (float) mu->isTightMuon(PV);   //id_m_tight_1
+        arr[31] = (float) utilities::heppymuonID(*mu, "POG_ID_TightNoVtx");   //id_m_tightnovtx_1
+        arr[32] = (float) mu->isHighPtMuon(PV);   //id_m_highpt_1
+    } else if(l1->isElectron()){
+        const pat::Electron *e = dynamic_cast<const pat::Electron*>(l1->masterClone().get());
+        arr[24] = (float) e->gsfTrack()->dxy(PV.position());   //d0_1
+        arr[25] = (float) e->gsfTrack()->dz(PV.position());  //dZ_1
+        arr[27] = (float) ((e->pfIsolationVariables().sumChargedHadronPt + std::max(
+                            e->pfIsolationVariables().sumNeutralHadronEt +
+                            e->pfIsolationVariables().sumPhotonEt - 
+                            0.5 * e->pfIsolationVariables().sumPUPt, 0.0)) / e->pt());   //iso_1
+    } else{
+        const pat::Tau *tau = dynamic_cast<const pat::Tau*>(l1->masterClone().get());
+        pat::PackedCandidate const* packedLeadTauCand = dynamic_cast<pat::PackedCandidate const*>(tau->leadChargedHadrCand().get());
+        arr[24] = (float)packedLeadTauCand->dxy();   //d0_2
+        arr[25] = (float)packedLeadTauCand->dz();   //dZ_2
+        arr[27] = (float)tau->tauID("byCombinedIsolationDeltaBetaCorrRaw3Hits"); //iso_1;
+    }
+    arr[26] = (float) sqrt(pow((l1->p4()).pt()+(met->p4()).pt(),2)-pow((l1->p4()+met->p4()).pt(),2));//mt_1
 
-      arr[33] = (float)0;   //id_e_mva_nt_loose_1
-      arr[34] = (float)0;   //id_e_cut_veto_1
-      arr[35] = (float)0;   //id_e_cut_loose_1
-      arr[36] = (float)0;   //id_e_cut_medium_1
-      arr[37] = (float)0;   //id_e_cut_tight_1
-      arr[38] = (float)0;   //trigweight_1
-      arr[39] = (float)0;   //againstElectronLooseMVA5_1
-      arr[40] = (float)0;   //againstElectronMediumMVA5_1
-      arr[41] = (float)0;   //againstElectronTightMVA5_1
-      arr[42] = (float)0;   //againstElectronVLooseMVA5_1
-      arr[43] = (float)0;   //againstElectronVTightMVA5_1
-      arr[44] = (float)0;   //againstMuonLoose3_1
-      arr[45] = (float)0;   //againstMuonTight3_1
-      arr[46] = (float)0;   //byCombinedIsolationDeltaBetaCorrRaw3Hits_1
-      arr[47] = (float)0;   //byIsolationMVA3newDMwoLTraw_1
-      arr[48] = (float)0;   //byIsolationMVA3oldDMwoLTraw_1
-      arr[49] = (float)0;   //byIsolationMVA3newDMwLTraw_1
-      arr[50] = (float)0;   //byIsolationMVA3oldDMwLTraw_1
-      arr[51] = (float)0;   //chargedIsoPtSum_1
-      arr[52] = (float)0;   //decayModeFinding_1
-      arr[53] = (float)0;   //decayModeFindingNewDMs_1
-      arr[54] = (float)0;   //neutralIsoPtSum_1
-      arr[55] = (float)0;   //puCorrPtSum_1
-      arr[56] = (float)l2->pt();   //pt_2
-      arr[57] = (float)l2->phi();   //phi_2
-      arr[58] = (float)l2->eta();   //eta_2
-      arr[59] = (float)l2->mass();   //m_2
-      arr[60] = (float)l2->charge();   //q_2
-      arr[61] = (float)0;   //d0_2
-      arr[62] = (float)0;   //dZ_2
-      arr[63] = (float)sqrt(pow((l2->p4()).pt()+(met->p4()).pt(),2)-pow((l2->p4()+met->p4()).pt(),2)); //mt_2
-      arr[64] = (float)0;   //iso_2
-      arr[65] = (float)0;   //id_m_loose_2
-      arr[66] = (float)0;   //id_m_medium_2
-      arr[67] = (float)0;   //id_m_tight_2
-      arr[68] = (float)0;   //id_m_tightnovtx_2
-      arr[69] = (float)0;   //id_m_highpt_2
-      arr[70] = (float)0;   //id_e_mva_nt_loose_2
-      arr[71] = (float)0;   //id_e_cut_veto_2
-      arr[72] = (float)0;   //id_e_cut_loose_2
-      arr[73] = (float)0;   //id_e_cut_medium_2
-      arr[74] = (float)0;   //id_e_cut_tight_2
-      arr[75] = (float)0;   //trigweight_2
-      if(!(l2->isMuon() || l2->isElectron())){
-          const pat::Tau *tau = dynamic_cast<const pat::Tau*>(l2->masterClone().get());
-          arr[76] = (float)tau->tauID("againstElectronVLooseMVA5");   //againstElectronLooseMVA5_2
-          arr[77] = (float)tau->tauID("againstElectronLooseMVA5");   //againstElectronMediumMVA5_2
-          arr[78] = (float)tau->tauID("againstElectronMediumMVA5");   //againstElectronTightMVA5_2
-          arr[79] = (float)tau->tauID("againstElectronTightMVA5");   //againstElectronVLooseMVA5_2
-          arr[80] = (float)tau->tauID("againstElectronVTightMVA5");   //againstElectronVTightMVA5_2
-          arr[81] = (float)tau->tauID("againstMuonLoose3");   //againstMuonLoose3_2
-          arr[82] = (float)tau->tauID("againstMuonTight3");   //againstMuonTight3_2
-          arr[83] = (float)tau->tauID("byCombinedIsolationDeltaBetaCorrRaw3Hits"); //byCombinedIsolationDeltaBetaCorrRaw3Hits_2
-          arr[84] = (float)tau->tauID("byIsolationMVA3newDMwoLTraw");   //byIsolationMVA3newDMwoLTraw_2
-          arr[85] = (float)tau->tauID("byIsolationMVA3oldDMwoLTraw");   //byIsolationMVA3oldDMwoLTraw_2
-          arr[86] = (float)tau->tauID("byIsolationMVA3newDMwLTraw");   //byIsolationMVA3newDMwLTraw_2
-          arr[87] = (float)tau->tauID("byIsolationMVA3oldDMwLTraw");   //byIsolationMVA3oldDMwLTraw_2
-          arr[88] = (float)0;   //chargedIsoPtSum_2
-          arr[89] = (float)tau->tauID("decayModeFinding");   //decayModeFinding_2
-          arr[90] = (float)tau->tauID("decayModeFindingNewDMs");   //decayModeFindingNewDMs_2
-          arr[91] = (float)0;   //neutralIsoPtSum_2
-          arr[92] = (float)0;   //puCorrPtSum_2
-      }
-      arr[93] = (float)0;   //pth
-      arr[94] = (float)((pairs->front()).daughter(0)->p4()+(pairs->front()).daughter(1)->p4()).mass();//m_vis
-      arr[95] = (float)lP.userFloat("SVfitMass");   //m_sv
-      arr[96] = (float)((pairs->front()).daughter(0)->p4()+(pairs->front()).daughter(1)->p4()).pt();//pt_sv
-      arr[97] = (float)0;   //eta_sv
-      arr[98] = (float)0;   //phi_sv
-      arr[99] = (float)0;   //met_sv
-      arr[100] = (float)0;   //met
-      arr[101] = (float)0;   //metphi
-      arr[102] = (float)0;   //mvamet
-      arr[103] = (float)0;   //mvametphi
-      arr[104] = (float)0;   //pzetavis
-      arr[105] = (float)0;   //pzetamiss
-      arr[106] = (float)0;   //mvacov00
-      arr[107] = (float)0;   //mvacov01
-      arr[108] = (float)0;   //mvacov10
-      arr[109] = (float)0;   //mvacov11
-      arr[110] = (float)0;   //mjj
-      arr[111] = (float)0;   //jdeta
-      arr[112] = (float)0;   //njetingap
-      arr[113] = (float)0;   //jdphi
-      arr[114] = (float)0;   //dijetpt
-      arr[115] = (float)0;   //dijetphi
-      arr[116] = (float)0;   //hdijetphi
-      arr[117] = (float)0;   //visjeteta
-      arr[118] = (float)0;   //ptvis
-      arr[119] = (float)0;   //nbtag
-      arr[120] = (float)0;   //njets
-      arr[121] = (float)0;   //njetspt20
-      arr[122] = (float)0;   //jpt_1
-      arr[123] = (float)0;   //jeta_1
-      arr[124] = (float)0;   //jphi_1
-      arr[125] = (float)0;   //jrawf_1
-      arr[126] = (float)0;   //jmva_1
-      arr[127] = (float)0;   //jpfid_1
-      arr[128] = (float)0;   //jpuid_1
-      arr[129] = (float)0;   //jcsv_1
-      arr[130] = (float)0;   //jpt_2
-      arr[131] = (float)0;   //jeta_2
-      arr[132] = (float)0;   //jphi_2
-      arr[133] = (float)0;   //jrawf_2
-      arr[134] = (float)0;   //jmva_2
-      arr[135] = (float)0;   //jpfid_2
-      arr[136] = (float)0;   //jpuid_2
-      arr[137] = (float)0;   //jcsv_2
-      arr[138] = (float)0;   //bpt_1
-      arr[139] = (float)0;   //beta_1
-      arr[140] = (float)0;   //bphi_1
-      arr[141] = (float)0;   //brawf_1
-      arr[142] = (float)0;   //bmva_1
-      arr[143] = (float)0;   //bpfid_1
-      arr[144] = (float)0;   //bpuid_1
-      arr[145] = (float)0;   //bcsv_1
-      arr[146] = (float)0;   //bpt_2
-      arr[147] = (float)0;   //beta_2
-      arr[148] = (float)0;   //bphi_2
-      arr[149] = (float)0;   //brawf_2
-      arr[150] = (float)0;   //bmva_2
-      arr[151] = (float)0;   //bpfid_2
-      arr[152] = (float)0;   //bpuid_2
-      arr[153] = (float)0;   //bcsv_2
+    arr[33] = (float)0;   //id_e_mva_nt_loose_1
+    arr[34] = (float)0;   //id_e_cut_veto_1
+    arr[35] = (float)0;   //id_e_cut_loose_1
+    arr[36] = (float)0;   //id_e_cut_medium_1
+    arr[37] = (float)0;   //id_e_cut_tight_1
+    arr[38] = (float)0;   //trigweight_1
+    if(!(l1->isMuon() || l1->isElectron())){
+        const pat::Tau *tau = dynamic_cast<const pat::Tau*>(l1->masterClone().get());
+        arr[39] = (float)tau->tauID("againstElectronVLooseMVA5");   //againstElectronLooseMVA5_1
+        arr[40] = (float)tau->tauID("againstElectronLooseMVA5");   //againstElectronMediumMVA5_1
+        arr[41] = (float)tau->tauID("againstElectronMediumMVA5");   //againstElectronTightMVA5_1
+        arr[42] = (float)tau->tauID("againstElectronTightMVA5");   //againstElectronVLooseMVA5_1
+        arr[43] = (float)tau->tauID("againstElectronVTightMVA5");   //againstElectronVTightMVA5_1
+        arr[44] = (float)tau->tauID("againstMuonLoose3");   //againstMuonLoose3_1
+        arr[45] = (float)tau->tauID("againstMuonTight3");   //againstMuonTight3_1
+        arr[46] = (float)tau->tauID("byCombinedIsolationDeltaBetaCorrRaw3Hits"); //byCombinedIsolationDeltaBetaCorrRaw3Hits_1
+        arr[47] = (float)tau->tauID("byIsolationMVA3newDMwoLTraw");   //byIsolationMVA3newDMwoLTraw_1
+        arr[48] = (float)tau->tauID("byIsolationMVA3oldDMwoLTraw");   //byIsolationMVA3oldDMwoLTraw_1
+        arr[49] = (float)tau->tauID("byIsolationMVA3newDMwLTraw");   //byIsolationMVA3newDMwLTraw_1
+        arr[50] = (float)tau->tauID("byIsolationMVA3oldDMwLTraw");   //byIsolationMVA3oldDMwLTraw_1
+        arr[51] = (float)0;   //chargedIsoPtSum_1
+        arr[52] = (float)tau->tauID("decayModeFinding");   //decayModeFinding_1
+        arr[53] = (float)tau->tauID("decayModeFindingNewDMs");   //decayModeFindingNewDMs_1
+        arr[54] = (float)0;   //neutralIsoPtSum_1
+        arr[55] = (float)0;   //puCorrPtSum_1
+    }
+    arr[56] = (float)l2->pt();   //pt_2
+    arr[57] = (float)l2->phi();   //phi_2
+    arr[58] = (float)l2->eta();   //eta_2
+    arr[59] = (float)l2->mass();   //m_2
+    arr[60] = (float)l2->charge();   //q_2
 
+    arr[64] = -99;
+    if(l2->isMuon()){
+        const pat::Muon *mu = dynamic_cast<const pat::Muon*>(l2->masterClone().get());
+        arr[61] = (float) mu->innerTrack()->dxy( PV.position());   //d0_2
+        arr[62] = (float) mu->innerTrack()->dz(PV.position());   //dZ_2
+        arr[64] = (float) ((mu->pfIsolationR03().sumChargedHadronPt
+                            + std::max( mu->pfIsolationR03().sumNeutralHadronEt + mu->pfIsolationR03().sumPhotonEt - 0.5 * mu->pfIsolationR03().sumPUPt, 0.0)
+                           ) / mu->pt());   //iso_2
+        arr[65] = (float) mu->isLooseMuon();   //id_m_loose_2
+        arr[66] = (float) utilities::heppymuonID(*mu, "POG_ID_Medium");   //id_m_medium_2
+        arr[67] = (float) mu->isTightMuon(PV);   //id_m_tight_2
+        arr[68] = (float) utilities::heppymuonID(*mu, "POG_ID_TightNoVtx");   //id_m_tightnovtx_2
+        arr[69] = (float) mu->isHighPtMuon(PV);   //id_m_highpt_2
+    } else if(l2->isElectron()){
+        const pat::Electron *e = dynamic_cast<const pat::Electron*>(l2->masterClone().get());
+        arr[61] = (float) e->gsfTrack()->dxy(PV.position());   //d0_2
+        arr[62] = (float) e->gsfTrack()->dz(PV.position());  //dZ_2
+        arr[64] = (float) ((e->pfIsolationVariables().sumChargedHadronPt + std::max(
+                            e->pfIsolationVariables().sumNeutralHadronEt +
+                            e->pfIsolationVariables().sumPhotonEt - 
+                            0.5 * e->pfIsolationVariables().sumPUPt, 0.0)) / e->pt());   //iso_2
+    } else{
+        const pat::Tau *tau = dynamic_cast<const pat::Tau*>(l2->masterClone().get());
+        pat::PackedCandidate const* packedLeadTauCand = dynamic_cast<pat::PackedCandidate const*>(tau->leadChargedHadrCand().get());
+        arr[61] = (float)packedLeadTauCand->dxy();   //d0_2
+        arr[62] = (float)packedLeadTauCand->dz();   //dZ_2
+        arr[64] = (float)tau->tauID("byCombinedIsolationDeltaBetaCorrRaw3Hits"); //iso_2;
+    }
+    arr[63] = (float)sqrt(pow((l2->p4()).pt()+(met->p4()).pt(),2)-pow((l2->p4()+met->p4()).pt(),2)); //mt_2
 
+    arr[70] = (float)0;   //id_e_mva_nt_loose_2
+    arr[71] = (float)0;   //id_e_cut_veto_2
+    arr[72] = (float)0;   //id_e_cut_loose_2
+    arr[73] = (float)0;   //id_e_cut_medium_2
+    arr[74] = (float)0;   //id_e_cut_tight_2
+    arr[75] = (float)0;   //trigweight_2
+    if(!(l2->isMuon() || l2->isElectron())){
+        const pat::Tau *tau = dynamic_cast<const pat::Tau*>(l2->masterClone().get());
+        arr[76] = (float)tau->tauID("againstElectronVLooseMVA5");   //againstElectronLooseMVA5_2
+        arr[77] = (float)tau->tauID("againstElectronLooseMVA5");   //againstElectronMediumMVA5_2
+        arr[78] = (float)tau->tauID("againstElectronMediumMVA5");   //againstElectronTightMVA5_2
+        arr[79] = (float)tau->tauID("againstElectronTightMVA5");   //againstElectronVLooseMVA5_2
+        arr[80] = (float)tau->tauID("againstElectronVTightMVA5");   //againstElectronVTightMVA5_2
+        arr[81] = (float)tau->tauID("againstMuonLoose3");   //againstMuonLoose3_2
+        arr[82] = (float)tau->tauID("againstMuonTight3");   //againstMuonTight3_2
+        arr[83] = (float)tau->tauID("byCombinedIsolationDeltaBetaCorrRaw3Hits"); //byCombinedIsolationDeltaBetaCorrRaw3Hits_2
+        arr[84] = (float)tau->tauID("byIsolationMVA3newDMwoLTraw");   //byIsolationMVA3newDMwoLTraw_2
+        arr[85] = (float)tau->tauID("byIsolationMVA3oldDMwoLTraw");   //byIsolationMVA3oldDMwoLTraw_2
+        arr[86] = (float)tau->tauID("byIsolationMVA3newDMwLTraw");   //byIsolationMVA3newDMwLTraw_2
+        arr[87] = (float)tau->tauID("byIsolationMVA3oldDMwLTraw");   //byIsolationMVA3oldDMwLTraw_2
+        arr[88] = (float)0;   //chargedIsoPtSum_2
+        arr[89] = (float)tau->tauID("decayModeFinding");   //decayModeFinding_2
+        arr[90] = (float)tau->tauID("decayModeFindingNewDMs");   //decayModeFindingNewDMs_2
+        arr[91] = (float)0;   //neutralIsoPtSum_2
+        arr[92] = (float)0;   //puCorrPtSum_2
+    }
+    arr[93] = (float)0;   //pth
+    arr[94] = (float)(l1->p4()+l2->p4()).mass();//m_vis
+    arr[95] = (float)lP.userFloat("SVfitMass");   //m_sv
+    //arr[96] = (float)(l1->p4()+l2->p4()).pt();//pt_sv
+    arr[96] = (float)lP.userFloat("SVfit_pt");//pt_sv
+    arr[97] = (float)0;   //eta_sv
+    arr[98] = (float)0;   //phi_sv
+    arr[99] = (float)0;   //met_sv
+    arr[100] = (float)0;   //met
+    arr[101] = (float)0;   //metphi
+    arr[102] = (float)0;   //mvamet
+    arr[103] = (float)0;   //mvametphi
+    arr[104] = (float)0;   //pzetavis
+    arr[105] = (float)0;   //pzetamiss
+    arr[106] = (float)lP.userFloat("MEt_cov00");   //mvacov00
+    arr[107] = (float)lP.userFloat("MEt_cov01");   //mvacov01
+    arr[108] = (float)lP.userFloat("MEt_cov10");   //mvacov10
+    arr[109] = (float)lP.userFloat("MEt_cov11");   //mvacov11
+    arr[110] = -99;
+    arr[111] = -99;
+    arr[112] = -99;
+    arr[113] = -99;
+    arr[114] = -99;
+    arr[115] = -99;
+    arr[116] = -99;
+    arr[117] = -99;
+
+    
+    pat::JetCollection goodjets; 
+    for (const pat::Jet &j : *jets){
+        if( j.pt() > 20  && deltaR(l1->p4(), j.p4()) > 0.5 && deltaR(l2->p4(), j.p4()) > 0.5 && fabs(j.eta()) < 4.7 )
+            goodjets.push_back(j);
+    }
+    if(goodjets.size() >= 2 ){
+
+        if(goodjets.size() > 0){
+            if(goodjets.size() > 1){
+                TLorentzVector jjp4 = TLorentzVector(goodjets.at(0).px(), goodjets.at(0).py(), goodjets.at(0).pz(), goodjets.at(0).energy()) +  
+                    TLorentzVector(goodjets.at(1).px(), goodjets.at(1).py(), goodjets.at(1).pz(), goodjets.at(1).energy());
+                arr[110] = (float)jjp4.M();   //mjj
+                arr[111] = (float)fabs((goodjets.at(0).eta() - goodjets.at(1).eta()));   //jdeta
+
+                float njetingap=0;
+                if(goodjets.size() > 2){
+                  for(std::vector<int>::size_type i = 2; i != goodjets.size(); i++){
+                    if ( goodjets[i].pt() < 30 || ! goodjets[i].userFloat("pileupJetId:fullDiscriminant") )
+                        continue;
+                    if( goodjets[i].eta() > std::min(goodjets[0].eta(),goodjets[1].eta()) && goodjets[i].eta() < std::max(goodjets[0].eta(),goodjets[1].eta())){
+                        njetingap+=1;       
+                    }
+                  }
+                }
+                arr[112] = (float)njetingap;   //njetingap
+                arr[113] = (float)fabs(goodjets.at(0).phi() - goodjets.at(1).phi());   //jdphi
+                arr[114] = (float)jjp4.Pt();   //dijetpt
+                arr[115] = (float)jjp4.Phi();   //dijetphi
+                float hdijetphi = deltaPhi(jjp4.Phi(), (l1->p4() + l2->p4()).phi() );
+                arr[116] = (float)hdijetphi;   //hdijetphi
+                float visjeteta =  std::min( fabs(goodjets.at(0).eta() - (l1->p4() + l2->p4()).eta()), fabs(goodjets.at(1).eta() - (l1->p4() + l2->p4()).eta()));
+                arr[117] = (float)visjeteta;   //visjeteta
+            }
+            arr[119] = (float)0;   //nbtag
+            arr[120] = (float)0;   //njets
+            arr[121] = (float)0;   //njetspt20
+            arr[122] = (float)0;   //jpt_1
+            arr[123] = (float)0;   //jeta_1
+            arr[124] = (float)0;   //jphi_1
+            arr[125] = (float)0;   //jrawf_1
+            arr[126] = (float)0;   //jmva_1
+            arr[127] = (float)0;   //jpfid_1
+            arr[128] = (float)0;   //jpuid_1
+            arr[129] = (float)0;   //jcsv_1
+            arr[130] = (float)0;   //jpt_2
+            arr[131] = (float)0;   //jeta_2
+            arr[132] = (float)0;   //jphi_2
+            arr[133] = (float)0;   //jrawf_2
+            arr[134] = (float)0;   //jmva_2
+            arr[135] = (float)0;   //jpfid_2
+            arr[136] = (float)0;   //jpuid_2
+            arr[137] = (float)0;   //jcsv_2
+            arr[138] = (float)0;   //bpt_1
+            arr[139] = (float)0;   //beta_1
+            arr[140] = (float)0;   //bphi_1
+            arr[141] = (float)0;   //brawf_1
+            arr[142] = (float)0;   //bmva_1
+            arr[143] = (float)0;   //bpfid_1
+            arr[144] = (float)0;   //bpuid_1
+            arr[145] = (float)0;   //bcsv_1
+            arr[146] = (float)0;   //bpt_2
+            arr[147] = (float)0;   //beta_2
+            arr[148] = (float)0;   //bphi_2
+            arr[149] = (float)0;   //brawf_2
+            arr[150] = (float)0;   //bmva_2
+            arr[151] = (float)0;   //bpfid_2
+            arr[152] = (float)0;   //bpuid_2
+            arr[153] = (float)0;   //bcsv_2
+        }
+    }
+    arr[118] = (float)(l1->p4() + l2->p4()).pt();   //ptvis
 
     synchtree->Fill(&arr[0]);
 

@@ -5,7 +5,7 @@ import os
 process = cms.Process("maxi2ntuples")
 
 process.load("FWCore.MessageService.MessageLogger_cfi")
-process.MessageLogger.cerr.FwkReport.reportEvery = 100
+process.MessageLogger.cerr.FwkReport.reportEvery = 500
 
 process.load('Configuration.StandardSequences.Services_cff')                                                                                                   
 process.load('JetMETCorrections.Configuration.JetCorrectionProducers_cff')
@@ -21,16 +21,16 @@ process.load('Configuration.StandardSequences.EndOfProcess_cff')
 
 mc=True; #if MC then true; if data then  false
 vbf=True
-grid=False;
+grid=True;
 
 #Directory with input file(s). Do not put ".root" files there that are not maent to be processed.
-directory = '/afs/cern.ch/work/m/molszews/CMSSW/Data/EmAOD_VBF/susy/'
+directory = '/afs/cern.ch/work/m/molszews/CMSSW/Data/EmAOD/'
 files = [];
 
 
 #Directory with outputfile(s). Can be of course the same as the above one, but remember to remove ouput files before another run.
 outputdir = '/afs/cern.ch/work/m/molszews/CMSSW/Data/ntuple_VBF/' 
-outfile = "susy_etau_01.root";
+outfile = "WJets.root";
 
 def getfiles(directory, files = []):
     infiles =[];
@@ -53,8 +53,8 @@ process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_cff')
 from Configuration.AlCa.GlobalTag_condDBv2 import GlobalTag
 #process.GlobalTag.globaltag = 'PHYS14_25_V1::All'  #phys14 MC;
 #process.GlobalTag.globaltag = '74X_dataRun2_Prompt_v0' #50ns data
-#process.GlobalTag.globaltag = 'MCRUN2_74_V9A'  #spring15 50ns MC;
-process.GlobalTag.globaltag = 'MCRUN2_74_V9'  #spring15 25ns MC;
+process.GlobalTag.globaltag = 'MCRUN2_74_V9A'  #spring15 50ns MC;
+#process.GlobalTag.globaltag = 'MCRUN2_74_V9'  #spring15 25ns MC;
 #process.GlobalTag = GlobalTag(process.GlobalTag, 'auto:run2_mc', '')
 
 process.load("Configuration.StandardSequences.GeometryDB_cff")
@@ -136,6 +136,10 @@ process.jetsSelected = cms.EDFilter("PATJetSelector",
         filter = cms.bool(False)
         )
 
+process.jetsIDSelected = cms.EDProducer("JetsSelector",
+    jets = cms.InputTag("jetsSelected"),
+        )
+
 ############### PAIRS #############################
 
 MVAPairMET = ();
@@ -156,7 +160,7 @@ process.pairswithmet = cms.EDProducer("AddMVAMET",
 
 process.channel = cms.EDProducer("ChannelSelector",
     pairs = cms.InputTag("pairswithmet"),
-    channel = cms.string("etau"), #mutau, etau, tautau...
+    channel = cms.string("mutau"), #mutau, etau, tautau...
 )
 
 process.pairchecka = cms.EDFilter("PatPairExistenceFilter",
@@ -215,7 +219,7 @@ process.m2n = cms.EDAnalyzer('ntuple',
     electrons = cms.InputTag("slimmedElectrons"),
     taus = cms.InputTag("slimmedTaus"),
     photons = cms.InputTag("slimmedPhotons"),
-    jets = cms.InputTag("jetsSelected"),
+    jets = cms.InputTag("jetsIDSelected"),
     fatjets = cms.InputTag("slimmedJetsAK8"),
     mets = cms.InputTag("slimmedMETs"),
     pairs = cms.InputTag("bestpair"),
@@ -235,7 +239,7 @@ process.synchtree = cms.EDAnalyzer('synchronization',
     electrons = cms.InputTag("slimmedElectrons"),
     taus = cms.InputTag("slimmedTaus"),
     photons = cms.InputTag("slimmedPhotons"),
-    jets = cms.InputTag("jetsSelected"),
+    jets = cms.InputTag("jetsIDSelected"),
     fatjets = cms.InputTag("slimmedJetsAK8"),
     mets = cms.InputTag("slimmedMETs"),
     pairs = cms.InputTag("bestpair"),
@@ -275,6 +279,7 @@ process.p = cms.Path(
         process.ininfo
         *process.egmGsfElectronIDSequence
         *process.jetsSelected
+        *process.jetsIDSelected
         *process.pairswithmet
         *process.channel
         *process.pairchecka
@@ -286,7 +291,7 @@ process.p = cms.Path(
         *process.paircheckb
         *process.bestpair
         *process.m2n
-        *process.synchtree
+#        *process.synchtree
 )
 '''
 process.p = cms.Path(

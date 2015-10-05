@@ -347,13 +347,24 @@ ntuple::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     pair->Fill(pairarr);
 
 
-    const reco::Candidate * l1 = pairs->front().daughter(0);;
+    const reco::Candidate * l1 = pairs->front().daughter(0);
     if(l1->isMuon()){
         const pat::Muon *muon  = dynamic_cast<const pat::Muon*>((pairs->front()).daughter(0)->masterClone().get());
-        float muarr[] = {(float)muon->pt(), (float)muon->eta(),(float) muon->phi(),(float) muon->mass(), (float)muon->charge(),(float)(muon->innerTrack()->dxy( PV.position())),
-               (float)(muon->innerTrack()->dz(PV.position())), (float)sqrt(pow((muon->p4()).pt() + (mety->p4()).pt(),2) - pow((muon->p4() + mety->p4()).pt(),2)),
-                (float)muon->isLooseMuon(), (float)muon->isTightMuon(PV), (float)muon->isHighPtMuon(PV),(float)utilities::heppymuonID(*muon, "POG_ID_Medium"), 
-                (float)utilities::heppymuonID(*muon, "POG_ID_TightNoVtx"),  (float)utilities::relIso(*muon, 0.5)};
+        float muarr[] = {(float)muon->pt(), 
+            (float)muon->eta(),
+            (float)muon->phi(),
+            (float)muon->mass(), 
+            (float)muon->charge(),
+            (float)(muon->innerTrack()->dxy( PV.position())),
+            (float)(muon->innerTrack()->dz(PV.position())),
+            (float)sqrt(pow((muon->p4()).pt() + (mety->p4()).pt(),2) - pow((muon->p4() + mety->p4()).pt(),2)),
+            (float)muon->isLooseMuon(), 
+            (float)muon->isTightMuon(PV), 
+            (float)muon->isHighPtMuon(PV),
+            (float)utilities::heppymuonID(*muon, "POG_ID_Medium"), 
+            (float)utilities::heppymuonID(*muon, "POG_ID_TightNoVtx"), 
+            (float)utilities::relIso(*muon, 0.5)
+        };
         mu->Fill(muarr);
     }
     else if(l1->isElectron()){
@@ -362,7 +373,7 @@ ntuple::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
         e->Fill(earr);
     }
     else{
-        const pat::Tau *taon  = dynamic_cast<const pat::Tau*>((pairs->front()).daughter(1)->masterClone().get());
+        const pat::Tau *taon  = dynamic_cast<const pat::Tau*>((pairs->front()).daughter(0)->masterClone().get());
         float tauarr[] = {(float)taon->pt(), (float)taon->eta(), (float)taon->phi(), (float)taon->mass(), (float)taon->charge(), 
                 (float)sqrt(pow((taon->p4()).pt() + (mety->p4()).pt(),2) - pow((taon->p4() + mety->p4()).pt(),2)),
                 (float)taon->tauID("decayModeFinding"), taon->tauID("decayModeFindingNewDMs"), 
@@ -378,7 +389,7 @@ ntuple::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 
     const reco::Candidate * l2 = pairs->front().daughter(1);
     if(l2->isMuon()){
-        const pat::Muon *muon  = dynamic_cast<const pat::Muon*>((pairs->front()).daughter(0)->masterClone().get());
+        const pat::Muon *muon  = dynamic_cast<const pat::Muon*>((pairs->front()).daughter(1)->masterClone().get());
         float muarr[] = {(float)muon->pt(), (float)muon->eta(),(float) muon->phi(),(float) muon->mass(), (float)muon->charge(),(float)(muon->innerTrack()->dxy( PV.position())),
                (float)(muon->innerTrack()->dz(PV.position())), (float)sqrt(pow((muon->p4()).pt() + (mety->p4()).pt(),2) - pow((muon->p4() + mety->p4()).pt(),2)),
                 (float)muon->isLooseMuon(), (float)muon->isTightMuon(PV), (float)muon->isHighPtMuon(PV),(float)utilities::heppymuonID(*muon, "POG_ID_Medium"), 
