@@ -1,9 +1,9 @@
 // -*- C++ -*-
 //
-// Package:    m2n/PATPairSelector
-// Class:      PATPairSelector
+// Package:    m2n/EventsSkimmer
+// Class:      EventsSkimmer
 // 
-/**\class PATPairSelector PATPairSelector.cc m2n/PATPairSelector/plugins/PATPairSelector.cc
+/**\class EventsSkimmer EventsSkimmer.cc m2n/EventsSkimmer/plugins/EventsSkimmer.cc
 
  Description: [one line class summary]
 
@@ -12,7 +12,7 @@
 */
 //
 // Original Author:  
-//         Created:  Tue, 10 Mar 2015 14:55:08 GMT
+//         Created:  Wed, 11 Mar 2015 17:34:48 GMT
 //
 //
 
@@ -57,8 +57,6 @@
 #include "CommonTools/UtilAlgos/interface/ObjectSelector.h"
 #include "CommonTools/UtilAlgos/interface/SingleElementCollectionSelector.h"
 
-#include "DataFormats/Math/interface/deltaR.h"
-
 
 #include <vector>
 #include <string>
@@ -66,10 +64,10 @@
 // class declaration
 //
 
-class PATPairSelector : public edm::EDProducer {
+class EventsSkimmer : public edm::EDProducer {
    public:
-      explicit PATPairSelector(const edm::ParameterSet&);
-      ~PATPairSelector();
+      explicit EventsSkimmer(const edm::ParameterSet&);
+      ~EventsSkimmer();
 
       static void fillDescriptions(edm::ConfigurationDescriptions& descriptions);
 
@@ -85,11 +83,8 @@ class PATPairSelector : public edm::EDProducer {
 
       // ----------member data ---------------------------
       edm::EDGetTokenT<pat::CompositeCandidateCollection> PairToken_;
-
-      const StringCutObjectSelector<pat::Muon, true> muCut;
-      const StringCutObjectSelector<pat::Electron, true> elCut;
-      const StringCutObjectSelector<pat::Tau, true> tauCut;
-      const double deltaR_;
+      std::string channel;
+      const bool mc;
 };
 
 //
@@ -104,12 +99,9 @@ class PATPairSelector : public edm::EDProducer {
 //
 // constructors and destructor
 //
-PATPairSelector::PATPairSelector(const edm::ParameterSet& iConfig):
+EventsSkimmer::EventsSkimmer(const edm::ParameterSet& iConfig):
     PairToken_(consumes<pat::CompositeCandidateCollection>(iConfig.getParameter<edm::InputTag>("pairs"))),
-    muCut(iConfig.getParameter<std::string>("muCut")),
-    elCut(iConfig.getParameter<std::string>("elCut")),
-    tauCut(iConfig.getParameter<std::string>("tauCut")),
-    deltaR_(iConfig.getParameter<double>("deltaR_"))
+    mc(iConfig.getParameter<bool>("mc"))
 {
    //register your products
 /* Examples
@@ -121,12 +113,13 @@ PATPairSelector::PATPairSelector(const edm::ParameterSet& iConfig):
    //if you want to put into the Run
    produces<ExampleData2,InRun>();
 */
-   //now do what ever other initialization is neede
+   //now do what ever other initialization is needed
    produces<pat::CompositeCandidateCollection>();
+  
 }
 
 
-PATPairSelector::~PATPairSelector()
+EventsSkimmer::~EventsSkimmer()
 {
  
    // do anything here that needs to be done at desctruction time
@@ -141,74 +134,53 @@ PATPairSelector::~PATPairSelector()
 
 // ------------ method called to produce the data  ------------
 void
-PATPairSelector::produce(edm::Event& iEvent, const edm::EventSetup& iSetup){
-
+EventsSkimmer::produce(edm::Event& iEvent, const edm::EventSetup& iSetup)
+{
     using namespace edm;
     edm::Handle<pat::CompositeCandidateCollection> leptonPair;
     iEvent.getByToken(PairToken_, leptonPair);
-    if (!leptonPair.isValid()) return;
 
     std::unique_ptr<pat::CompositeCandidateCollection> selectedPair(new pat::CompositeCandidateCollection());
+    
+    if (!leptonPair.isValid()) return;
+
+    std::string hlta = mc ? "HLT_IsoMu17_eta2p1_LooseIsoPFTau20_v1" : "HLT_IsoMu17_eta2p1_LooseIsoPFTau20_v2";
+    std::string hltb = mc ? "HLT_IsoMu24_eta2p1_v1" : "HLT_IsoMu24_eta2p1_v2";
 
     for (const pat::CompositeCandidate &lP : *leptonPair){
+        
+        bool goodPair = lP.userFloat("ChannelSelector") 
+            && lP.userFloat("PATPairSelector") 
+            && lP.userFloat("PairBaselineSelection")
+            && lP.userFloat("PostSynchSelection")
+            && (lP.userFloat(hlta) || lP.userFloat(hltb));
 
-        const reco::Candidate * l1, *l2; 
-        float passed = 1;
-        l1 = lP.daughter(0)->masterClone().get(); l2 = lP.daughter(1)->masterClone().get();
 
-        if ( deltaR(l1->eta(), l1->phi(), l2->eta(), l2->phi()) < deltaR_ )
-            passed = 0;
+        if(!goodPair)
+            continue;
 
-        if (l1->isMuon()){
-            const pat::Muon *mu = dynamic_cast<const pat::Muon*>(l1);    
-            if (!muCut(*mu)) 
-                passed = 0;
-        } else if(l1->isElectron()){
-            const pat::Electron* el = dynamic_cast<const pat::Electron*>(l1);
-            if (!elCut(*el)) 
-                passed = 0;
-        } else{
-            const pat::Tau* tau = dynamic_cast<const pat::Tau*>(l1);
-            if (!tauCut(*tau)) 
-                passed = 0;
-        }
 
-        if (l2->isMuon()){
-            const pat::Muon *mu = dynamic_cast<const pat::Muon*>(l2);    
-            if (!muCut(*mu)) 
-                passed = 0;
-        } else if(l2->isElectron()){
-            const pat::Electron* el = dynamic_cast<const pat::Electron*>(l2);
-            if (!elCut(*el)) 
-                passed = 0;
-        } else{
-            const pat::Tau* tau = dynamic_cast<const pat::Tau*>(l2);
-            if (!tauCut(*tau))
-                passed = 0;
-        }
-        pat::CompositeCandidate pair(lP);
-        pair.addUserFloat("PATPairSelector", passed);
-        selectedPair->push_back(pair);
+        selectedPair->push_back(lP);
     }
+    iEvent.put(std::move(selectedPair));
  
-   iEvent.put(std::move(selectedPair));
 }
 
 // ------------ method called once each job just before starting event loop  ------------
 void 
-PATPairSelector::beginJob()
+EventsSkimmer::beginJob()
 {
 }
 
 // ------------ method called once each job just after ending the event loop  ------------
 void 
-PATPairSelector::endJob() {
+EventsSkimmer::endJob() {
 }
 
 // ------------ method called when starting to processes a run  ------------
 /*
 void
-PATPairSelector::beginRun(edm::Run const&, edm::EventSetup const&)
+EventsSkimmer::beginRun(edm::Run const&, edm::EventSetup const&)
 {
 }
 */
@@ -216,7 +188,7 @@ PATPairSelector::beginRun(edm::Run const&, edm::EventSetup const&)
 // ------------ method called when ending the processing of a run  ------------
 /*
 void
-PATPairSelector::endRun(edm::Run const&, edm::EventSetup const&)
+EventsSkimmer::endRun(edm::Run const&, edm::EventSetup const&)
 {
 }
 */
@@ -224,7 +196,7 @@ PATPairSelector::endRun(edm::Run const&, edm::EventSetup const&)
 // ------------ method called when starting to processes a luminosity block  ------------
 /*
 void
-PATPairSelector::beginLuminosityBlock(edm::LuminosityBlock const&, edm::EventSetup const&)
+EventsSkimmer::beginLuminosityBlock(edm::LuminosityBlock const&, edm::EventSetup const&)
 {
 }
 */
@@ -232,14 +204,14 @@ PATPairSelector::beginLuminosityBlock(edm::LuminosityBlock const&, edm::EventSet
 // ------------ method called when ending the processing of a luminosity block  ------------
 /*
 void
-PATPairSelector::endLuminosityBlock(edm::LuminosityBlock const&, edm::EventSetup const&)
+EventsSkimmer::endLuminosityBlock(edm::LuminosityBlock const&, edm::EventSetup const&)
 {
 }
 */
  
 // ------------ method fills 'descriptions' with the allowed parameters for the module  ------------
 void
-PATPairSelector::fillDescriptions(edm::ConfigurationDescriptions& descriptions) {
+EventsSkimmer::fillDescriptions(edm::ConfigurationDescriptions& descriptions) {
   //The following says we do not know what parameters are allowed so do no validation
   // Please change this to state exactly what you do use, even if it is no parameters
   edm::ParameterSetDescription desc;
@@ -248,4 +220,4 @@ PATPairSelector::fillDescriptions(edm::ConfigurationDescriptions& descriptions) 
 }
 
 //define this as a plug-in
-DEFINE_FWK_MODULE(PATPairSelector);
+DEFINE_FWK_MODULE(EventsSkimmer);

@@ -152,7 +152,10 @@ BestPairSelector::produce(edm::Event& iEvent, const edm::EventSetup& iSetup)
     std::unique_ptr<pat::CompositeCandidateCollection> selectedPair(new pat::CompositeCandidateCollection());
 
 
-    if (!leptonPair.isValid() && leptonPair->size()==0) return;
+    if (!leptonPair.isValid() || leptonPair->size()==0){
+        iEvent.put(std::move(selectedPair));
+        return;
+    }
 
     
     if(leptonPair->size() == 1){

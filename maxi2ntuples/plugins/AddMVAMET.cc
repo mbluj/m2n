@@ -132,7 +132,6 @@ AddMVAMET::~AddMVAMET()
 void
 AddMVAMET::produce(edm::Event& iEvent, const edm::EventSetup& iSetup)
 {
- 
 
     std::unique_ptr<pat::CompositeCandidateCollection> pairsCollection(new pat::CompositeCandidateCollection());
 

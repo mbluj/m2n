@@ -144,7 +144,8 @@ ChannelSelector::produce(edm::Event& iEvent, const edm::EventSetup& iSetup)
     if (!leptonPair.isValid()) return;
 
     for (const pat::CompositeCandidate &lP : *leptonPair){
-
+        
+        float passed = 1;
         const reco::Candidate * l1, *l2; 
         l1 = lP.daughter(0); l2 = lP.daughter(1);
         std::string leg = "";  std::string leg_ = "";
@@ -163,8 +164,10 @@ ChannelSelector::produce(edm::Event& iEvent, const edm::EventSetup& iSetup)
             leg_ += "tau";
         
         if( !(channel == leg + leg_ || channel == leg_ + leg))
-            continue;
-        selectedPair->push_back(lP);
+            passed = 0;
+        pat::CompositeCandidate pair(lP);
+        pair.addUserFloat("ChannelSelector", passed);
+        selectedPair->push_back(pair);
     }
     iEvent.put(std::move(selectedPair));
  

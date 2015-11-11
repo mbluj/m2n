@@ -111,12 +111,12 @@ class PairBaselineSelection : public edm::EDProducer {
       virtual void produce(edm::Event&, const edm::EventSetup&) override;
       virtual void endJob() override;
 
-      bool tautau(const reco::Vertex &, edm::Handle<edm::TriggerResults>&, edm::Handle<pat::TriggerObjectStandAloneCollection>&, edm::Handle<pat::PackedTriggerPrescales>&,const edm::TriggerNames &  ,const pat::Tau*, const pat::Tau*);
-      bool mutau(const reco::Vertex &, edm::Handle<edm::TriggerResults>&, edm::Handle<pat::TriggerObjectStandAloneCollection>&, edm::Handle<pat::PackedTriggerPrescales>&, const edm::TriggerNames &, const pat::Muon*, const pat::Tau*);
-      bool etau(const reco::Vertex &, edm::Handle<edm::TriggerResults>&, edm::Handle<pat::TriggerObjectStandAloneCollection>&, edm::Handle<pat::PackedTriggerPrescales>&,const edm::TriggerNames &,const pat::Electron*, const pat::Tau*);
-      bool mumu(const pat::Muon*, const pat::Muon*);
-      bool ee(const pat::Electron*, const pat::Electron*);
-      bool emu(const reco::Vertex &, edm::Handle<edm::TriggerResults>&, edm::Handle<pat::TriggerObjectStandAloneCollection>&, edm::Handle<pat::PackedTriggerPrescales>&, const edm::TriggerNames &, const pat::Electron*,const pat::Muon* );
+      float tautau(const reco::Vertex &, edm::Handle<edm::TriggerResults>&, edm::Handle<pat::TriggerObjectStandAloneCollection>&, edm::Handle<pat::PackedTriggerPrescales>&,const edm::TriggerNames &  ,const pat::Tau*, const pat::Tau*);
+      float mutau(const reco::Vertex &, edm::Handle<edm::TriggerResults>&, edm::Handle<pat::TriggerObjectStandAloneCollection>&, edm::Handle<pat::PackedTriggerPrescales>&, const edm::TriggerNames &, const pat::Muon*, const pat::Tau*);
+      float etau(const reco::Vertex &, edm::Handle<edm::TriggerResults>&, edm::Handle<pat::TriggerObjectStandAloneCollection>&, edm::Handle<pat::PackedTriggerPrescales>&,const edm::TriggerNames &,const pat::Electron*, const pat::Tau*);
+      float mumu(const pat::Muon*, const pat::Muon*);
+      float ee(const pat::Electron*, const pat::Electron*);
+      float emu(const reco::Vertex &, edm::Handle<edm::TriggerResults>&, edm::Handle<pat::TriggerObjectStandAloneCollection>&, edm::Handle<pat::PackedTriggerPrescales>&, const edm::TriggerNames &, const pat::Electron*,const pat::Muon* );
 
       //virtual void beginRun(edm::Run const&, edm::EventSetup const&) override;
       //virtual void endRun(edm::Run const&, edm::EventSetup const&) override;
@@ -233,13 +233,15 @@ PairBaselineSelection::produce(edm::Event& iEvent, const edm::EventSetup& iSetup
 
     edm::Handle<pat::CompositeCandidateCollection> leptonPair;
     iEvent.getByToken(PairToken_, leptonPair);
-    if (!leptonPair.isValid()) return;
-
-
-
-
 
     std::unique_ptr<pat::CompositeCandidateCollection> selectedPair(new pat::CompositeCandidateCollection());
+
+
+    if (!leptonPair.isValid()){
+        iEvent.put(std::move(selectedPair));
+        return;
+    }
+
     
 
     for (const pat::CompositeCandidate &lP : *leptonPair){
@@ -248,102 +250,105 @@ PairBaselineSelection::produce(edm::Event& iEvent, const edm::EventSetup& iSetup
         l1 = lP.daughter(0); l2 = lP.daughter(1);
 //        short unsigned int channelcase; 
 
-    bool pass = false; 
+        float passed = 1;
 
-    if (l1->isMuon()){
-        if (l2->isMuon()){
-            //std::cout << "muon-muon channel" <<std::endl;
-            const pat::Muon *mu  = dynamic_cast<const pat::Muon*>(l1->masterClone().get());
-            const pat::Muon *mu_ = dynamic_cast<const pat::Muon*>(l2->masterClone().get());
-            pass = mumu(mu, mu_);
+        if (l1->isMuon()){
+            if (l2->isMuon()){
+                //std::cout << "muon-muon channel" <<std::endl;
+                const pat::Muon *mu  = dynamic_cast<const pat::Muon*>(l1->masterClone().get());
+                const pat::Muon *mu_ = dynamic_cast<const pat::Muon*>(l2->masterClone().get());
+                passed = mumu(mu, mu_);
+            }
+            else if(l2->isElectron()){
+                //std::cout << "muon-electron channel" <<std::endl;
+                const pat::Muon *mu  = dynamic_cast<const pat::Muon*>(l1->masterClone().get());
+                const pat::Electron *e = dynamic_cast<const pat::Electron*>(l2->masterClone().get());
+                for (size_t i = 0; i < electrons->size(); ++i){
+                     const auto el = electrons->ptrAt(i);
+                     if(el->p4() == e->p4())
+                        if((*tight_id_decisions)[el]){
+                            passed =  emu(PV, triggerBits,triggerObjects,  triggerPrescales, names, e, mu);
+                            if (passed)
+                                break;
+                        }
+                }
+            }
+            else {
+                //std::cout << "muon-tau channell" <<std::endl;
+                const pat::Muon *mu  = dynamic_cast<const pat::Muon*>(l1->masterClone().get());
+                const pat::Tau *tau  = dynamic_cast<const pat::Tau*>(l2->masterClone().get());
+                passed = mutau(PV, triggerBits,triggerObjects,  triggerPrescales, names,  mu,  tau);
+            }
         }
-        else if(l2->isElectron()){
-            //std::cout << "muon-electron channel" <<std::endl;
-            const pat::Muon *mu  = dynamic_cast<const pat::Muon*>(l1->masterClone().get());
-            const pat::Electron *e = dynamic_cast<const pat::Electron*>(l2->masterClone().get());
-            for (size_t i = 0; i < electrons->size(); ++i){
-                 const auto el = electrons->ptrAt(i);
-                 if(el->p4() == e->p4())
-                    if((*tight_id_decisions)[el]){
-                        pass =  emu(PV, triggerBits,triggerObjects,  triggerPrescales, names, e, mu);
-                        if (pass)
-                            break;
-                    }
+        else if(l1->isElectron()){
+            if (l2->isMuon()){
+                //std::cout << "muon-electron channel" <<std::endl;
+                const pat::Electron *e = dynamic_cast<const pat::Electron*>(l1->masterClone().get());
+                const pat::Muon *mu = dynamic_cast<const pat::Muon*>(l2->masterClone().get());
+                for (size_t i = 0; i < electrons->size(); ++i){
+                     const auto el = electrons->ptrAt(i);
+                     if(el->p4() == e->p4())
+                        if((*tight_id_decisions)[el]){
+                            passed =  emu(PV, triggerBits,triggerObjects,  triggerPrescales, names, e, mu);
+                            if (passed)
+                                break;
+                        }
+                }
+            }
+            else if(l2->isElectron()){
+                //std::cout << "electron-electron channel" <<std::endl;
+                const pat::Electron *el = dynamic_cast<const pat::Electron*>(l1->masterClone().get());
+                const pat::Electron *el_ = dynamic_cast<const pat::Electron*>(l2->masterClone().get());
+                passed = ee(el,el_);
+            }
+            else {
+                //std::cout << "electron-tau channel" <<std::endl;
+                const pat::Electron *e = dynamic_cast<const pat::Electron*>(l1->masterClone().get());
+                const pat::Tau *tau  = dynamic_cast<const pat::Tau*>(l2->masterClone().get());
+                for (size_t i = 0; i < electrons->size(); ++i){
+                     const auto el = electrons->ptrAt(i);
+                     if(el->p4() == e->p4())
+                        if((*tight_id_decisions)[el]){
+                            passed = etau(PV, triggerBits, triggerObjects, triggerPrescales,names ,e,tau);
+                            if (passed)
+                                break;
+                        }
+                }
+                //std::cout << *el << std::endl;
             }
         }
         else {
-            //std::cout << "muon-tau channell" <<std::endl;
-            const pat::Muon *mu  = dynamic_cast<const pat::Muon*>(l1->masterClone().get());
-            const pat::Tau *tau  = dynamic_cast<const pat::Tau*>(l2->masterClone().get());
-            pass = mutau(PV, triggerBits,triggerObjects,  triggerPrescales, names,  mu,  tau);
-        }
-    }
-    else if(l1->isElectron()){
-        if (l2->isMuon()){
-            //std::cout << "muon-electron channel" <<std::endl;
-            const pat::Electron *e = dynamic_cast<const pat::Electron*>(l1->masterClone().get());
-            const pat::Muon *mu = dynamic_cast<const pat::Muon*>(l2->masterClone().get());
-            for (size_t i = 0; i < electrons->size(); ++i){
-                 const auto el = electrons->ptrAt(i);
-                 if(el->p4() == e->p4())
-                    if((*tight_id_decisions)[el]){
-                        pass =  emu(PV, triggerBits,triggerObjects,  triggerPrescales, names, e, mu);
-                        if (pass)
-                            break;
-                    }
+            if (l2->isMuon()){
+                //std::cout << "muon-tau channel" <<std::endl;
+                const pat::Tau *tau  = dynamic_cast<const pat::Tau*>(l1->masterClone().get());
+                const pat::Muon *mu = dynamic_cast<const pat::Muon*>(l2->masterClone().get());
+                passed = mutau(PV,triggerBits,triggerObjects,  triggerPrescales, names,  mu,  tau);
+            }
+            else if(l2->isElectron()){
+                //std::cout << "electron-tau channel" <<std::endl;
+                const pat::Tau *tau  = dynamic_cast<const pat::Tau*>(l1->masterClone().get());
+                const pat::Electron *e = dynamic_cast<const pat::Electron*>(l2->masterClone().get());
+                for (size_t i = 0; i < electrons->size(); ++i){
+                     const auto el = electrons->ptrAt(i);
+                     if(el->p4() == e->p4())
+                        if((*tight_id_decisions)[el])
+                            passed = etau(PV, triggerBits, triggerObjects, triggerPrescales,names ,e,tau);
+                }
+            }
+            else {
+                //std::cout << "tau-tau channel" <<std::endl;
+                const pat::Tau *tau  = dynamic_cast<const pat::Tau*>(l1->masterClone().get());
+                const pat::Tau *tau_  = dynamic_cast<const pat::Tau*>(l2->masterClone().get());
+                passed = tautau(PV, triggerBits, triggerObjects, triggerPrescales,names , tau, tau_);
             }
         }
-        else if(l2->isElectron()){
-            //std::cout << "electron-electron channel" <<std::endl;
-            const pat::Electron *el = dynamic_cast<const pat::Electron*>(l1->masterClone().get());
-            const pat::Electron *el_ = dynamic_cast<const pat::Electron*>(l2->masterClone().get());
-            pass = ee(el,el_);
-        }
-        else {
-            //std::cout << "electron-tau channel" <<std::endl;
-            const pat::Electron *e = dynamic_cast<const pat::Electron*>(l1->masterClone().get());
-            const pat::Tau *tau  = dynamic_cast<const pat::Tau*>(l2->masterClone().get());
-            for (size_t i = 0; i < electrons->size(); ++i){
-                 const auto el = electrons->ptrAt(i);
-                 if(el->p4() == e->p4())
-                    if((*tight_id_decisions)[el]){
-                        pass = etau(PV, triggerBits, triggerObjects, triggerPrescales,names ,e,tau);
-                        if (pass)
-                            break;
-                    }
-            }
-            //std::cout << *el << std::endl;
-        }
-    }
-    else {
-        if (l2->isMuon()){
-            //std::cout << "muon-tau channel" <<std::endl;
-            const pat::Tau *tau  = dynamic_cast<const pat::Tau*>(l1->masterClone().get());
-            const pat::Muon *mu = dynamic_cast<const pat::Muon*>(l2->masterClone().get());
-            pass = mutau(PV,triggerBits,triggerObjects,  triggerPrescales, names,  mu,  tau);
-        }
-        else if(l2->isElectron()){
-            //std::cout << "electron-tau channel" <<std::endl;
-            const pat::Tau *tau  = dynamic_cast<const pat::Tau*>(l1->masterClone().get());
-            const pat::Electron *e = dynamic_cast<const pat::Electron*>(l2->masterClone().get());
-            for (size_t i = 0; i < electrons->size(); ++i){
-                 const auto el = electrons->ptrAt(i);
-                 if(el->p4() == e->p4())
-                    if((*tight_id_decisions)[el])
-                        pass = etau(PV, triggerBits, triggerObjects, triggerPrescales,names ,e,tau);
-            }
-        }
-        else {
-            //std::cout << "tau-tau channel" <<std::endl;
-            const pat::Tau *tau  = dynamic_cast<const pat::Tau*>(l1->masterClone().get());
-            const pat::Tau *tau_  = dynamic_cast<const pat::Tau*>(l2->masterClone().get());
-            pass = tautau(PV, triggerBits, triggerObjects, triggerPrescales,names , tau, tau_);
-        }
-    }
 
-    if (pass)
-        selectedPair->push_back(lP);
-//        std::cout << "Passeddddddddddddddddd!\n"; 
+        pat::CompositeCandidate pair(lP);
+        pair.addUserFloat("PairBaselineSelection", passed);
+        selectedPair->push_back(pair);
+        //if (pass)
+        //    selectedPair->push_back(lP);
+    //        std::cout << "Passeddddddddddddddddd!\n"; 
     }
 
     iEvent.put(std::move(selectedPair));
@@ -361,7 +366,7 @@ PairBaselineSelection::endJob() {
 }
 
 
-bool PairBaselineSelection::tautau(const reco::Vertex &PV, edm::Handle<edm::TriggerResults>& triggerBits, edm::Handle<pat::TriggerObjectStandAloneCollection>& triggerObjects, edm::Handle<pat::PackedTriggerPrescales>& triggerPrescales,const edm::TriggerNames &names , const pat::Tau* tau, const pat::Tau* tau_){
+float PairBaselineSelection::tautau(const reco::Vertex &PV, edm::Handle<edm::TriggerResults>& triggerBits, edm::Handle<pat::TriggerObjectStandAloneCollection>& triggerObjects, edm::Handle<pat::PackedTriggerPrescales>& triggerPrescales,const edm::TriggerNames &names , const pat::Tau* tau, const pat::Tau* tau_){
 
 
     pat::PackedCandidate const* packedLeadTauCand = dynamic_cast<pat::PackedCandidate const*>(tau->leadChargedHadrCand().get());
@@ -459,7 +464,7 @@ bool PairBaselineSelection::tautau(const reco::Vertex &PV, edm::Handle<edm::Trig
 
 
 
-bool PairBaselineSelection::mutau(const reco::Vertex &PV, edm::Handle<edm::TriggerResults>& triggerBits, edm::Handle<pat::TriggerObjectStandAloneCollection>& triggerObjects, edm::Handle<pat::PackedTriggerPrescales>& triggerPrescales,const edm::TriggerNames &names, const pat::Muon* mu, const pat::Tau* tau){
+float PairBaselineSelection::mutau(const reco::Vertex &PV, edm::Handle<edm::TriggerResults>& triggerBits, edm::Handle<pat::TriggerObjectStandAloneCollection>& triggerObjects, edm::Handle<pat::PackedTriggerPrescales>& triggerPrescales,const edm::TriggerNames &names, const pat::Muon* mu, const pat::Tau* tau){
 
     pat::PackedCandidate const* packedLeadTauCand = dynamic_cast<pat::PackedCandidate const*>(tau->leadChargedHadrCand().get());
     //Phys'14 MC samples
@@ -551,6 +556,8 @@ bool PairBaselineSelection::mutau(const reco::Vertex &PV, edm::Handle<edm::Trigg
             || deltaR(mu->p4(), tau->p4()) <= 0.5 
         ) return false;
 
+
+/*
         std::string hlta = mc ? "HLT_IsoMu17_eta2p1_LooseIsoPFTau20_v1" : "HLT_IsoMu17_eta2p1_LooseIsoPFTau20_v2";
         std::string hltb = mc ? "HLT_IsoMu24_eta2p1_v1" : "HLT_IsoMu24_eta2p1_v2";
         for (unsigned int i = 0, n = triggerBits->size(); i < n; ++i) {
@@ -588,9 +595,12 @@ bool PairBaselineSelection::mutau(const reco::Vertex &PV, edm::Handle<edm::Trigg
                 }
             }
         }
+*/
+
+
     }
 
-    return false;
+    return true;
 
 
     // VETO
@@ -631,7 +641,7 @@ bool PairBaselineSelection::mutau(const reco::Vertex &PV, edm::Handle<edm::Trigg
     }
     */
 }
-bool PairBaselineSelection::etau(const reco::Vertex &PV, edm::Handle<edm::TriggerResults>& triggerBits, edm::Handle<pat::TriggerObjectStandAloneCollection>& triggerObjects, edm::Handle<pat::PackedTriggerPrescales>& triggerPrescales,const edm::TriggerNames &names, const pat::Electron* e, const pat::Tau* tau){
+float PairBaselineSelection::etau(const reco::Vertex &PV, edm::Handle<edm::TriggerResults>& triggerBits, edm::Handle<pat::TriggerObjectStandAloneCollection>& triggerObjects, edm::Handle<pat::PackedTriggerPrescales>& triggerPrescales,const edm::TriggerNames &names, const pat::Electron* e, const pat::Tau* tau){
 
     pat::PackedCandidate const* packedLeadTauCand = dynamic_cast<pat::PackedCandidate const*>(tau->leadChargedHadrCand().get());
 
@@ -875,13 +885,13 @@ bool PairBaselineSelection::etau(const reco::Vertex &PV, edm::Handle<edm::Trigge
     return false;   
 
 }
-bool PairBaselineSelection::mumu(const pat::Muon* mu, const pat::Muon* mu_){
+float PairBaselineSelection::mumu(const pat::Muon* mu, const pat::Muon* mu_){
     return false;   
 }
-bool PairBaselineSelection::ee(const pat::Electron* e, const pat::Electron* e_){
+float PairBaselineSelection::ee(const pat::Electron* e, const pat::Electron* e_){
     return false;
 }
-bool PairBaselineSelection::emu(const reco::Vertex &PV, edm::Handle<edm::TriggerResults>& triggerBits, edm::Handle<pat::TriggerObjectStandAloneCollection>& triggerObjects, edm::Handle<pat::PackedTriggerPrescales>& triggerPrescales,const edm::TriggerNames &names, const pat::Electron* e,const pat::Muon* mu){
+float PairBaselineSelection::emu(const reco::Vertex &PV, edm::Handle<edm::TriggerResults>& triggerBits, edm::Handle<pat::TriggerObjectStandAloneCollection>& triggerObjects, edm::Handle<pat::PackedTriggerPrescales>& triggerPrescales,const edm::TriggerNames &names, const pat::Electron* e,const pat::Muon* mu){
     if(sample.find("spring15") != std::string::npos){
 
         if(

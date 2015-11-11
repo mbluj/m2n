@@ -67,3 +67,214 @@ Traceback (most recent call last):
     raise ConfigException("Working area '%s' already exists \nPlease change the requestName in the config file" % fullpath)
 ConfigException: Working area '/afs/cern.ch/work/m/molszews/CMSSW/tautau/M2N/CMSSW_7_4_5/src/m2n/maxi2ntuples/python/susy_synch_01/crab_m2n' already exists 
 Please change the requestName in the config file
+DEBUG 2015-10-16 10:06:11,889: 	 Executing command: 'status'
+DEBUG 2015-10-16 10:06:11,890: 	 Found CRAB cache file /afs/cern.ch/user/m/molszews/.crab3
+DEBUG 2015-10-16 10:06:11,928: 	 Checking credentials
+DEBUG 2015-10-16 10:06:11,929: 	 Proxy file /tmp/x509up_u39587 not found
+DEBUG 2015-10-16 10:06:11,929: 	 Creating new proxy for 24:00 hours with VO group '' and VO role 'NULL'.
+DEBUG 2015-10-16 10:06:19,565: 	 Executing : 
+ command : voms-proxy-init -voms cms:/cms -valid 24:00 -rfc
+ output : None
+ error: None
+ retcode : 0
+DEBUG 2015-10-16 10:06:20,173: 	 Executing : 
+ command : voms-proxy-info -file /tmp/x509up_u39587 -timeleft
+ output : 86398
+
+ error: 
+ retcode : 0
+DEBUG 2015-10-16 10:06:20,682: 	 Executing : 
+ command : voms-proxy-info -file /tmp/x509up_u39587 -actimeleft
+ output : 86397
+
+ error: 
+ retcode : 0
+DEBUG 2015-10-16 10:06:21,186: 	 Executing : 
+ command : env X509_USER_PROXY=/tmp/x509up_u39587 voms-proxy-info -fqan
+ output : /cms/Role=NULL/Capability=NULL
+
+ error: 
+ retcode : 0
+DEBUG 2015-10-16 10:06:21,186: 	 Proxy created.
+ERROR 2015-10-16 10:06:21,204: 	 Cannot find .requestcache file in CRAB project directory /afs/cern.ch/work/m/molszews/CMSSW/tautau/M2N/CMSSW_7_4_7/src/m2n/maxi2ntuples/python/data_04
+ERROR 2015-10-16 10:06:21,204: 	 Caught exception
+Traceback (most recent call last):
+  File "/cvmfs/cms.cern.ch/crab3/slc6_amd64_gcc481/cms/crabclient/3.3.1510/bin/crab", line 159, in <module>
+    client()
+  File "/cvmfs/cms.cern.ch/crab3/slc6_amd64_gcc481/cms/crabclient/3.3.1510/bin/crab", line 145, in __call__
+    self.cmd = sub_cmd(self.logger, args[1:])
+  File "/cvmfs/cms.cern.ch/crab3/slc6_amd64_gcc481/cms/crabclient/3.3.1510/lib/python2.6/site-packages/CRABClient/Commands/SubCommand.py", line 317, in __init__
+    self.loadLocalCache(proxyOptsSetPlace)
+  File "/cvmfs/cms.cern.ch/crab3/slc6_amd64_gcc481/cms/crabclient/3.3.1510/lib/python2.6/site-packages/CRABClient/Commands/SubCommand.py", line 427, in loadLocalCache
+    self.cachedinfo, self.logfile = loadCache(self.requestarea, self.logger)
+  File "/cvmfs/cms.cern.ch/crab3/slc6_amd64_gcc481/cms/crabclient/3.3.1510/lib/python2.6/site-packages/CRABClient/ClientUtilities.py", line 445, in loadCache
+    raise CachefileNotFoundException(msg)
+CachefileNotFoundException: Cannot find .requestcache file in CRAB project directory /afs/cern.ch/work/m/molszews/CMSSW/tautau/M2N/CMSSW_7_4_7/src/m2n/maxi2ntuples/python/data_04
+ERROR 2015-10-16 10:06:21,220: 	 Unhandled Exception!
+ERROR 2015-10-16 10:06:21,220: 	 'NoneType' object has no attribute 'terminate'
+Traceback (most recent call last):
+  File "/cvmfs/cms.cern.ch/crab3/slc6_amd64_gcc481/cms/crabclient/3.3.1510/bin/crab", line 213, in <module>
+    client.cmd.terminate( exitcode )
+AttributeError: 'NoneType' object has no attribute 'terminate'
+ERROR 2015-10-16 10:06:21,220: 	 ERROR: AttributeError: 'NoneType' object has no attribute 'terminate'
+ERROR 2015-10-16 10:06:21,220: 	 
+	Please email hn-cms-computing-tools@cern.ch for support with the crab.log file or crab.log URL.
+ERROR 2015-10-16 10:06:21,220: 	 	Client Version: 3.3.1510
+ERROR 2015-10-16 10:06:21,220: 	 	Please use 'crab uploadlog' to upload the log file /afs/cern.ch/work/m/molszews/CMSSW/tautau/M2N/CMSSW_7_4_7/src/m2n/maxi2ntuples/python/crab.log to the CRAB cache.
+DEBUG 2015-10-16 10:06:50,726: 	 Executing command: 'status'
+DEBUG 2015-10-16 10:06:50,726: 	 Found CRAB cache file /afs/cern.ch/user/m/molszews/.crab3
+DEBUG 2015-10-16 10:06:50,734: 	 Checking credentials
+DEBUG 2015-10-16 10:06:50,735: 	 Found proxy file /tmp/x509up_u39587
+DEBUG 2015-10-16 10:06:50,735: 	 Getting proxy life time left
+DEBUG 2015-10-16 10:06:51,239: 	 Executing : 
+ command : voms-proxy-info -file /tmp/x509up_u39587 -timeleft
+ output : 86367
+
+ error: 
+ retcode : 0
+ERROR 2015-10-16 10:06:51,677: 	 Keyboard Interrupted
+ERROR 2015-10-16 10:06:51,679: 	 Unhandled Exception!
+ERROR 2015-10-16 10:06:51,679: 	 'NoneType' object has no attribute 'terminate'
+Traceback (most recent call last):
+  File "/cvmfs/cms.cern.ch/crab3/slc6_amd64_gcc481/cms/crabclient/3.3.1510/bin/crab", line 213, in <module>
+    client.cmd.terminate( exitcode )
+AttributeError: 'NoneType' object has no attribute 'terminate'
+ERROR 2015-10-16 10:06:51,680: 	 ERROR: AttributeError: 'NoneType' object has no attribute 'terminate'
+ERROR 2015-10-16 10:06:51,680: 	 
+	Please email hn-cms-computing-tools@cern.ch for support with the crab.log file or crab.log URL.
+ERROR 2015-10-16 10:06:51,680: 	 	Client Version: 3.3.1510
+ERROR 2015-10-16 10:06:51,680: 	 	Please use 'crab uploadlog' to upload the log file /afs/cern.ch/work/m/molszews/CMSSW/tautau/M2N/CMSSW_7_4_7/src/m2n/maxi2ntuples/python/crab.log to the CRAB cache.
+DEBUG 2015-10-16 12:01:06,015: 	 Executing command: 'getoutput'
+DEBUG 2015-10-16 12:01:06,019: 	 Found CRAB cache file /afs/cern.ch/user/m/molszews/.crab3
+DEBUG 2015-10-16 12:01:06,067: 	 Checking credentials
+DEBUG 2015-10-16 12:01:06,082: 	 Proxy file /tmp/x509up_u39587 not found
+DEBUG 2015-10-16 12:01:06,082: 	 Creating new proxy for 24:00 hours with VO group '' and VO role 'NULL'.
+ERROR 2015-10-16 12:09:46,297: 	 Keyboard Interrupted
+ERROR 2015-10-16 12:09:46,481: 	 Unhandled Exception!
+ERROR 2015-10-16 12:09:46,482: 	 'NoneType' object has no attribute 'terminate'
+Traceback (most recent call last):
+  File "/cvmfs/cms.cern.ch/crab3/slc6_amd64_gcc481/cms/crabclient/3.3.1510/bin/crab", line 213, in <module>
+    client.cmd.terminate( exitcode )
+AttributeError: 'NoneType' object has no attribute 'terminate'
+ERROR 2015-10-16 12:09:46,508: 	 ERROR: AttributeError: 'NoneType' object has no attribute 'terminate'
+ERROR 2015-10-16 12:09:46,508: 	 
+	Please email hn-cms-computing-tools@cern.ch for support with the crab.log file or crab.log URL.
+ERROR 2015-10-16 12:09:46,508: 	 	Client Version: 3.3.1510
+ERROR 2015-10-16 12:09:46,508: 	 	Please use 'crab uploadlog' to upload the log file /afs/cern.ch/work/m/molszews/CMSSW/tautau/M2N/CMSSW_7_4_7/src/m2n/maxi2ntuples/python/crab.log to the CRAB cache.
+DEBUG 2015-10-19 14:37:30,255: 	 Executing command: 'status'
+DEBUG 2015-10-19 14:37:30,256: 	 Found CRAB cache file /afs/cern.ch/user/m/molszews/.crab3
+DEBUG 2015-10-19 14:37:59,994: 	 Executing command: 'status'
+DEBUG 2015-10-19 14:37:59,994: 	 Found CRAB cache file /afs/cern.ch/user/m/molszews/.crab3
+DEBUG 2015-10-19 14:44:05,665: 	 Executing command: 'status'
+DEBUG 2015-10-19 14:44:05,667: 	 Found CRAB cache file /afs/cern.ch/user/m/molszews/.crab3
+DEBUG 2015-10-20 20:42:51,801: 	 Executing command: 'submit'
+DEBUG 2015-10-20 20:42:51,804: 	 Found CRAB cache file /afs/cern.ch/user/m/molszews/.crab3
+DEBUG 2015-10-20 20:48:41,402: 	 Executing command: 'submit'
+DEBUG 2015-10-20 20:48:41,404: 	 Found CRAB cache file /afs/cern.ch/user/m/molszews/.crab3
+DEBUG 2015-10-20 20:48:41,417: 	 Checking credentials
+DEBUG 2015-10-20 20:48:41,418: 	 Found proxy file /tmp/x509up_u39587
+DEBUG 2015-10-20 20:48:41,418: 	 Getting proxy life time left
+DEBUG 2015-10-20 20:48:42,026: 	 Executing : 
+ command : voms-proxy-info -file /tmp/x509up_u39587 -timeleft
+ output : 86060
+
+ error: 
+ retcode : 0
+DEBUG 2015-10-20 20:48:42,536: 	 Executing : 
+ command : voms-proxy-info -file /tmp/x509up_u39587 -actimeleft
+ output : 86059
+
+ error: 
+ retcode : 0
+DEBUG 2015-10-20 20:48:42,537: 	 Proxy valid for 23:54:20 hours
+INFO 2015-10-20 20:48:42,537: 	 Will use CRAB configuration file crab.py
+DEBUG 2015-10-20 20:48:42,537: 	 Loading CRAB configuration file.
+DEBUG 2015-10-20 20:48:42,539: 	 Will use CRAB Analysis plugin (i.e. will run an analysis job type).
+ERROR 2015-10-20 20:48:42,539: 	 Working area '/afs/cern.ch/work/m/molszews/CMSSW/tautau/M2N/CMSSW_7_4_7/src/m2n/maxi2ntuples/python/crab_02/crab_wjet_01' already exists 
+Please change the requestName in the config file
+ERROR 2015-10-20 20:48:42,539: 	 Caught exception
+Traceback (most recent call last):
+  File "/cvmfs/cms.cern.ch/crab3/slc6_amd64_gcc481/cms/crabclient/3.3.1510/bin/crab", line 159, in <module>
+    client()
+  File "/cvmfs/cms.cern.ch/crab3/slc6_amd64_gcc481/cms/crabclient/3.3.1510/bin/crab", line 145, in __call__
+    self.cmd = sub_cmd(self.logger, args[1:])
+  File "/cvmfs/cms.cern.ch/crab3/slc6_amd64_gcc481/cms/crabclient/3.3.1510/lib/python2.6/site-packages/CRABClient/Commands/submit.py", line 32, in __init__
+    SubCommand.__init__(self, logger, cmdargs, disable_interspersed_args=True)
+  File "/cvmfs/cms.cern.ch/crab3/slc6_amd64_gcc481/cms/crabclient/3.3.1510/lib/python2.6/site-packages/CRABClient/Commands/SubCommand.py", line 298, in __init__
+    getattr(self.configuration.General, 'requestName', None))
+  File "/cvmfs/cms.cern.ch/crab3/slc6_amd64_gcc481/cms/crabclient/3.3.1510/lib/python2.6/site-packages/CRABClient/ClientUtilities.py", line 393, in createWorkArea
+    raise ConfigException("Working area '%s' already exists \nPlease change the requestName in the config file" % fullpath)
+ConfigException: Working area '/afs/cern.ch/work/m/molszews/CMSSW/tautau/M2N/CMSSW_7_4_7/src/m2n/maxi2ntuples/python/crab_02/crab_wjet_01' already exists 
+Please change the requestName in the config file
+ERROR 2015-10-20 20:48:42,553: 	 Unhandled Exception!
+ERROR 2015-10-20 20:48:42,553: 	 'NoneType' object has no attribute 'terminate'
+Traceback (most recent call last):
+  File "/cvmfs/cms.cern.ch/crab3/slc6_amd64_gcc481/cms/crabclient/3.3.1510/bin/crab", line 213, in <module>
+    client.cmd.terminate( exitcode )
+AttributeError: 'NoneType' object has no attribute 'terminate'
+ERROR 2015-10-20 20:48:42,553: 	 ERROR: AttributeError: 'NoneType' object has no attribute 'terminate'
+ERROR 2015-10-20 20:48:42,553: 	 
+	Please email hn-cms-computing-tools@cern.ch for support with the crab.log file or crab.log URL.
+ERROR 2015-10-20 20:48:42,553: 	 	Client Version: 3.3.1510
+ERROR 2015-10-20 20:48:42,553: 	 	Please use 'crab uploadlog' to upload the log file /afs/cern.ch/work/m/molszews/CMSSW/tautau/M2N/CMSSW_7_4_7/src/m2n/maxi2ntuples/python/crab.log to the CRAB cache.
+DEBUG 2015-11-06 15:50:57,673: 	 Executing command: 'submit'
+DEBUG 2015-11-06 15:50:57,674: 	 Found CRAB cache file /afs/cern.ch/user/m/molszews/.crab3
+DEBUG 2015-11-06 15:50:57,751: 	 Checking credentials
+DEBUG 2015-11-06 15:50:57,751: 	 Found proxy file /tmp/x509up_u39587
+DEBUG 2015-11-06 15:50:57,751: 	 Getting proxy life time left
+DEBUG 2015-11-06 15:50:58,458: 	 Executing : 
+ command : voms-proxy-info -file /tmp/x509up_u39587 -timeleft
+ output : 42453
+
+ error: 
+ retcode : 0
+DEBUG 2015-11-06 15:50:58,965: 	 Executing : 
+ command : voms-proxy-info -file /tmp/x509up_u39587 -actimeleft
+ output : 
+ error: No VOMS attributes found!
+
+ retcode : 1
+DEBUG 2015-11-06 15:50:58,965: 	 Proxy valid for 00:00:00 hours
+DEBUG 2015-11-06 15:50:58,966: 	 Creating new proxy for 24:00 hours with VO group '' and VO role 'NULL'.
+DEBUG 2015-11-06 15:51:10,326: 	 Executing : 
+ command : voms-proxy-init -voms cms:/cms -valid 24:00 -rfc
+ output : None
+ error: None
+ retcode : 0
+DEBUG 2015-11-06 15:51:10,935: 	 Executing : 
+ command : voms-proxy-info -file /tmp/x509up_u39587 -timeleft
+ output : 86397
+
+ error: 
+ retcode : 0
+DEBUG 2015-11-06 15:51:11,448: 	 Executing : 
+ command : voms-proxy-info -file /tmp/x509up_u39587 -actimeleft
+ output : 86396
+
+ error: 
+ retcode : 0
+DEBUG 2015-11-06 15:51:11,959: 	 Executing : 
+ command : env X509_USER_PROXY=/tmp/x509up_u39587 voms-proxy-info -fqan
+ output : /cms/Role=NULL/Capability=NULL
+
+ error: 
+ retcode : 0
+DEBUG 2015-11-06 15:51:11,960: 	 Proxy created.
+INFO 2015-11-06 15:51:11,960: 	 Will use CRAB configuration file crabTmp.py
+DEBUG 2015-11-06 15:51:11,960: 	 Loading CRAB configuration file.
+ERROR 2015-11-06 15:51:11,984: 	 Invalid CRAB configuration: Parameter Data.publishDataName has been renamed to Data.outputDatasetTag starting from CRAB v3.3.1511; please change your configuration file accordingly.
+The documentation about the CRAB configuration file can be found in https://twiki.cern.ch/twiki/bin/view/CMSPublic/CRAB3ConfigurationFile
+ERROR 2015-11-06 15:51:11,984: 	 Caught exception
+Traceback (most recent call last):
+  File "/cvmfs/cms.cern.ch/crab3/slc6_amd64_gcc481/cms/crabclient/3.3.1511/bin/crab", line 159, in <module>
+    client()
+  File "/cvmfs/cms.cern.ch/crab3/slc6_amd64_gcc481/cms/crabclient/3.3.1511/bin/crab", line 145, in __call__
+    self.cmd = sub_cmd(self.logger, args[1:])
+  File "/cvmfs/cms.cern.ch/crab3/slc6_amd64_gcc481/cms/crabclient/3.3.1511/lib/python2.6/site-packages/CRABClient/Commands/submit.py", line 32, in __init__
+    SubCommand.__init__(self, logger, cmdargs, disable_interspersed_args=True)
+  File "/cvmfs/cms.cern.ch/crab3/slc6_amd64_gcc481/cms/crabclient/3.3.1511/lib/python2.6/site-packages/CRABClient/Commands/SubCommand.py", line 295, in __init__
+    self.loadConfig(self.options.config, self.args)
+  File "/cvmfs/cms.cern.ch/crab3/slc6_amd64_gcc481/cms/crabclient/3.3.1511/lib/python2.6/site-packages/CRABClient/Commands/SubCommand.py", line 89, in loadConfig
+    raise ConfigurationException(configmsg)
+ConfigurationException: Invalid CRAB configuration: Parameter Data.publishDataName has been renamed to Data.outputDatasetTag starting from CRAB v3.3.1511; please change your configuration file accordingly.
+The documentation about the CRAB configuration file can be found in https://twiki.cern.ch/twiki/bin/view/CMSPublic/CRAB3ConfigurationFile
