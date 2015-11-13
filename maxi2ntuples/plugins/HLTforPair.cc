@@ -234,7 +234,7 @@ HLTforPair::produce(edm::Event& iEvent, const edm::EventSetup& iSetup)
               HLT_IsoMu24_eta2p1_v2 = 0,
               HLT_IsoMu27_v1 = 0,
               HLT_IsoMu17_eta2p1 = 0,
-              HLT_IsoMu18_v = 0,
+              HLT_IsoMu18_v1 = 0,
               HLT_IsoMu22_v1 = 0;
 
 
@@ -279,9 +279,9 @@ HLTforPair::produce(edm::Event& iEvent, const edm::EventSetup& iSetup)
         ) HLT_IsoMu24_eta2p1_v2 = 1;
 
         if(
-            getpaths("HLT_IsoMu18_v",  triggerBits, triggerPrescales, names)
+            getpaths("HLT_IsoMu18_v1",  triggerBits, triggerPrescales, names)
             && getfilters(l1, {"hltL3crIsoL1sMu16L1f0L2f10QL3f18QL3trkIsoFiltered0p09"}, triggerObjects, triggerPrescales, names)
-        ) HLT_IsoMu18_v = 1;
+        ) HLT_IsoMu18_v1 = 1;
         
         if(
             getpaths("HLT_IsoMu22_v1",  triggerBits, triggerPrescales, names)
@@ -298,7 +298,7 @@ HLTforPair::produce(edm::Event& iEvent, const edm::EventSetup& iSetup)
         pair.addUserFloat("HLT_IsoMu24_eta2p1_v2",HLT_IsoMu24_eta2p1_v2);
         pair.addUserFloat("HLT_IsoMu27_v1",HLT_IsoMu27_v1);
         pair.addUserFloat("HLT_IsoMu17_eta2p1",HLT_IsoMu17_eta2p1);
-        pair.addUserFloat("HLT_IsoMu18_v",HLT_IsoMu18_v);
+        pair.addUserFloat("HLT_IsoMu18_v1",HLT_IsoMu18_v1);
         pair.addUserFloat("HLT_IsoMu22_v1",HLT_IsoMu22_v1);
 
         selectedPair->push_back(pair);
@@ -326,11 +326,12 @@ HLTforPair::endJob() {
 
 bool  HLTforPair::getpaths(std::string hlt, edm::Handle<edm::TriggerResults>& triggerBits , edm::Handle<pat::PackedTriggerPrescales>& triggerPrescales, const edm::TriggerNames &names){
     
-    for (unsigned int i = 0, n = triggerBits->size(); i < n; ++i) 
+    for (unsigned int i = 0, n = triggerBits->size(); i < n; ++i) {
+ //       std::cout << names.triggerName(i) << std::endl;
         if(triggerBits->accept(i))
             if (names.triggerName(i) == hlt)
                 return true;
-    
+    }
 
     return false;
 

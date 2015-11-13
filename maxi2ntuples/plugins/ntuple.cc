@@ -376,7 +376,7 @@ ntuple::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
         wpair.trigger(HLT_IsoMu17_eta2p1_LooseIsoPFTau20_v1, lP.userFloat("HLT_IsoMu17_eta2p1_LooseIsoPFTau20_v1"));
         wpair.trigger(HLT_IsoMu24_eta2p1_v1, lP.userFloat("HLT_IsoMu24_eta2p1_v1"));
         wpair.trigger(HLT_IsoMu27_v1, lP.userFloat("HLT_IsoMu27_v1"));
-        wpair.trigger(HLT_IsoMu18_v, lP.userFloat("HLT_IsoMu18_v"));
+        wpair.trigger(HLT_IsoMu18_v1, lP.userFloat("HLT_IsoMu18_v1"));
         wpair.trigger(HLT_IsoMu22_v1, lP.userFloat("HLT_IsoMu22_v1"));
         wpair.trigger(HLT_IsoMu17_eta2p1, lP.userFloat("HLT_IsoMu17_eta2p1"));
         wpair.trigger(HLT_IsoMu17_eta2p1_LooseIsoPFTau20_v2, lP.userFloat("HLT_IsoMu17_eta2p1_LooseIsoPFTau20_v2"));
@@ -458,8 +458,8 @@ ntuple::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
             wtau.tauID(againstElectronMediumMVA5, taon->tauID("againstElectronMediumMVA5"));
             wtau.tauID(againstElectronTightMVA5, taon->tauID("againstElectronTightMVA5"));
             wtau.tauID(againstElectronVTightMVA5, taon->tauID("againstElectronVTightMVA5"));
-            wtau.tauID(byIsolationMVA3newDMwoLTraw, taon->tauID("byIsolationMVA3newDMwoLTraw"));
-            wtau.tauID(byIsolationMVA3oldDMwoLTraw, taon->tauID("byIsolationMVA3oldDMwoLTraw"));
+            //wtau.tauID(byIsolationMVA3newDMwoLTraw, taon->tauID("byIsolationMVA3newDMwoLTraw"));
+            //wtau.tauID(byIsolationMVA3oldDMwoLTraw, taon->tauID("byIsolationMVA3oldDMwoLTraw"));
             wtau.tauID(byIsolationMVA3newDMwLTraw, taon->tauID("byIsolationMVA3newDMwLTraw"));
             wtau.tauID(byIsolationMVA3oldDMwLTraw, taon->tauID("byIsolationMVA3oldDMwLTraw"));
 

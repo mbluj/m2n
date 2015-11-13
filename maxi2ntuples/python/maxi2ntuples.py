@@ -22,24 +22,25 @@ process.load('Configuration.StandardSequences.EndOfProcess_cff')
 
 #####################################################################################
 
-process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_cff') #MC
-#process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_condDBv2_cff') #data
+#process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_cff') #MC
+process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_condDBv2_cff') #data
 
 from Configuration.AlCa.GlobalTag_condDBv2 import GlobalTag
 
 #process.GlobalTag.globaltag = 'PHYS14_25_V1::All'  #phys14 MC;
 #process.GlobalTag.globaltag = '74X_dataRun2_Prompt_v0' #50ns data
 #process.GlobalTag.globaltag = '74X_dataRun2_Prompt_v1' #25ns data
+process.GlobalTag.globaltag = '74X_dataRun2_Prompt_v2' #25ns data
 #process.GlobalTag.globaltag = 'MCRUN2_74_V9A'  #spring15 50ns MC;
-process.GlobalTag.globaltag = 'MCRUN2_74_V9'  #spring15 25ns MC;
+#process.GlobalTag.globaltag = 'MCRUN2_74_V9'  #spring15 25ns MC;
 #process.GlobalTag = GlobalTag(process.GlobalTag, 'auto:run2_mc', '')
 
-mc=True; #if MC then true; if data then  false
-sample = 3; #0 -data; 1-DY; 2-WJets; 3-TTbar
-outfile = "tt.root";
+mc=False; #if MC then true; if data then  false
+sample = 0; #0 -data; 1-DY; 2-WJets; 3-TTbar
+outfile = "dd.root";
 vbf=False
-grid=False
-
+grid=True
+aod = True
 #####################################################################################
 
 #####################################################################################
@@ -120,8 +121,6 @@ else:
     process.TFileService = cms.Service("TFileService", fileName = cms.string(outputdir+outfile))
 
 ######################################################################################################
-
-
 process.eventnumberfilter = cms.EDFilter("EventNumberFilter",
 )
 
@@ -155,6 +154,18 @@ process.jetsIDSelected = cms.EDProducer("JetsSelector",
 
 ############### PAIRS #############################
 
+
+##
+## Build ll candidates (here OS)
+##
+process.pairmaker = cms.EDProducer("CandViewShallowCloneCombiner",
+    decay = cms.string("slimmedMuons slimmedTaus"),
+    cut = cms.string("mass>0"),
+    checkCharge = cms.bool(False)
+)
+
+
+###################################################
 MVAPairMET = ();
 for index in range(100):
   MVAMETName = "pfMETMVA%i" % index
@@ -163,7 +174,8 @@ for index in range(100):
 
 process.pairswithmet = cms.EDProducer("AddMVAMET",
 #    pairs = cms.InputTag("SVllCand"),
-    pairs = cms.InputTag("SVbypass"),
+#    pairs = cms.InputTag("SVbypass"),
+    pairs = cms.InputTag("pairmaker"),
     mets = cms.InputTag("slimmedMETs"),
     pairsmets = cms.VInputTag(MVAPairMET),
     mvamet = cms.InputTag("pfMETMVA0"),
@@ -325,6 +337,7 @@ process.maxi2ntuples = cms.EDAnalyzer('maxi2ntuples',
 
 process.p = cms.Path(
         process.ininfo
+        *process.pairmaker
         *process.egmGsfElectronIDSequence
         *process.jetsSelected
         *process.jetsIDSelected
@@ -354,3 +367,10 @@ process.p = cms.Path(
 )
 '''
 #process.e = cms.EndPath(process.out)
+#process.o = cms.Path(process.pairmaker)
+
+process.schedule = cms.Schedule(process.p)
+#if aod:
+#    process.schedule.extend(process.pairmaker)
+#process.schedule.extend(process.p)
+

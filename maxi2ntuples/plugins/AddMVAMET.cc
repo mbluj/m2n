@@ -81,7 +81,7 @@ class AddMVAMET : public edm::EDProducer {
       // ----------member data ---------------------------
       edm::EDGetTokenT<reco::PFMETCollection> mvametToken_;
       edm::EDGetTokenT<pat::METCollection> metToken_;
-      edm::EDGetTokenT<pat::CompositeCandidateCollection> pairsToken_;
+      edm::EDGetTokenT<reco::CompositeCandidateCollection> pairsToken_;
       std::vector<edm::InputTag> pairsmetToken_;
       bool usePairMET;
       bool useMVAMET;
@@ -102,7 +102,7 @@ class AddMVAMET : public edm::EDProducer {
 AddMVAMET::AddMVAMET(const edm::ParameterSet& iConfig):
      mvametToken_(consumes<reco::PFMETCollection>(iConfig.getParameter<edm::InputTag>("mvamet"))),
      metToken_(consumes<pat::METCollection>(iConfig.getParameter<edm::InputTag>("mets"))),
-     pairsToken_(consumes<pat::CompositeCandidateCollection>(iConfig.getParameter<edm::InputTag>("pairs")))
+     pairsToken_(consumes<reco::CompositeCandidateCollection>(iConfig.getParameter<edm::InputTag>("pairs")))
 {
    usePairMET = iConfig.getUntrackedParameter<bool>("usePairMET");
    useMVAMET = iConfig.getUntrackedParameter<bool>("useMVAMET");
@@ -140,7 +140,7 @@ AddMVAMET::produce(edm::Event& iEvent, const edm::EventSetup& iSetup)
 //    const reco::PFMET &met = mvamets->front();
 
 
-    edm::Handle<pat::CompositeCandidateCollection> pairs;
+    edm::Handle<reco::CompositeCandidateCollection> pairs;
     iEvent.getByToken(pairsToken_, pairs);
     if (!pairs.isValid()) return;
 

@@ -25,11 +25,11 @@ def prepareCrabCfg(dataset,
     shortName+="_"+publish_data_suffix
     ##Modify CRAB3 configuration
     config.General.requestName = shortName
-    config.General.workArea = '/afs/cern.ch/work/m/molszews/CMSSW/Data/m2n/01'
+    config.General.workArea = '/afs/cern.ch/work/m/molszews/CMSSW/Data/m2n/03'
     config.JobType.pluginName = 'Analysis'
     config.JobType.psetName = 'maxi2ntuples.py'
     config.JobType.allowUndistributedCMSSW = True
-    config.Data.inputDBS = 'phys03'
+    config.Data.inputDBS = 'global'
     config.Data.splitting = splitmethod
     config.Data.unitsPerJob = eventsPerJob
     config.Data.totalUnits = -1
@@ -55,7 +55,7 @@ datasetsMC = [
     ##'/SingleMuon/molszews-SingleMuon_Run2015C_PromptReco_v1_v1_25ns-42a7e4340eeaef6d4f87c5c983a49b31/USER'
     ##'/WJetsToLNu_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8/molszews-20082015_RunIISpring15DR74-Asympt50ns_MCRUN2_EmAOD-f66e06a4fb4f3dd49e2c4e93f2dbebe2/USER'
     ##'/DYJetsToLL_M-50_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8/molszews-16082015_RunIISpring15DR74-Asympt50ns_MCRUN2_74_V9A-v2_EmAOD-f66e06a4fb4f3dd49e2c4e93f2dbebe2/USER'
-    '/TTJets_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8/molszews-TTJets_TuneCUETP8M1_13TeV_amcatnloFXFX_pythia8_v1-de0a0f5c6787d3ec8a72b569e41467a2/USER'#TTbezSVfita
+    ##'/TTJets_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8/molszews-TTJets_TuneCUETP8M1_13TeV_amcatnloFXFX_pythia8_v1-de0a0f5c6787d3ec8a72b569e41467a2/USER'#TTbezSVfita
 ]
 
 ########################################################
@@ -75,10 +75,12 @@ datasetsDATA = [
     ##"/MuonEG/Run2015B-17Jul2015-v1/MINIAOD",
     ##"/MuonEG/Run2015B-PromptReco-v1/MINIAOD",
     ##"/MuonEG/Run2015C-PromptReco-v1/MINIAOD"
+    '/SingleMuon/Run2015D-PromptReco-v3/MINIAOD'
 ]
 
 jsonFile50ns = "/afs/cern.ch/cms/CAF/CMSCOMM/COMM_DQM/certification/Collisions15/13TeV/Cert_246908-255031_13TeV_PromptReco_Collisions15_50ns_JSON_v2.txt"
-jsonFile25ns = "/afs/cern.ch/cms/CAF/CMSCOMM/COMM_DQM/certification/Collisions15/13TeV/Cert_246908-255031_13TeV_PromptReco_Collisions15_25ns_JSON_v2.txt"
+#jsonFile25ns = "/afs/cern.ch/cms/CAF/CMSCOMM/COMM_DQM/certification/Collisions15/13TeV/Cert_246908-255031_13TeV_PromptReco_Collisions15_25ns_JSON_v2.txt"
+jsonFile25ns = "/afs/cern.ch/cms/CAF/CMSCOMM/COMM_DQM/certification/Collisions15/13TeV/Cert_246908-258159_13TeV_PromptReco_Collisions15_25ns_JSON_v3.txt"
 
 jsonFile = jsonFile25ns
 ########################################################
@@ -89,6 +91,6 @@ for dataset in datasetsDATA:
                    jsonFile=jsonFile,
                    storage_element="T2_PL_Swierk",
                    publish_data_suffix = "v1_25ns",
-                   splitmethod = 'LumiBased')
+                   splitmethod = 'FileBased')
 ########################################################
 

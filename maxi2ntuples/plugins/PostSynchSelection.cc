@@ -249,11 +249,12 @@ PostSynchSelection::produce(edm::Event& iEvent, const edm::EventSetup& iSetup)
         float iso = (mu.pfIsolationR03().sumChargedHadronPt + 
             std::max(mu.pfIsolationR03().sumNeutralHadronEt + mu.pfIsolationR03().sumPhotonEt - 0.5 * mu.pfIsolationR03().sumPUPt, 0.0)) / mu.pt();
         if(
-            mu.pt() >15 
+            mu.pt() >10
             && fabs(mu.eta()) < 2.4
-            && mu.isGlobalMuon()
-            && mu.isTrackerMuon()
-            && mu.isPFMuon()
+           // && mu.isGlobalMuon()
+           // && mu.isTrackerMuon()
+           // && mu.isPFMuon()
+            && mu.isMediumMuon()
             && fabs(mu.muonBestTrack()->dz(PV.position())) < 0.2
             && fabs(mu.muonBestTrack()->dxy( PV.position()) ) < 0.045
             && iso < 0.3
