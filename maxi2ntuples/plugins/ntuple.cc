@@ -367,20 +367,15 @@ ntuple::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
         wpair.PairBaselineSelection(lP.userFloat("PairBaselineSelection"));
         wpair.PostSynchSelection(lP.userFloat("PostSynchSelection"));
 
-        wpair.trigger(HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v1, lP.userFloat("HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v1"));
-        wpair.trigger(HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_v1, lP.userFloat("HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_v1"));
-        wpair.trigger(HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v2, lP.userFloat("HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v2"));
-        wpair.trigger(HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_v2, lP.userFloat("HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_v2"));
-        wpair.trigger(HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v3, lP.userFloat("HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v3"));
-        wpair.trigger(HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_v3, lP.userFloat("HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_v3"));
-        wpair.trigger(HLT_IsoMu17_eta2p1_LooseIsoPFTau20_v1, lP.userFloat("HLT_IsoMu17_eta2p1_LooseIsoPFTau20_v1"));
-        wpair.trigger(HLT_IsoMu24_eta2p1_v1, lP.userFloat("HLT_IsoMu24_eta2p1_v1"));
-        wpair.trigger(HLT_IsoMu27_v1, lP.userFloat("HLT_IsoMu27_v1"));
-        wpair.trigger(HLT_IsoMu18_v1, lP.userFloat("HLT_IsoMu18_v1"));
-        wpair.trigger(HLT_IsoMu22_v1, lP.userFloat("HLT_IsoMu22_v1"));
+        wpair.trigger(HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL, lP.userFloat("HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL"));
+        wpair.trigger(HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL, lP.userFloat("HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL"));
+        wpair.trigger(HLT_IsoMu17_eta2p1_LooseIsoPFTau20, lP.userFloat("HLT_IsoMu17_eta2p1_LooseIsoPFTau20"));
+        wpair.trigger(HLT_IsoMu24_eta2p1, lP.userFloat("HLT_IsoMu24_eta2p1"));
+        wpair.trigger(HLT_IsoMu27, lP.userFloat("HLT_IsoMu27"));
+        wpair.trigger(HLT_IsoMu18, lP.userFloat("HLT_IsoMu18"));
+        wpair.trigger(HLT_IsoMu22, lP.userFloat("HLT_IsoMu22"));
         wpair.trigger(HLT_IsoMu17_eta2p1, lP.userFloat("HLT_IsoMu17_eta2p1"));
-        wpair.trigger(HLT_IsoMu17_eta2p1_LooseIsoPFTau20_v2, lP.userFloat("HLT_IsoMu17_eta2p1_LooseIsoPFTau20_v2"));
-        wpair.trigger(HLT_IsoMu24_eta2p1_v2, lP.userFloat("HLT_IsoMu24_eta2p1_v2"));
+        wpair.trigger(HLT_IsoMu17_eta2p1_LooseIsoPFTau20_SingleL1, lP.userFloat("HLT_IsoMu17_eta2p1_LooseIsoPFTau20_SingleL1"));
 
         wpaircollection.push_back(wpair);
 

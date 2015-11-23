@@ -228,14 +228,13 @@ HLTforPair::produce(edm::Event& iEvent, const edm::EventSetup& iSetup)
 //        short unsigned int channelcase; 
 
         //mutau
-        float HLT_IsoMu17_eta2p1_LooseIsoPFTau20_v1 = 0,
-              HLT_IsoMu17_eta2p1_LooseIsoPFTau20_v2 = 0,
-              HLT_IsoMu24_eta2p1_v1 = 0,
-              HLT_IsoMu24_eta2p1_v2 = 0,
-              HLT_IsoMu27_v1 = 0,
+        float HLT_IsoMu17_eta2p1_LooseIsoPFTau20 = 0,
+              HLT_IsoMu24_eta2p1 = 0,
+              HLT_IsoMu27 = 0,
               HLT_IsoMu17_eta2p1 = 0,
-              HLT_IsoMu18_v1 = 0,
-              HLT_IsoMu22_v1 = 0;
+              HLT_IsoMu18 = 0,
+              HLT_IsoMu22 = 0,
+              HLT_IsoMu17_eta2p1_LooseIsoPFTau20_SingleL1 = 0;
 
 
  //       float passed = 0;
@@ -244,62 +243,65 @@ HLTforPair::produce(edm::Event& iEvent, const edm::EventSetup& iSetup)
         //if (!l1->isMuon())
         //    std::cout << "HLTforPair module ERROR: l1 is not muon!!!\n";
 
-        if(
-           getpaths("HLT_IsoMu17_eta2p1_LooseIsoPFTau20_v1", triggerBits, triggerPrescales, names) 
-           && getfilters(l1, {"hltOverlapFilterIsoMu17LooseIsoPFTau20", "hltL3crIsoL1sMu16erTauJet20erL1f0L2f10QL3f17QL3trkIsoFiltered0p09"}, triggerObjects, triggerPrescales, names) 
-           && getfilters(l2, {"hltPFTau20TrackLooseIsoAgainstMuon", "hltOverlapFilterIsoMu17LooseIsoPFTau20"}, triggerObjects, triggerPrescales, names) 
-        )  HLT_IsoMu17_eta2p1_LooseIsoPFTau20_v1 = 1;
+        for(int i = 1; i < 5; i++){
+            if(
+               getpaths("HLT_IsoMu17_eta2p1_LooseIsoPFTau20_v" + std::to_string(i), triggerBits, triggerPrescales, names) 
+               && getfilters(l1, {"hltOverlapFilterIsoMu17LooseIsoPFTau20", "hltL3crIsoL1sMu16erTauJet20erL1f0L2f10QL3f17QL3trkIsoFiltered0p09"}, triggerObjects, triggerPrescales, names) 
+               && getfilters(l2, {"hltPFTau20TrackLooseIsoAgainstMuon", "hltOverlapFilterIsoMu17LooseIsoPFTau20"}, triggerObjects, triggerPrescales, names) 
+            ){HLT_IsoMu17_eta2p1_LooseIsoPFTau20 = 1; break;}
+        }
+        for(int i = 1; i < 5; i++){
+            if(
+               getpaths("HLT_IsoMu17_eta2p1_LooseIsoPFTau20_SingleL1_v" + std::to_string(i), triggerBits, triggerPrescales, names) 
+               && getfilters(l1, {"hltOverlapFilterIsoMu17LooseIsoPFTau20", "hltL3crIsoL1sMu16erTauJet20erL1f0L2f10QL3f17QL3trkIsoFiltered0p09"}, triggerObjects, triggerPrescales, names) 
+               && getfilters(l2, {"hltPFTau20TrackLooseIsoAgainstMuon", "hltOverlapFilterIsoMu17LooseIsoPFTau20"}, triggerObjects, triggerPrescales, names) 
+            ){HLT_IsoMu17_eta2p1_LooseIsoPFTau20_SingleL1 = 1; break;}
+        }
+        for(int i = 1; i < 5; i++){
+            if(
+               getpaths("HLT_IsoMu24_eta2p1_v" + std::to_string(i), triggerBits, triggerPrescales, names) 
+               && getfilters(l1, {"hltL3crIsoL1sMu20Eta2p1L1f0L2f10QL3f24QL3trkIsoFiltered0p09"}, triggerObjects, triggerPrescales, names) 
+               && l1->pt() > 25.
+            ) {HLT_IsoMu24_eta2p1 = 1; break;}
+        }
 
-        if(
-           getpaths("HLT_IsoMu24_eta2p1_v1", triggerBits, triggerPrescales, names) 
-           && getfilters(l1, {"hltL3crIsoL1sMu20Eta2p1L1f0L2f10QL3f24QL3trkIsoFiltered0p09"}, triggerObjects, triggerPrescales, names) 
-           && l1->pt() > 25.
-        ) HLT_IsoMu24_eta2p1_v1 = 1;
+        for(int i = 1; i < 5; i++){
+            if(
+                getpaths("HLT_IsoMu27_v" + std::to_string(i),  triggerBits, triggerPrescales, names)
+                && getfilters(l1, {"hltL3crIsoL1sMu25L1f0L2f10QL3f27QL3trkIsoFiltered0p09"}, triggerObjects, triggerPrescales, names)
+            ){ HLT_IsoMu27 = 1;break;}
+        }
+        for(int i = 1; i < 5; i++){
+            if(
+                getpaths("HLT_IsoMu17_eta2p1_v" + std::to_string(i),  triggerBits, triggerPrescales, names)
+                && getfilters(l1, {"hltL3crIsoL1sSingleMu16erL1f0L2f10QL3f17QL3trkIsoFiltered0p09"}, triggerObjects, triggerPrescales, names)
+            ) {HLT_IsoMu17_eta2p1 = 1; break;}
+        }
 
-        if(
-            getpaths("HLT_IsoMu27_v1",  triggerBits, triggerPrescales, names)
-            && getfilters(l1, {"hltL3crIsoL1sMu25L1f0L2f10QL3f27QL3trkIsoFiltered0p09"}, triggerObjects, triggerPrescales, names)
-        ) HLT_IsoMu27_v1 = 1;
+        for(int i = 1; i < 5; i++){
+            if(
+                getpaths("HLT_IsoMu18_v" + std::to_string(i),  triggerBits, triggerPrescales, names)
+                && getfilters(l1, {"hltL3crIsoL1sMu16L1f0L2f10QL3f18QL3trkIsoFiltered0p09"}, triggerObjects, triggerPrescales, names)
+            ){ HLT_IsoMu18 = 1; break;}
+        }
 
-        if(
-            getpaths("HLT_IsoMu17_eta2p1",  triggerBits, triggerPrescales, names)
-            && getfilters(l1, {"hltL3crIsoL1sSingleMu16erL1f0L2f10QL3f17QL3trkIsoFiltered0p09"}, triggerObjects, triggerPrescales, names)
-        ) HLT_IsoMu17_eta2p1 = 1;
-
-        if(
-           getpaths("HLT_IsoMu17_eta2p1_LooseIsoPFTau20_v2", triggerBits, triggerPrescales, names) 
-           && getfilters(l1, {"hltOverlapFilterIsoMu17LooseIsoPFTau20", "hltL3crIsoL1sMu16erTauJet20erL1f0L2f10QL3f17QL3trkIsoFiltered0p09"}, triggerObjects, triggerPrescales, names) 
-           && getfilters(l2, {"hltPFTau20TrackLooseIsoAgainstMuon", "hltOverlapFilterIsoMu17LooseIsoPFTau20"}, triggerObjects, triggerPrescales, names) 
-        )  HLT_IsoMu17_eta2p1_LooseIsoPFTau20_v2 = 1;
-
-        if(
-           getpaths("HLT_IsoMu24_eta2p1_v2", triggerBits, triggerPrescales, names) 
-           && getfilters(l1, {"hltL3crIsoL1sMu20Eta2p1L1f0L2f10QL3f24QL3trkIsoFiltered0p09"}, triggerObjects, triggerPrescales, names) 
-           && l1->pt() > 25.
-        ) HLT_IsoMu24_eta2p1_v2 = 1;
-
-        if(
-            getpaths("HLT_IsoMu18_v1",  triggerBits, triggerPrescales, names)
-            && getfilters(l1, {"hltL3crIsoL1sMu16L1f0L2f10QL3f18QL3trkIsoFiltered0p09"}, triggerObjects, triggerPrescales, names)
-        ) HLT_IsoMu18_v1 = 1;
-        
-        if(
-            getpaths("HLT_IsoMu22_v1",  triggerBits, triggerPrescales, names)
-            && getfilters(l1, {"hltL3crIsoL1sMu20L1f0L2f10QL3f22QL3trkIsoFiltered0p09"}, triggerObjects, triggerPrescales, names)
-        ) HLT_IsoMu22_v1 = 1;
-
+        for(int i = 1; i < 5; i++){
+            if(
+                getpaths("HLT_IsoMu22_v" + std::to_string(i),  triggerBits, triggerPrescales, names)
+                && getfilters(l1, {"hltL3crIsoL1sMu20L1f0L2f10QL3f22QL3trkIsoFiltered0p09"}, triggerObjects, triggerPrescales, names)
+            ) HLT_IsoMu22 = 1;
+        }
 
 
         pat::CompositeCandidate pair(lP);
         //pair.addUserFloat("HLTforPair", passed);
-        pair.addUserFloat("HLT_IsoMu17_eta2p1_LooseIsoPFTau20_v1",HLT_IsoMu17_eta2p1_LooseIsoPFTau20_v1);
-        pair.addUserFloat("HLT_IsoMu17_eta2p1_LooseIsoPFTau20_v2",HLT_IsoMu17_eta2p1_LooseIsoPFTau20_v2);
-        pair.addUserFloat("HLT_IsoMu24_eta2p1_v1",HLT_IsoMu24_eta2p1_v1);
-        pair.addUserFloat("HLT_IsoMu24_eta2p1_v2",HLT_IsoMu24_eta2p1_v2);
-        pair.addUserFloat("HLT_IsoMu27_v1",HLT_IsoMu27_v1);
+        pair.addUserFloat("HLT_IsoMu17_eta2p1_LooseIsoPFTau20",HLT_IsoMu17_eta2p1_LooseIsoPFTau20);
+        pair.addUserFloat("HLT_IsoMu24_eta2p1",HLT_IsoMu24_eta2p1);
+        pair.addUserFloat("HLT_IsoMu27",HLT_IsoMu27);
         pair.addUserFloat("HLT_IsoMu17_eta2p1",HLT_IsoMu17_eta2p1);
-        pair.addUserFloat("HLT_IsoMu18_v1",HLT_IsoMu18_v1);
-        pair.addUserFloat("HLT_IsoMu22_v1",HLT_IsoMu22_v1);
+        pair.addUserFloat("HLT_IsoMu18",HLT_IsoMu18);
+        pair.addUserFloat("HLT_IsoMu22",HLT_IsoMu22);
+        pair.addUserFloat("HLT_IsoMu17_eta2p1_LooseIsoPFTau20_SingleL1",HLT_IsoMu17_eta2p1_LooseIsoPFTau20_SingleL1);
 
         selectedPair->push_back(pair);
         //if (pass)
@@ -327,7 +329,7 @@ HLTforPair::endJob() {
 bool  HLTforPair::getpaths(std::string hlt, edm::Handle<edm::TriggerResults>& triggerBits , edm::Handle<pat::PackedTriggerPrescales>& triggerPrescales, const edm::TriggerNames &names){
     
     for (unsigned int i = 0, n = triggerBits->size(); i < n; ++i) {
- //       std::cout << names.triggerName(i) << std::endl;
+        //std::cout << names.triggerName(i) << std::endl;
         if(triggerBits->accept(i))
             if (names.triggerName(i) == hlt)
                 return true;

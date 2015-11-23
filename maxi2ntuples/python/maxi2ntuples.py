@@ -9,7 +9,7 @@ process.MessageLogger.cerr.FwkReport.reportEvery = 500
 
 process.load('Configuration.StandardSequences.Services_cff')                                                                                                   
 process.load('JetMETCorrections.Configuration.JetCorrectionProducers_cff')
-process.load('RecoMET.METPUSubtraction.mvaPFMET_cff')
+#process.load('RecoMET.METPUSubtraction.mvaPFMET_cff')
 
 process.load('SimGeneral.HepPDTESSource.pythiapdt_cfi')
 process.load('Configuration.EventContent.EventContent_cff')
@@ -28,19 +28,21 @@ process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_condD
 from Configuration.AlCa.GlobalTag_condDBv2 import GlobalTag
 
 #process.GlobalTag.globaltag = 'PHYS14_25_V1::All'  #phys14 MC;
-#process.GlobalTag.globaltag = '74X_dataRun2_Prompt_v0' #50ns data
+process.GlobalTag.globaltag = '74X_mcRun2_asymptotic_v2'
 #process.GlobalTag.globaltag = '74X_dataRun2_Prompt_v1' #25ns data
-process.GlobalTag.globaltag = '74X_dataRun2_Prompt_v2' #25ns data
+#process.GlobalTag.globaltag = '74X_dataRun2_Prompt_v2' #25ns data
+#process.GlobalTag.globaltag = '74X_dataRun2_reMiniAOD_v0' #25ns data october
 #process.GlobalTag.globaltag = 'MCRUN2_74_V9A'  #spring15 50ns MC;
 #process.GlobalTag.globaltag = 'MCRUN2_74_V9'  #spring15 25ns MC;
 #process.GlobalTag = GlobalTag(process.GlobalTag, 'auto:run2_mc', '')
 
-mc=False; #if MC then true; if data then  false
-sample = 0; #0 -data; 1-DY; 2-WJets; 3-TTbar
-outfile = "dd.root";
+mc=True; #if MC then true; if data then  false
+sample = 4; #0 -data; 1-DY; 2-WJets; 3-TTbar; 4-QCD
+outfile = "qcd.root";
 vbf=False
 grid=True
 aod = True
+minioadv2 = True
 #####################################################################################
 
 #####################################################################################
@@ -213,9 +215,6 @@ process.selected = cms.EDProducer("PairBaselineSelection",
     vertices = cms.InputTag("offlineSlimmedPrimaryVertices"),
     muons = cms.InputTag("slimmedMuons"),
     electrons = cms.InputTag("slimmedElectrons"),
-    bits = cms.InputTag("TriggerResults","","HLT"),
-    prescales = cms.InputTag("patTrigger"),
-    objects = cms.InputTag("selectedPatTrigger"),
     mc = cms.bool(mc),
     eleTightIdMap = cms.InputTag("egmGsfElectronIDs:mvaEleID-Spring15-25ns-nonTrig-V1-wp80"),
     sample = cms.string('spring15')  #options: "phys14", "spring15"
@@ -308,9 +307,13 @@ process.synchtree = cms.EDAnalyzer('synchronization',
     objects = cms.InputTag("selectedPatTrigger"),
     prunedGenParticles = cms.InputTag("prunedGenParticles"),
     packedGenParticles = cms.InputTag("packedGenParticles"),
-    pileupinfo = cms.InputTag("addPileupInfo"),
     mc = cms.bool(mc),
 )
+
+if minioadv2:
+    process.m2n.pileupinfo = cms.InputTag("slimmedAddPileupInfo")
+else:
+    process.m2n.pileupinfo = cms.InputTag("addPileupInfo")
 
 if mc and not vbf:
     process.m2n.lheprod =  cms.InputTag("externalLHEProducer");
@@ -367,10 +370,7 @@ process.p = cms.Path(
 )
 '''
 #process.e = cms.EndPath(process.out)
-#process.o = cms.Path(process.pairmaker)
+process.o = cms.Path(process.pairmaker)
 
 process.schedule = cms.Schedule(process.p)
-#if aod:
-#    process.schedule.extend(process.pairmaker)
-#process.schedule.extend(process.p)
 

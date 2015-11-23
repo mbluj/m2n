@@ -144,21 +144,24 @@ EventsSkimmer::produce(edm::Event& iEvent, const edm::EventSetup& iSetup)
     
     if (!leptonPair.isValid()) return;
 
-    std::string hlta = mc ? "HLT_IsoMu17_eta2p1_LooseIsoPFTau20_v1" : "HLT_IsoMu17_eta2p1_LooseIsoPFTau20_v2";
-    std::string hltb = mc ? "HLT_IsoMu24_eta2p1_v1" : "HLT_IsoMu24_eta2p1_v2";
-    std::string hltc = "HLT_IsoMu27_v1";
+    std::string hlta = "HLT_IsoMu17_eta2p1_LooseIsoPFTau20";
+    std::string hltb =  "HLT_IsoMu24_eta2p1";
+    //std::string hltb = mc ? "HLT_IsoMu24_eta2p1_v1" : "HLT_IsoMu24_eta2p1_v2";
+    std::string hltc = "HLT_IsoMu27";
     std::string hltd = "HLT_IsoMu17_eta2p1";
-    std::string hlte = "HLT_IsoMu18_v1";
-    std::string hltf = "HLT_IsoMu22_v1";
+    std::string hlte = "HLT_IsoMu18";
+    std::string hltf = "HLT_IsoMu22";
+    std::string hltg = "HLT_IsoMu17_eta2p1_LooseIsoPFTau20_SingleL1";
+
 
     for (const pat::CompositeCandidate &lP : *leptonPair){
-        if (lP.userFloat(hlte))
-            std::cout << lP.userFloat("PATPairSelector") << lP.userFloat("PairBaselineSelection") << lP.userFloat("PostSynchSelection") << std::endl;
+ //       if (lP.userFloat(hlte))
+ //           std::cout << lP.userFloat("PATPairSelector") << lP.userFloat("PairBaselineSelection") << lP.userFloat("PostSynchSelection") << std::endl;
         bool goodPair = lP.userFloat("ChannelSelector") 
             && lP.userFloat("PATPairSelector") 
             && lP.userFloat("PairBaselineSelection")
             && lP.userFloat("PostSynchSelection")
-            && (lP.userFloat(hlta) || lP.userFloat(hltb) || lP.userFloat(hltc) || lP.userFloat(hltd) || lP.userFloat(hlte) || lP.userFloat(hltf));
+            && (lP.userFloat(hlta) || lP.userFloat(hltb) || lP.userFloat(hltc) || lP.userFloat(hltd) || lP.userFloat(hlte) || lP.userFloat(hltf) || lP.userFloat(hltg));
 
 
         if(!goodPair)
