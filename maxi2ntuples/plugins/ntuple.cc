@@ -69,6 +69,11 @@
 #include "DataFormats/PatCandidates/interface/TriggerObjectStandAlone.h"
 #include "DataFormats/PatCandidates/interface/PackedTriggerPrescales.h"
 
+#include "TrackingTools/TransientTrack/interface/TransientTrackBuilder.h"
+#include "TrackingTools/Records/interface/TransientTrackRecord.h"
+#include "RecoVertex/VertexPrimitives/interface/TransientVertex.h"
+#include "RecoVertex/AdaptiveVertexFit/interface/AdaptiveVertexFitter.h"
+
 #include "m2n/maxi2ntuples/interface/utilities.h"
 #include "m2n/HTTDataFormats/interface/HTTEvent.h"
 
@@ -87,8 +92,6 @@
 //
 // class declaration
 //
-
-//gSystem->Load("libPhysics.so");
 class ntuple : public edm::EDAnalyzer {
    public:
       explicit ntuple(const edm::ParameterSet&);
@@ -105,6 +108,10 @@ class ntuple : public edm::EDAnalyzer {
   ///        estimate based on TRK-11-001 note    
   bool findPrimaryVertices(const edm::Event & iEvent, const edm::EventSetup & iSetup);
 
+  //Refit PV using track information stored in miniAOD
+  ///This has to be run AFTER finding tau candidates. WARING:
+  ///first verion will not exclude tau tracks from fit.
+  bool refitPV(const edm::Event & iEvent, const edm::EventSetup & iSetup);
 
    private:
       virtual void beginJob() override;
@@ -142,6 +149,8 @@ class ntuple : public edm::EDAnalyzer {
   const bool mc;
   const int sample;
 
+  ///Helper variables used for VX refitting.
+  unsigned int pfPVIndex_;
 
 
 //    TNtuple* evt;
@@ -241,7 +250,9 @@ bool ntuple::findPrimaryVertices(const edm::Event & iEvent, const edm::EventSetu
   iEvent.getByToken(vtxToken_, vertices);
 
   if(vertices->size()==0) return false;   //at least one vertex
-  wevent->thePV_.SetXYZ((*vertices)[0].x(),(*vertices)[0].y(),(*vertices)[0].z());
+
+  TVector3 aPV((*vertices)[0].x(),(*vertices)[0].y(),(*vertices)[0].z());
+  wevent->thePV(aPV);
 
   //Find vertex with highest score with PF (miniAOD like)
   //miniAOD uses PF particles instead of tracks
@@ -255,7 +266,9 @@ bool ntuple::findPrimaryVertices(const edm::Event & iEvent, const edm::EventSetu
     }
   }
 
-  wevent->pfPV_.SetXYZ((*vertices)[iPfVtx].x(),(*vertices)[iPfVtx].y(),(*vertices)[iPfVtx].z());
+  aPV.SetXYZ((*vertices)[iPfVtx].x(),(*vertices)[iPfVtx].y(),(*vertices)[iPfVtx].z());
+  wevent->pfPV(aPV);
+  pfPVIndex_ = iPfVtx;
 
   return true;
 }
@@ -268,7 +281,7 @@ bool ntuple::refitPV(const edm::Event & iEvent, const edm::EventSetup & iSetup){
   edm::Handle<reco::VertexCollection> vertices;
   iEvent.getByToken(vtxToken_, vertices);
   edm::Handle<reco::BeamSpot> beamSpot;
-  if(useBeamSpot_) iEvent.getByToken(bs_, beamSpot);
+  iEvent.getByToken(bs_, beamSpot);
 
   edm::ESHandle<TransientTrackBuilder> transTrackBuilder;
   iSetup.get<TransientTrackRecord>().get("TransientTrackBuilder",transTrackBuilder);
@@ -282,13 +295,14 @@ bool ntuple::refitPV(const edm::Event & iEvent, const edm::EventSetup & iSetup){
     if((*cands)[i].charge()==0 || (*cands)[i].vertexRef().isNull()) continue;
     if(!(*cands)[i].bestTrack()) continue;
     ///Skip tracks comming from tau decay.
+    /*
     aTrack.SetPxPyPzE((*cands)[i].px(),(*cands)[i].py(),(*cands)[i].pz(),(*cands)[i].energy());
     if(myEvent_->recoEvent_.piMinus_.DeltaR(aTrack)<0.01 ||
        myEvent_->recoEvent_.piPlus_.DeltaR(aTrack)<0.01) continue;       
-    
-    int key = (*cands)[i].vertexRef().key();
+    */
+    unsigned int key = (*cands)[i].vertexRef().key();
     int quality = (*cands)[i].pvAssociationQuality();
-    if(key!=myEvent_->recoEvent_.pfPVIndex_ ||
+    if(key!=pfPVIndex_ ||
        (quality!=pat::PackedCandidate::UsedInFitTight &&
 	quality!=pat::PackedCandidate::UsedInFitLoose)) continue;
 
@@ -297,7 +311,7 @@ bool ntuple::refitPV(const edm::Event & iEvent, const edm::EventSetup & iSetup){
   ///Built transient tracks from tracks.
   std::vector<reco::TransientTrack> transTracks;  
   for(auto iter: pvTracks) transTracks.push_back(transTrackBuilder->build(iter));
-  myEvent_->recoEvent_.nTracksInRefit_ = transTracks.size();
+  wevent->nTracksInRefit(transTracks.size());
 
   bool fitOk = false;  
   if(transTracks.size() >= 2 ) {
@@ -314,19 +328,19 @@ bool ntuple::refitPV(const edm::Event & iEvent, const edm::EventSetup & iSetup){
   }
   
   if(fitOk && transVtx.isValid() && transVtxNoBS.isValid()) { 
-    //myEvent_->recoEvent_.refitPfPV_.SetXYZ(transVtx.position().x(),transVtx.position().y(),transVtx.position().z());
-    //myEvent_->recoEvent_.refitPfPVNoBS_.SetXYZ(transVtxNoBS.position().x(),transVtxNoBS.position().y(),transVtxNoBS.position().z());
-
-    myEvent_->recoEvent_.refitPfPV_.SetXYZ(transVtx.position().x(),transVtx.position().y(),(*vertices)[0].z()); //TEST
-    myEvent_->recoEvent_.refitPfPVNoBS_.SetXYZ(transVtxNoBS.position().x(),transVtxNoBS.position().y(),(*vertices)[0].z());//TEST
-     myEvent_->recoEvent_.isRefit_=true;
+    ///Here we put z position of original vertex, as it gave the best results.
+    ///This has to be understood.
+    TVector3 aPV(transVtx.position().x(),transVtx.position().y(),(*vertices)[0].z());
+    wevent->refitPfPV(aPV);
+    aPV.SetXYZ(transVtxNoBS.position().x(),transVtxNoBS.position().y(),(*vertices)[0].z());
+    wevent->refitPfPVNoBS(aPV);
+    wevent->isRefit(true);
   }
   else {
-     myEvent_->recoEvent_.refitPfPV_.SetXYZ((*vertices)[0].x(),
-					    (*vertices)[0].y(),
-					    (*vertices)[0].z());
-     myEvent_->recoEvent_.refitPfPVNoBS_ = myEvent_->recoEvent_.refitPfPV_;
-     myEvent_->recoEvent_.isRefit_=false;
+    TVector3 aPV((*vertices)[0].x(), (*vertices)[0].y(), (*vertices)[0].z());
+    wevent->refitPfPV(aPV);
+    wevent->refitPfPVNoBS(aPV);
+    wevent->isRefit(false);
   }
   
   return true;

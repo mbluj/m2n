@@ -59,17 +59,23 @@ class Wevent{
     void sample(int x){sample_ = x;}
 
     ///Set PV stored in miniAOD
-    void thePV(const TVector3 & pfPV_) {thePV_ = aPV}
+    void thePV(const TVector3 & aPV) {thePV_ = aPV;}
 
     //Set PV selected with highest score with PF (miniAOD like)
     //miniAOD uses PF particles instead of tracks
-    void PfPV(const TVector3 & pfPV_) {pfPV_ = aPV}
+    void pfPV(const TVector3 & aPV) {pfPV_ = aPV;}
 
     //Set PV refitted using BS
-    void refitPfPV(const TVector3 & pfPV_) {refitPfPV_ = aPV}
+    void refitPfPV(const TVector3 & aPV) {refitPfPV_ = aPV;}
 
     //Set PV refitted without BS
-    void refitPfPVNoBS(const TVector3 & refitPfPVNoBS_) {refitPfPVNoBS_ = aPV}
+    void refitPfPVNoBS(const TVector3 & aPV) {refitPfPVNoBS_ = aPV;}
+
+    ///Set isRefit bool.
+    void isRefit(bool aBit){isRefit_ = aBit;};
+
+    ///Set number of trascks used in refit.
+    void nTracksInRefit(const int & nTracks) {nTracksInRefit_ = nTracks;};
 
     ///Reset class data members
     void clear();
@@ -89,15 +95,19 @@ class Wevent{
 
     //Get PV selected with highest score with PF (miniAOD like)
     //miniAOD uses PF particles instead of tracks
-    const TVector3 & PfPV(const TVector3 & pfPV_) const {return pfPV_;}
+    const TVector3 & pfPV() const {return pfPV_;}
 
     //Get PV refitted using BS
-    const TVector3 & refitPfPV(const TVector3 & pfPV_) const {return refitPfPV_;}
+    const TVector3 & refitPfPV() const {return refitPfPV_;}
 
     //Get PV refitted without BS
-    const TVector3 & refitPfPVNoBS(const TVector3 & refitPfPVNoBS_) const {return refitPfPVNoBS_;}    
+    const TVector3 & refitPfPVNoBS() const {return refitPfPVNoBS_;}    
 
+    ///Set isRefit bool.
+    const bool isRefit() const {return isRefit_;};
 
+    ///Set number of trascks used in refit.
+    const int nTracksInRefit() const {return nTracksInRefit_;}
 
 };
 
