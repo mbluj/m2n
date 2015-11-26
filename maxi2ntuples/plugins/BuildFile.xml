@@ -24,7 +24,7 @@
 <use name="HLTrigger/HLTfilters"/>
 <use name="RecoEgamma/EgammaTools"/>
 <use name="RecoEgamma/ElectronIdentification"/>
-<use name="WarsawAnalysis/HTTDataFormats"/>
+<use name="m2n/HTTDataFormats"/>
 <use name="root"/>
 <use name="rootcint"/>
 <use name="rootsys"/>
