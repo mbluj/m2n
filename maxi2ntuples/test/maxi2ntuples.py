@@ -22,8 +22,7 @@ process.load('Configuration.StandardSequences.EndOfProcess_cff')
 
 #####################################################################################
 
-#process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_cff') #MC
-process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_condDBv2_cff') #data
+process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_condDBv2_cff')
 
 from Configuration.AlCa.GlobalTag_condDBv2 import GlobalTag
 
@@ -89,34 +88,12 @@ def nadpisanie(plik, tekst):
     f.close()
 
 
-#dir = '/afs/cern.ch/work/m/molszews/CMSSW/Data/EmAOD_VBF/'
-#inputFile = "Enriched_miniAOD_100";
-#outputFile = "ntuples.root";
-#myfilelist = cms.untracked.vstring()
-#myfilelist.extend(sys.argv[3:]);
+dir = '/afs/cern.ch/work/a/akalinow/CMS/HiggsCP/Data/GluGluHToTauTau_M125_13TeV_powheg_pythia8/MINIAODSIM/Asympt25ns_MCRUN2_74_V9-v1/'
+inputFile = "043989C6-942E-E511-99B7-20CF30561701";
+outputFile = "ntuples.root";
 
-#print myfilelist;
-#Number_of_events = 464755;
-#xSection = 3.748;
+process.source = cms.Source("PoolSource", fileNames = cms.untracked.vstring('file:/afs/cern.ch/work/a/akalinow/CMS/HiggsCP/Data/GluGluHToTauTau_M125_13TeV_powheg_pythia8/MINIAODSIM/Asympt25ns_MCRUN2_74_V9-v1/043989C6-942E-E511-99B7-20CF30561701.root'))
 
-#nadpisanie(dir+inputFile+'.json', "Number_of_events = "+ str(Number_of_events)+'\n')
-#pisanie(dir+inputFile+'.json', "xSection = "+ str(xSection)+'\n')
-if grid:
-    process.source = cms.Source("PoolSource", fileNames = cms.untracked.vstring())
-else:
-    process.source = cms.Source("PoolSource",
-        # replace 'myfile.root' with the source file you want to use
-        fileNames = cms.untracked.vstring(
-            getfiles(directory, files)        
-    #        'file:/afs/cern.ch/work/m/molszews/CMSSW/Data/mbluj/Enriched_miniAOD_100_1_qrj.root'
-        )
-    )
-
-'''
-process.out = cms.OutputModule("PoolOutputModule",
-    fileName = cms.untracked.string('miniAODMVAMET.root'),
-)
-'''
 if grid:
     process.TFileService = cms.Service("TFileService", fileName = cms.string(outfile))
 else:

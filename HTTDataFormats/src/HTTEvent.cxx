@@ -18,6 +18,12 @@ void Wtau::clear(){
 
   leadingTk_ = TLorentzVector();
 
+  sv_ = TVector3();
+  nPCA_ = TVector3();
+  nPCAAODvx_ = TVector3();
+  nPCAGenvx_ = TVector3();
+  nPCARefitvx_ = TVector3();
+
 }
 
 Wmu::Wmu(){
@@ -65,11 +71,4 @@ void Wevent::clear(){
 
 Wpair::Wpair(){;}
 Wpair::~Wpair(){;}
-void Wpair::clear(){
-
-  svMinus_ = TVector3();
-  svPlus_ = TVector3();
-  nPiPlus_ = TVector3();
-  nPiMinus_ = TVector3();
-
-}
+void Wpair::clear(){}

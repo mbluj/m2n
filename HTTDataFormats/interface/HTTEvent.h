@@ -26,6 +26,9 @@ class Wevent{
     ///PCA analysis data members
     ///Primary Vertices recontructed with different methods
 
+    //Generated PV position 
+    TVector3 genPV_;
+
     //PV stored in miniAOD
     TVector3 thePV_;
 
@@ -58,6 +61,9 @@ class Wevent{
     void genevtweight(float x){genevtweight_ = x;}
     void sample(int x){sample_ = x;}
 
+    ///Set generated PV
+    void genPV(const TVector3 & aPV) {genPV_ = aPV;}
+
     ///Set PV stored in miniAOD
     void thePV(const TVector3 & aPV) {thePV_ = aPV;}
 
@@ -89,6 +95,9 @@ class Wevent{
     int paircount(){return paircount_;}
     float genevtweight(){return genevtweight_;}
     int sample(){return sample_;}
+
+    ///Get generated PV 
+    const TVector3 & genPV() const {return genPV_;}
 
     ///Get PV stored in miniAOD
     const TVector3 & thePV() const {return thePV_;}
@@ -145,6 +154,15 @@ class Wtau{
 
     ///Leading tau track four momemntum.
     TLorentzVector leadingTk_;
+
+    ///Secondary vertex position (from GEN)
+    TVector3 sv_;
+
+    ///PCA vector (vector from PV to PCA)
+    TVector3 nPCA_;
+
+    ///PCA vectors calculated using different PV estimates
+    TVector3 nPCAAODvx_, nPCAGenvx_, nPCARefitvx_;
     
     std::vector<bool> tauID_ = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}; 
 
@@ -161,6 +179,21 @@ class Wtau{
     void mt(float x){mt_ = x;}
     void tauID(tauidenum y, float x){tauID_[y] = x;}
 
+    ///Set tau leading charged track.
+    void leadingTk(const TLorentzVector & a4v) {leadingTk_ = a4v;};
+
+    ///Set PCA vector calculated using PV stored in AOD
+    void nPCA(const TVector3 & a3v) {nPCA_ = a3v;};
+
+    ///Set PCA vector calculated using PV selected using PF weights
+    ///relaculated from miniAOD
+    void nPCAAODvx(const TVector3 & a3v) {nPCAAODvx_ = a3v;};
+
+    ///Set PCA vector calculated using generated PV 
+    void nPCAGenvx(const TVector3 & a3v) {nPCAGenvx_ = a3v;};
+
+    ///Set PCA vector calculated using refitted PV 
+    void nPCARefitvx(const TVector3 & a3v) {nPCARefitvx_ = a3v;};
 
     float pt(){return pt_;}
     float phi(){return phi_;}
@@ -170,6 +203,22 @@ class Wtau{
     float mt(){return mt_;}
 
     float tauID(tauidenum y){return tauID_[y];}
+
+    ///Get leading charged track
+    const TLorentzVector & leadingTk(const TLorentzVector & a4v) const {return leadingTk_;};
+
+    ///Get PCA vector calculated using PV stored in AOD
+    const TVector3 & nPCA() {return nPCA_;};
+
+    ///Get PCA vector calculated using PV selected using PF weights
+    ///relaculated from miniAOD
+    const TVector3 & nPCAAODvx() {return nPCAAODvx_;};
+
+    ///Get PCA vector calculated using generated PV 
+    const TVector3 & nPCAGenvx() {return nPCAGenvx_;};
+
+    ///Get PCA vector calculated using refitted PV 
+    const TVector3 & nPCARefitvx() {return nPCARefitvx_;};
 
 };
 typedef std::vector<Wtau> WtauCollection;
@@ -192,6 +241,15 @@ class Wmu{
     float isTightnovtxMuon_ = -999;
     float iso_ = -999;
 
+    ///Secondary vertex position (from GEN)
+    TVector3 sv_;
+
+    ///PCA vector (vector from PV to PCA)
+    TVector3 nPCA_;
+
+    ///PCA vectors calculated using different PV estimates
+    TVector3 nPCAAODvx_, nPCAGenvx_, nPCARefitvx_;
+
   public:
     Wmu();
     ~Wmu();
@@ -212,6 +270,19 @@ class Wmu{
     void isTightnovtxMuon(float x){isTightnovtxMuon_ = x;}
     void iso(float x){iso_ = x;}
 
+    ///Set PCA vector calculated using PV stored in AOD
+    void nPCA(const TVector3 & a3v) {nPCA_ = a3v;};
+
+    ///Set PCA vector calculated using PV selected using PF weights
+    ///relaculated from miniAOD
+    void nPCAAODvx(const TVector3 & a3v) {nPCAAODvx_ = a3v;};
+
+    ///Set PCA vector calculated using generated PV 
+    void nPCAGenvx(const TVector3 & a3v) {nPCAGenvx_ = a3v;};
+
+    ///Set PCA vector calculated using refitted PV 
+    void nPCARefitvx(const TVector3 & a3v) {nPCARefitvx_ = a3v;};
+
     float pt(){return pt_;}
     float phi(){return phi_;}
     float eta(){return eta_;}
@@ -227,6 +298,19 @@ class Wmu{
     float isTightnovtxMuon(){return isTightnovtxMuon_;}
     float iso(){return iso_;}
 
+    ///Get PCA vector calculated using PV stored in AOD
+    const TVector3 & nPCA() {return nPCA_;};
+
+    ///Get PCA vector calculated using PV selected using PF weights
+    ///relaculated from miniAOD
+    const TVector3 & nPCAAODvx() {return nPCAAODvx_;};
+
+    ///Get PCA vector calculated using generated PV 
+    const TVector3 & nPCAGenvx() {return nPCAGenvx_;};
+
+    ///Get PCA vector calculated using refitted PV 
+    const TVector3 & nPCARefitvx() {return nPCARefitvx_;};
+
 
 };
 typedef std::vector<Wmu> WmuCollection;
@@ -239,6 +323,15 @@ class Welectron{
     float mass_ = -999;
     int charge_ = -999;
 
+    ///Secondary vertex position (from GEN)
+    TVector3 sv_;
+    
+    ///PCA vector (vector from PV to PCA)
+    TVector3 nPCA_;
+    
+    ///PCA vectors calculated using different PV estimates
+    TVector3 nPCAAODvx_, nPCAGenvx_, nPCARefitvx_;
+
   public:
     Welectron();
     ~Welectron();
@@ -249,12 +342,41 @@ class Welectron{
     void eta(float x){eta_ = x;}
     void mass(float x){mass_ = x;}
     void charge(float x){charge_ = x;}
+
+    ///Set PCA vector calculated using PV stored in AOD
+    void nPCA(const TVector3 & a3v) {nPCA_ = a3v;};
+
+    ///Set PCA vector calculated using PV selected using PF weights
+    ///relaculated from miniAOD
+    void nPCAAODvx(const TVector3 & a3v) {nPCAAODvx_ = a3v;};
+
+    ///Set PCA vector calculated using generated PV 
+    void nPCAGenvx(const TVector3 & a3v) {nPCAGenvx_ = a3v;};
+
+    ///Set PCA vector calculated using refitted PV 
+    void nPCARefitvx(const TVector3 & a3v) {nPCARefitvx_ = a3v;};
  
     float pt(){return pt_;}
     float phi(){return phi_;}
     float eta(){return eta_;}
     float mass(){return mass_;}
     float charge(){return charge_;}
+
+
+
+    ///Get PCA vector calculated using PV stored in AOD
+    const TVector3 & nPCA() {return nPCA_;};
+
+    ///Get PCA vector calculated using PV selected using PF weights
+    ///relaculated from miniAOD
+    const TVector3 & nPCAAODvx() {return nPCAAODvx_;};
+
+    ///Get PCA vector calculated using generated PV 
+    const TVector3 & nPCAGenvx() {return nPCAGenvx_;};
+
+    ///Get PCA vector calculated using refitted PV 
+    const TVector3 & nPCARefitvx() {return nPCARefitvx_;};
+
 };
 typedef std::vector<Welectron> WelectronCollection;
 
@@ -315,21 +437,6 @@ class Wpair{
     bool PATPairSelector_ = 0;
     bool PairBaselineSelection_ = 0;
     bool PostSynchSelection_ = 0;
-
-    ///Secondary vertex position for positive and negative legs.
-    TVector3 svMinus_, svPlus_;
-
-    ///PCA vector  for positive and negative legs.
-    TVector3 nPiPlus_, nPiMinus_;
-
-    ///PCA vector  for positive leg, calculated using
-    ///different PV
-    TVector3 nPiPlusAODvx_, nPiPlusGenvx_, nPiPlusRefitvx_;
-
-    ///PCA vector  for negative leg, calculated using
-    ///different PV
-    TVector3 nPiMinusAODvx_, nPiMinusGenvx_, nPiMinusRefitvx_;
-
 
     std::vector<bool> triggers_ = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}; 
    

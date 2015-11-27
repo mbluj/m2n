@@ -1,6 +1,18 @@
 
 <lcgdict>
   <class name="Wevent"/>
+  <class name="Wtau"/>
+  <class name="std::vector<Wtau>"/>
+  <class name="Wmu"/>
+  <class name="std::vector<Wmu>"/>
+  <class name="Welectron"/>
+  <class name="std::vector<Welectron>"/>
+  <class name="Wpair"/>
+  <class name="std::vector<Wpair>"/>
+  <class name="Wmet"/>
+  <class name="std::vector<Wmet>"/>
+  <class name="Wjet"/>
+  <class name="std::vector<Wjet>"/>
 </lcgdict>
 
  

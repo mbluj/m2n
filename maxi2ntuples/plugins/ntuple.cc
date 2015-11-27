@@ -74,6 +74,11 @@
 #include "RecoVertex/VertexPrimitives/interface/TransientVertex.h"
 #include "RecoVertex/AdaptiveVertexFit/interface/AdaptiveVertexFitter.h"
 
+#include "TrackingTools/IPTools/interface/IPTools.h"
+#include "RecoVertex/VertexPrimitives/interface/ConvertToFromReco.h"
+#include "TrackingTools/GeomPropagators/interface/AnalyticalTrajectoryExtrapolatorToLine.h"
+#include "TrackingTools/GeomPropagators/interface/AnalyticalImpactPointExtrapolator.h"
+
 #include "m2n/maxi2ntuples/interface/utilities.h"
 #include "m2n/HTTDataFormats/interface/HTTEvent.h"
 
@@ -112,6 +117,39 @@ class ntuple : public edm::EDAnalyzer {
   ///This has to be run AFTER finding tau candidates. WARING:
   ///first verion will not exclude tau tracks from fit.
   bool refitPV(const edm::Event & iEvent, const edm::EventSetup & iSetup);
+
+  ///Calculate vector from PV to Point of Closest Approach (PCA).
+  ///Using leading track extracted from pat::Tau,
+  ///and PV position passed as aPoint
+  TVector3 getPCA(const edm::Event & iEvent, const edm::EventSetup & iSetup,
+		  const reco::Track *aTrack, const GlobalPoint & aPoint);
+
+  ///Set PCA vector for reco taus. This must be run AFTER
+  ///vertex refitting. 
+  ///WARNING: The T object is modified in this method.
+  template<typename T> void setPCAVectors(T & aObject, 			   
+					  const reco::Track *aTrack,
+					  const edm::Event & iEvent, const edm::EventSetup & iSetup){
+    GlobalPoint aPoint(wevent->refitPfPV().X(),
+		       wevent->refitPfPV().Y(),
+		       wevent->refitPfPV().Z());
+    aObject.nPCARefitvx(getPCA(iEvent, iSetup, aTrack, aPoint));
+    
+    aPoint = GlobalPoint(wevent->thePV().X(),
+			 wevent->thePV().Y(),
+			 wevent->thePV().Z());
+    aObject.nPCARefitvx(getPCA(iEvent, iSetup, aTrack, aPoint));
+    
+    aPoint = GlobalPoint(wevent->thePV().X(),
+			 wevent->thePV().Y(),
+			 wevent->thePV().Z());
+    aObject.nPCA(getPCA(iEvent, iSetup, aTrack, aPoint));
+  
+  aPoint = GlobalPoint(wevent->genPV().X(),
+  		       wevent->genPV().Y(),
+  		       wevent->genPV().Z());
+  aObject.nPCAGenvx(getPCA(iEvent, iSetup, aTrack, aPoint));
+    }
 
    private:
       virtual void beginJob() override;
@@ -347,11 +385,29 @@ bool ntuple::refitPV(const edm::Event & iEvent, const edm::EventSetup & iSetup){
 }
 /////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////
+TVector3 ntuple::getPCA(const edm::Event & iEvent, const edm::EventSetup & iSetup,
+			const reco::Track *aTrack,	   
+			const GlobalPoint & aPoint){
 
+  TVector3 aPCA;
+  if(!aTrack) return aPCA;
+  
+  edm::ESHandle<TransientTrackBuilder> transTrackBuilder;
+  iSetup.get<TransientTrackRecord>().get("TransientTrackBuilder",transTrackBuilder);  
+  reco::TransientTrack transTrk=transTrackBuilder->build(aTrack);
+     
+  //TransverseImpactPointExtrapolator extrapolator(transTrk.field());
+  AnalyticalImpactPointExtrapolator extrapolator(transTrk.field());
+  GlobalPoint pos  = extrapolator.extrapolate(transTrk.impactPointState(),aPoint).globalPosition();
 
+  aPCA.SetX(pos.x() - aPoint.x());
+  aPCA.SetY(pos.y() - aPoint.y());
+  aPCA.SetZ(pos.z() - aPoint.z());
 
-
-
+  return aPCA;
+}
+/////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////
 // ------------ method called for each event  ------------
 void
 ntuple::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
@@ -418,6 +474,8 @@ ntuple::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     wevent->paircount(pairs->size());
     wevent->sample(sample);
 
+    findPrimaryVertices(iEvent, iSetup);
+    refitPV(iEvent, iSetup);
 
     events->Fill(1.,1.);
     if(mc){
@@ -525,6 +583,7 @@ ntuple::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
             wmu.phi(muon->phi());
             wmu.mass(muon->mass());
             wmu.charge(muon->charge());
+	    setPCAVectors<Wmu>(wmu, muon->bestTrack(), iEvent, iSetup);
             wmu.mt(sqrt(pow((muon->p4()).pt() + (mety->p4()).pt(),2) - pow((muon->p4() + mety->p4()).pt(),2)));
             wmu.d0(muon->innerTrack()->dxy( PV.position()));
             wmu.dz(muon->innerTrack()->dz(PV.position()));
@@ -549,7 +608,7 @@ ntuple::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
             welectron.mass(electron->mass());
             welectron.charge(electron->charge());
             welectroncollection.push_back(welectron);
-
+	    setPCAVectors<Welectron>(welectron, electron->bestTrack(), iEvent, iSetup);
         }
         else{
             //const pat::Tau *taon  = dynamic_cast<const pat::Tau*>(l1->masterClone().get());
@@ -573,6 +632,12 @@ ntuple::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
             wtau.phi(taon->phi());
             wtau.mass(taon->mass());
             wtau.charge(taon->charge());
+	    TLorentzVector a4v(taon->leadChargedHadrCand()->p4().px(),
+			       taon->leadChargedHadrCand()->p4().py(),
+			       taon->leadChargedHadrCand()->p4().pz(),
+			       taon->leadChargedHadrCand()->p4().e());
+	    wtau.leadingTk(a4v);
+	    setPCAVectors<Wtau>(wtau, taon->leadChargedHadrCand()->bestTrack(), iEvent, iSetup);
             wtau.mt(sqrt(pow((taon->p4()).pt() + (mety->p4()).pt(),2) - pow((taon->p4() + mety->p4()).pt(),2)));
             wtau.tauID(decayModeFinding, taon->tauID("decayModeFinding"));
             wtau.tauID(decayModeFindingNewDMs, taon->tauID("decayModeFindingNewDMs"));
