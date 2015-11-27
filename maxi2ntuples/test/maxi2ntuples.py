@@ -53,7 +53,7 @@ files = [];
 
 
 #Directory with outputfile(s). Can be of course the same as the above one, but remember to remove ouput files before another run.
-outputdir = '/afs/cern.ch/work/m/molszews/CMSSW/Data/ntuple_VBF/' 
+outputdir = './' 
 
 def getfiles(directory, files = []):
     infiles =[];
@@ -88,11 +88,11 @@ def nadpisanie(plik, tekst):
     f.close()
 
 
-dir = '/afs/cern.ch/work/a/akalinow/CMS/HiggsCP/Data/GluGluHToTauTau_M125_13TeV_powheg_pythia8/MINIAODSIM/Asympt25ns_MCRUN2_74_V9-v1/'
-inputFile = "043989C6-942E-E511-99B7-20CF30561701";
+dir = '/afs/cern.ch/work/a/akalinow/CMS/HiggsCP/Data/RunIISpring15MiniAODv2/GluGluHToTauTau_M125_13TeV_powheg_pythia8/MINIAODSIM/74X_mcRun2_asymptotic_v2-v1/'
+inputFile = "0068654C-C36D-E511-A660-0025905938AA";
 outputFile = "ntuples.root";
 
-process.source = cms.Source("PoolSource", fileNames = cms.untracked.vstring('file:/afs/cern.ch/work/a/akalinow/CMS/HiggsCP/Data/GluGluHToTauTau_M125_13TeV_powheg_pythia8/MINIAODSIM/Asympt25ns_MCRUN2_74_V9-v1/043989C6-942E-E511-99B7-20CF30561701.root'))
+process.source = cms.Source("PoolSource", fileNames = cms.untracked.vstring('file:/afs/cern.ch/work/a/akalinow/CMS/HiggsCP/Data/RunIISpring15MiniAODv2/GluGluHToTauTau_M125_13TeV_powheg_pythia8/MINIAODSIM/74X_mcRun2_asymptotic_v2-v1/0068654C-C36D-E511-A660-0025905938AA.root'))
 
 if grid:
     process.TFileService = cms.Service("TFileService", fileName = cms.string(outfile))
@@ -264,6 +264,9 @@ process.m2n = cms.EDAnalyzer('ntuple',
     prunedGenParticles = cms.InputTag("prunedGenParticles"),
     packedGenParticles = cms.InputTag("packedGenParticles"),
     pileupinfo = cms.InputTag("addPileupInfo"),
+    vertexScores = cms.InputTag("offlineSlimmedPrimaryVertices"),
+    src = cms.InputTag("packedPFCandidates"),
+    beamSpot = cms.InputTag("offlineBeamSpot"),
     mc = cms.bool(mc),
     sample = cms.int32(sample)
 )

@@ -256,6 +256,11 @@ ntuple::ntuple(const edm::ParameterSet& iConfig):
     packedGenToken_(consumes<pat::PackedGenParticleCollection>(iConfig.getParameter<edm::InputTag>("packedGenParticles"))),
     lheprodToken_(consumes<LHEEventProduct>(iConfig.getParameter<edm::InputTag>("lheprod"))),
     PileupSummaryInfoToken_(consumes<PileupSummaryInfoCollection>(iConfig.getParameter<edm::InputTag>("pileupinfo"))),
+
+    scores_(consumes<edm::ValueMap<float> >(iConfig.getParameter<edm::InputTag>("vertexScores"))),
+    cands_(consumes<edm::View<pat::PackedCandidate> >(iConfig.getParameter<edm::InputTag>("src"))),
+    bs_(consumes<reco::BeamSpot>(iConfig.getParameter<edm::InputTag>("beamSpot"))), 
+
     mc(iConfig.getParameter<bool>("mc")),
     sample(iConfig.getParameter<int>("sample"))
 {
@@ -391,6 +396,8 @@ TVector3 ntuple::getPCA(const edm::Event & iEvent, const edm::EventSetup & iSetu
 
   TVector3 aPCA;
   if(!aTrack) return aPCA;
+
+  std::cout<<"----- Here"<<std::endl;
   
   edm::ESHandle<TransientTrackBuilder> transTrackBuilder;
   iSetup.get<TransientTrackRecord>().get("TransientTrackBuilder",transTrackBuilder);  
