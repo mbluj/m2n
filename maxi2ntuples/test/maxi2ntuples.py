@@ -5,7 +5,7 @@ import os
 process = cms.Process("maxi2ntuples")
 
 process.load("FWCore.MessageService.MessageLogger_cfi")
-process.MessageLogger.cerr.FwkReport.reportEvery = 500
+process.MessageLogger.cerr.FwkReport.reportEvery = 5000
 
 process.load('Configuration.StandardSequences.Services_cff')                                                                                                   
 process.load('JetMETCorrections.Configuration.JetCorrectionProducers_cff')
@@ -22,7 +22,8 @@ process.load('Configuration.StandardSequences.EndOfProcess_cff')
 
 #####################################################################################
 
-process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_condDBv2_cff')
+#process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_cff') #MC
+process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_condDBv2_cff') #data
 
 from Configuration.AlCa.GlobalTag_condDBv2 import GlobalTag
 
@@ -39,7 +40,7 @@ mc=True; #if MC then true; if data then  false
 sample = 4; #0 -data; 1-DY; 2-WJets; 3-TTbar; 4-QCD
 outfile = "qcd.root";
 vbf=False
-grid=True
+grid=False
 aod = True
 minioadv2 = True
 #####################################################################################
@@ -48,7 +49,7 @@ minioadv2 = True
 
 
 #Directory with input file(s). Do not put ".root" files there that are not maent to be processed.
-directory = '/afs/cern.ch/work/m/molszews/CMSSW/Data/EmAOD/'
+directory = '/afs/cern.ch/work/a/akalinow/CMS/HiggsCP/Data/enrichedAOD/GluGluHToTauTau_M125_13TeV_powheg_pythia8_v1/'
 files = [];
 
 
@@ -88,12 +89,34 @@ def nadpisanie(plik, tekst):
     f.close()
 
 
-dir = '/afs/cern.ch/work/a/akalinow/CMS/HiggsCP/Data/RunIISpring15MiniAODv2/GluGluHToTauTau_M125_13TeV_powheg_pythia8/MINIAODSIM/74X_mcRun2_asymptotic_v2-v1/'
-inputFile = "0068654C-C36D-E511-A660-0025905938AA";
-outputFile = "ntuples.root";
+#dir = '/afs/cern.ch/work/m/molszews/CMSSW/Data/EmAOD_VBF/'
+#inputFile = "Enriched_miniAOD_100";
+#outputFile = "ntuples.root";
+#myfilelist = cms.untracked.vstring()
+#myfilelist.extend(sys.argv[3:]);
 
-process.source = cms.Source("PoolSource", fileNames = cms.untracked.vstring('file:/afs/cern.ch/work/a/akalinow/CMS/HiggsCP/Data/RunIISpring15MiniAODv2/GluGluHToTauTau_M125_13TeV_powheg_pythia8/MINIAODSIM/74X_mcRun2_asymptotic_v2-v1/0068654C-C36D-E511-A660-0025905938AA.root'))
+#print myfilelist;
+#Number_of_events = 464755;
+#xSection = 3.748;
 
+#nadpisanie(dir+inputFile+'.json', "Number_of_events = "+ str(Number_of_events)+'\n')
+#pisanie(dir+inputFile+'.json', "xSection = "+ str(xSection)+'\n')
+if grid:
+    process.source = cms.Source("PoolSource", fileNames = cms.untracked.vstring())
+else:
+    process.source = cms.Source("PoolSource",
+        # replace 'myfile.root' with the source file you want to use
+        fileNames = cms.untracked.vstring(
+            getfiles(directory, files)        
+    #        'file:/afs/cern.ch/work/m/molszews/CMSSW/Data/mbluj/Enriched_miniAOD_100_1_qrj.root'
+        )
+    )
+
+'''
+process.out = cms.OutputModule("PoolOutputModule",
+    fileName = cms.untracked.string('miniAODMVAMET.root'),
+)
+'''
 if grid:
     process.TFileService = cms.Service("TFileService", fileName = cms.string(outfile))
 else:
@@ -152,15 +175,17 @@ for index in range(100):
 
 
 process.pairswithmet = cms.EDProducer("AddMVAMET",
-#    pairs = cms.InputTag("SVllCand"),
-#    pairs = cms.InputTag("SVbypass"),
-    pairs = cms.InputTag("pairmaker"),
     mets = cms.InputTag("slimmedMETs"),
     pairsmets = cms.VInputTag(MVAPairMET),
     mvamet = cms.InputTag("pfMETMVA0"),
     useMVAMET  = cms.untracked.bool(False),
     usePairMET = cms.untracked.bool(False),
 )
+if aod:
+    process.pairswithmet.pairs =  cms.InputTag("pairmaker") #reco::CompositeCandidateCollection
+else:
+    process.pairswithmet.pairs =  cms.InputTag("SVllCand") #pat::CompositeCandidateCollection
+    #pairs = cms.InputTag("SVbypass"), 
 
 process.channel = cms.EDProducer("ChannelSelector",
     pairs = cms.InputTag("pairswithmet"),
@@ -321,7 +346,28 @@ process.maxi2ntuples = cms.EDAnalyzer('maxi2ntuples',
 process.p = cms.Path(
         process.ininfo
         *process.pairmaker
-        *process.egmGsfElectronIDSequence
+#AK        *process.egmGsfElectronIDSequence
+        *process.jetsSelected
+        *process.jetsIDSelected
+        *process.pairswithmet
+        *process.channel
+#        *process.pairchecka
+#        *process.hltLevel1GTSeed
+#        *process.l1Filter
+        *process.clean
+#AK        *process.electronMVAValueMapProducer
+        *process.selected
+        *process.hlt
+        *process.vetoed
+        *process.eventskimmer
+#        *process.paircheckb
+        *process.bestpair
+        *process.m2n
+#        *process.synchtree
+)
+process.o = cms.Path(
+        process.ininfo
+#        *process.egmGsfElectronIDSequence
         *process.jetsSelected
         *process.jetsIDSelected
         *process.pairswithmet
@@ -349,8 +395,11 @@ process.p = cms.Path(
         *process.maxi2ntuples
 )
 '''
+#process.o = cms.Path(process.pairmaker)
 #process.e = cms.EndPath(process.out)
-process.o = cms.Path(process.pairmaker)
+if aod:
+    process.schedule = cms.Schedule(process.p)
+else:    
+    process.schedule = cms.Schedule(process.o)
 
-process.schedule = cms.Schedule(process.p)
 

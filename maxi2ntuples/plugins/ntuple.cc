@@ -134,7 +134,7 @@ class ntuple : public edm::EDAnalyzer {
 		       wevent->refitPfPV().Y(),
 		       wevent->refitPfPV().Z());
     aObject.nPCARefitvx(getPCA(iEvent, iSetup, aTrack, aPoint));
-    
+
     aPoint = GlobalPoint(wevent->thePV().X(),
 			 wevent->thePV().Y(),
 			 wevent->thePV().Z());
@@ -385,7 +385,7 @@ bool ntuple::refitPV(const edm::Event & iEvent, const edm::EventSetup & iSetup){
     wevent->refitPfPVNoBS(aPV);
     wevent->isRefit(false);
   }
-  
+
   return true;
 }
 /////////////////////////////////////////////////////////////////
@@ -397,8 +397,6 @@ TVector3 ntuple::getPCA(const edm::Event & iEvent, const edm::EventSetup & iSetu
   TVector3 aPCA;
   if(!aTrack) return aPCA;
 
-  std::cout<<"----- Here"<<std::endl;
-  
   edm::ESHandle<TransientTrackBuilder> transTrackBuilder;
   iSetup.get<TransientTrackRecord>().get("TransientTrackBuilder",transTrackBuilder);  
   reco::TransientTrack transTrk=transTrackBuilder->build(aTrack);
@@ -546,6 +544,7 @@ ntuple::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
         }
     }
     isZ->Fill();
+
     if (!pairs.isValid() || pairs->size()==0){
         newevent->Fill();
         return;
@@ -639,6 +638,7 @@ ntuple::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
             wtau.phi(taon->phi());
             wtau.mass(taon->mass());
             wtau.charge(taon->charge());
+
 	    TLorentzVector a4v(taon->leadChargedHadrCand()->p4().px(),
 			       taon->leadChargedHadrCand()->p4().py(),
 			       taon->leadChargedHadrCand()->p4().pz(),
