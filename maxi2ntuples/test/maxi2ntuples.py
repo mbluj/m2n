@@ -19,26 +19,19 @@ process.load('Configuration.StandardSequences.MagneticField_38T_cff')
 process.load('Configuration.StandardSequences.EndOfProcess_cff')
 
 #####################################################################################
-
 #####################################################################################
 
-#process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_cff') #MC
 process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_condDBv2_cff') #data
 
 from Configuration.AlCa.GlobalTag_condDBv2 import GlobalTag
 
-#process.GlobalTag.globaltag = 'PHYS14_25_V1::All'  #phys14 MC;
-process.GlobalTag.globaltag = '74X_mcRun2_asymptotic_v2'
-#process.GlobalTag.globaltag = '74X_dataRun2_Prompt_v1' #25ns data
-#process.GlobalTag.globaltag = '74X_dataRun2_Prompt_v2' #25ns data
-#process.GlobalTag.globaltag = '74X_dataRun2_reMiniAOD_v0' #25ns data october
-#process.GlobalTag.globaltag = 'MCRUN2_74_V9A'  #spring15 50ns MC;
-#process.GlobalTag.globaltag = 'MCRUN2_74_V9'  #spring15 25ns MC;
-#process.GlobalTag = GlobalTag(process.GlobalTag, 'auto:run2_mc', '')
+#74X version 2, new JECs miniAOD
+#https://twiki.cern.ch/twiki/bin/view/CMSPublic/WorkBookMiniAOD#Run2015_Data
+process.GlobalTag.globaltag = '74X_dataRun2_reMiniAOD_v1' 
 
-mc=True; #if MC then true; if data then  false
-sample = 4; #0 -data; 1-DY; 2-WJets; 3-TTbar; 4-QCD
-outfile = "qcd.root";
+mc=False; #if MC then true; if data then  false
+sample = 0; #0 -data; 1-DY; 2-WJets; 3-TTbar; 4-QCD; 5 - HTauTau
+outfile = "HTauTau.root";
 vbf=False
 grid=False
 aod = True
@@ -49,12 +42,8 @@ minioadv2 = True
 
 
 #Directory with input file(s). Do not put ".root" files there that are not maent to be processed.
-directory = '/afs/cern.ch/work/a/akalinow/CMS/HiggsCP/Data/enrichedAOD/GluGluHToTauTau_M125_13TeV_powheg_pythia8_v1/'
+directory = '/home/akalinow/scratch/CMS/HiggsCP/Data/SingleMuon/Run2015D-PromptReco-v4/MINIAOD/'
 files = [];
-
-
-#Directory with outputfile(s). Can be of course the same as the above one, but remember to remove ouput files before another run.
-outputdir = './' 
 
 def getfiles(directory, files = []):
     infiles =[];
@@ -76,56 +65,18 @@ process.load("Configuration.StandardSequences.GeometryDB_cff")
 process.load("TrackingTools.TransientTrack.TransientTrackBuilder_cfi")
 process.options = cms.untracked.PSet( wantSummary = cms.untracked.bool(True) )
 
-process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1) )
+process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(10000) )
 #################################### FILES #####################################################
-#dopisuje na koniec pliku
-def pisanie(plik, tekst):
-    with open(plik,"a") as f:
-        f.write(tekst)
-
-def nadpisanie(plik, tekst):
-    f = open(plik,"w")
-    f.write(tekst)
-    f.close()
-
-
-#dir = '/afs/cern.ch/work/m/molszews/CMSSW/Data/EmAOD_VBF/'
-#inputFile = "Enriched_miniAOD_100";
-#outputFile = "ntuples.root";
-#myfilelist = cms.untracked.vstring()
-#myfilelist.extend(sys.argv[3:]);
-
-#print myfilelist;
-#Number_of_events = 464755;
-#xSection = 3.748;
-
-#nadpisanie(dir+inputFile+'.json', "Number_of_events = "+ str(Number_of_events)+'\n')
-#pisanie(dir+inputFile+'.json', "xSection = "+ str(xSection)+'\n')
-if grid:
-    process.source = cms.Source("PoolSource", fileNames = cms.untracked.vstring())
-else:
-    process.source = cms.Source("PoolSource",
-        # replace 'myfile.root' with the source file you want to use
-        fileNames = cms.untracked.vstring(
-            getfiles(directory, files)        
-    #        'file:/afs/cern.ch/work/m/molszews/CMSSW/Data/mbluj/Enriched_miniAOD_100_1_qrj.root'
-        )
-    )
-
-'''
-process.out = cms.OutputModule("PoolOutputModule",
-    fileName = cms.untracked.string('miniAODMVAMET.root'),
+process.source = cms.Source("PoolSource",
+                            # replace 'myfile.root' with the source file you want to use
+                            fileNames = cms.untracked.vstring(
+                                getfiles(directory, files)        
+                                #        'file:/afs/cern.ch/work/m/molszews/CMSSW/Data/mbluj/Enriched_miniAOD_100_1_qrj.root'
+                            )
 )
-'''
-if grid:
-    process.TFileService = cms.Service("TFileService", fileName = cms.string(outfile))
-else:
-    process.TFileService = cms.Service("TFileService", fileName = cms.string(outputdir+outfile))
+process.TFileService = cms.Service("TFileService", fileName = cms.string(outfile))
 
 ######################################################################################################
-process.eventnumberfilter = cms.EDFilter("EventNumberFilter",
-)
-
 process.ininfo = cms.EDAnalyzer("ininfo",
     mc = cms.bool(mc),
 #    pairs = cms.InputTag("SVllCand"),
@@ -138,7 +89,6 @@ switchOnVIDElectronIdProducer(process, DataFormat.MiniAOD)
 my_id_modules = ['RecoEgamma.ElectronIdentification.Identification.mvaElectronID_Spring15_25ns_nonTrig_V1_cff']
 for idmod in my_id_modules:
     setupAllVIDIdsInModule(process,idmod,setupVIDElectronSelection)
-
 
 
 ############### JETS ##############################
@@ -155,8 +105,6 @@ process.jetsIDSelected = cms.EDProducer("JetsSelector",
         )
 
 ############### PAIRS #############################
-
-
 ##
 ## Build ll candidates (here OS)
 ##
@@ -172,7 +120,6 @@ MVAPairMET = ();
 for index in range(100):
   MVAMETName = "pfMETMVA%i" % index
   MVAPairMET += (cms.InputTag(MVAMETName),)
-
 
 process.pairswithmet = cms.EDProducer("AddMVAMET",
     mets = cms.InputTag("slimmedMETs"),
@@ -229,8 +176,6 @@ process.hlt= cms.EDProducer("HLTforPair",
     objects = cms.InputTag("selectedPatTrigger"),
 )
 
-
-
 #VETO SELECTION
 process.vetoed = cms.EDProducer("PostSynchSelection",
     pairs = cms.InputTag("hlt"),
@@ -245,8 +190,6 @@ process.vetoed = cms.EDProducer("PostSynchSelection",
     sample = cms.string('spring15')  #options: "phys14", "spring15"
 )
 
-
-
 process.paircheckb = cms.EDFilter("PatPairExistenceFilter",
 #    pairs = cms.InputTag("selected"),
     pairs = cms.InputTag("vetoed"),
@@ -256,8 +199,6 @@ process.eventskimmer = cms.EDProducer("EventsSkimmer",
     mc = cms.bool(mc),
     pairs = cms.InputTag("vetoed"),
 )
-
-
 
 process.bestpair = cms.EDProducer("BestPairSelector",
     pairs = cms.InputTag("eventskimmer"),
@@ -270,8 +211,6 @@ process.load('HLTrigger.HLTfilters.hltLevel1GTSeed_cfi')
 process.hltLevel1GTSeed.L1TechTriggerSeeding = cms.bool(False)
 process.hltLevel1GTSeed.L1SeedsLogicalExpression = cms.string('(L1_SingleMuBeamHalo OR L1_SingleMuOpen)  AND NOT L1_SingleJet6U')
 
-#process.m2n = cms.EDAnalyzer('maxi2ntuples',
-#process.m2n = cms.EDAnalyzer('tautau',
 process.m2n = cms.EDAnalyzer('ntuple',
 
     vertices = cms.InputTag("offlineSlimmedPrimaryVertices"),
@@ -346,60 +285,23 @@ process.maxi2ntuples = cms.EDAnalyzer('maxi2ntuples',
 process.p = cms.Path(
         process.ininfo
         *process.pairmaker
-#AK        *process.egmGsfElectronIDSequence
+        *process.egmGsfElectronIDSequence
         *process.jetsSelected
         *process.jetsIDSelected
         *process.pairswithmet
         *process.channel
-#        *process.pairchecka
-#        *process.hltLevel1GTSeed
-#        *process.l1Filter
-        *process.clean
-#AK        *process.electronMVAValueMapProducer
-        *process.selected
-        *process.hlt
-        *process.vetoed
-        *process.eventskimmer
-#        *process.paircheckb
-        *process.bestpair
-        *process.m2n
-#        *process.synchtree
-)
-process.o = cms.Path(
-        process.ininfo
-#        *process.egmGsfElectronIDSequence
-        *process.jetsSelected
-        *process.jetsIDSelected
-        *process.pairswithmet
-        *process.channel
-#        *process.pairchecka
-#        *process.hltLevel1GTSeed
-#        *process.l1Filter
         *process.clean
         *process.electronMVAValueMapProducer
         *process.selected
         *process.hlt
         *process.vetoed
         *process.eventskimmer
-#        *process.paircheckb
         *process.bestpair
         *process.m2n
-#        *process.synchtree
 )
-'''
-process.p = cms.Path(
-        process.eventnumberfilter
-        *process.pairswithmet
-        *process.pairchecka
-        *process.channel
-        *process.maxi2ntuples
-)
-'''
-#process.o = cms.Path(process.pairmaker)
-#process.e = cms.EndPath(process.out)
-if aod:
-    process.schedule = cms.Schedule(process.p)
-else:    
-    process.schedule = cms.Schedule(process.o)
+
+
+process.schedule = cms.Schedule(process.p)
+
 
 
