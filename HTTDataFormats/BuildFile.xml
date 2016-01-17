@@ -1,0 +1,8 @@
+<use   name="root"/>  
+<use   name="m2n/maxi2ntuples"/>
+
+<export>
+  <lib   name="1"/>
+</export>
+
+

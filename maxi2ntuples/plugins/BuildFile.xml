@@ -24,7 +24,12 @@
 <use name="HLTrigger/HLTfilters"/>
 <use name="RecoEgamma/EgammaTools"/>
 <use name="RecoEgamma/ElectronIdentification"/>
-<use name="WarsawAnalysis/HTTDataFormats"/>
+<use name="TrackingTools/TransientTrack"/>
+<use name="TrackingTools/Records"/>
+<use name="TrackingTools/IPTools"/>
+<use name="RecoVertex/VertexPrimitives"/>
+<use name="RecoVertex/AdaptiveVertexFit"/>  
+<use name="m2n/HTTDataFormats"/>
 <use name="root"/>
 <use name="rootcint"/>
 <use name="rootsys"/>

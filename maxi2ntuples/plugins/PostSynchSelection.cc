@@ -227,9 +227,9 @@ PostSynchSelection::produce(edm::Event& iEvent, const edm::EventSetup& iSetup)
 */
     edm::Handle<edm::View<reco::GsfElectron> > electrons;
     iEvent.getByToken(electronToken_,electrons);
+
     edm::Handle<edm::ValueMap<bool> > tight_id_decisions;
     iEvent.getByToken(eleTightIdMapToken_,tight_id_decisions);
-
 
     edm::Handle<pat::CompositeCandidateCollection> leptonPair;
     iEvent.getByToken(PairToken_, leptonPair);
