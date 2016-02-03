@@ -27,9 +27,10 @@ from Configuration.AlCa.GlobalTag_condDBv2 import GlobalTag
 
 #74X version 2, new JECs miniAOD
 #https://twiki.cern.ch/twiki/bin/view/CMSPublic/WorkBookMiniAOD#Run2015_Data
-process.GlobalTag.globaltag = '74X_dataRun2_reMiniAOD_v1' 
+#process.GlobalTag.globaltag = '74X_dataRun2_reMiniAOD_v1' 
+process.GlobalTag.globaltag = '74X_mcRun2_asymptotic_v2'
 
-mc=False; #if MC then true; if data then  false
+mc=True; #if MC then true; if data then  false
 sample = 0; #0 -data; 1-DY; 2-WJets; 3-TTbar; 4-QCD; 5 - HTauTau
 outfile = "HTauTau.root";
 vbf=False
@@ -42,8 +43,8 @@ minioadv2 = True
 
 
 #Directory with input file(s). Do not put ".root" files there that are not maent to be processed.
-directory = '/home/akalinow/scratch/CMS/HiggsCP/Data/SingleMuon/Run2015D-PromptReco-v4/MINIAOD/'
-files = [];
+directory = '/afs/cern.ch/work/m/molszews/CMSSW/Data/EmAOD/'
+files = ['DYJetsToLLv3.root'];
 
 def getfiles(directory, files = []):
     infiles =[];

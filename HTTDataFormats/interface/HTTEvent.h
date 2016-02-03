@@ -150,6 +150,7 @@ class Wtau{
     float eta_ = -999;
     float mass_ = -999;
     int charge_ = -999;
+    int decayMode_ = -999;
     float mt_ = -999;
 
     ///Leading tau track four momemntum.
@@ -176,6 +177,7 @@ class Wtau{
     void eta(float x){eta_ = x;}
     void mass(float x){mass_ = x;}
     void charge(float x){charge_ = x;}
+    void decayMode(int x){decayMode_ = x;}
     void mt(float x){mt_ = x;}
     void tauID(tauidenum y, float x){tauID_[y] = x;}
 
@@ -200,6 +202,7 @@ class Wtau{
     float eta(){return eta_;}
     float mass(){return mass_;}
     float charge(){return charge_;}
+    int decayMode(){return decayMode_;}
     float mt(){return mt_;}
 
     float tauID(tauidenum y){return tauID_[y];}

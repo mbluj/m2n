@@ -1,0 +1,376 @@
+import FWCore.ParameterSet.Config as cms		      |	import FWCore.ParameterSet.Config as cms								
+import sys						      |	import sys								
+import os						      |	import os								
+							      |									
+process = cms.Process("maxi2ntuples")			      |	process = cms.Process("maxi2ntuples")								
+							      |									
+process.load("FWCore.MessageService.MessageLogger_cfi")	      |	process.load("FWCore.MessageService.MessageLogger_cfi")								
+process.MessageLogger.cerr.FwkReport.reportEvery = 500	      |	process.MessageLogger.cerr.FwkReport.reportEvery = 5000								
+							      |									
+process.load('Configuration.StandardSequences.Services_cff')  |	process.load('Configuration.StandardSequences.Services_cff') 								
+process.load('JetMETCorrections.Configuration.JetCorrectionPr |	process.load('JetMETCorrections.Configuration.JetCorrectionPr								
+#process.load('RecoMET.METPUSubtraction.mvaPFMET_cff')	      |	#process.load('RecoMET.METPUSubtraction.mvaPFMET_cff')								
+							      |									
+process.load('SimGeneral.HepPDTESSource.pythiapdt_cfi')	      |	process.load('SimGeneral.HepPDTESSource.pythiapdt_cfi')								
+process.load('Configuration.EventContent.EventContent_cff')   |	process.load('Configuration.EventContent.EventContent_cff')								
+process.load('SimGeneral.MixingModule.mixNoPU_cfi')	      |	process.load('SimGeneral.MixingModule.mixNoPU_cfi')								
+process.load('Configuration.StandardSequences.GeometryRecoDB_ |	process.load('Configuration.StandardSequences.GeometryRecoDB_								
+process.load('Configuration.StandardSequences.MagneticField_3 |	process.load('Configuration.StandardSequences.MagneticField_3								
+process.load('Configuration.StandardSequences.EndOfProcess_cf |	process.load('Configuration.StandardSequences.EndOfProcess_cf								
+							      |									
+############################################################# |	#############################################################								
+							      |	#############################################################								
+############################################################# |									
+							      |	process.load('Configuration.StandardSequences.FrontierConditi								
+#process.load('Configuration.StandardSequences.FrontierCondit |									
+process.load('Configuration.StandardSequences.FrontierConditi |	from Configuration.AlCa.GlobalTag_condDBv2 import GlobalTag								
+							      |									
+from Configuration.AlCa.GlobalTag_condDBv2 import GlobalTag   |	#74X version 2, new JECs miniAOD								
+							      |	#https://twiki.cern.ch/twiki/bin/view/CMSPublic/WorkBookMiniA								
+#process.GlobalTag.globaltag = 'PHYS14_25_V1::All'  #phys14 M |	#process.GlobalTag.globaltag = '74X_dataRun2_reMiniAOD_v1' 								
+process.GlobalTag.globaltag = '74X_mcRun2_asymptotic_v2'      |	process.GlobalTag.globaltag = '74X_mcRun2_asymptotic_v2'								
+#process.GlobalTag.globaltag = '74X_dataRun2_Prompt_v1' #25ns |									
+#process.GlobalTag.globaltag = '74X_dataRun2_Prompt_v2' #25ns |	mc=True; #if MC then true; if data then  false								
+#process.GlobalTag.globaltag = '74X_dataRun2_reMiniAOD_v0' #2 |	sample = 0; #0 -data; 1-DY; 2-WJets; 3-TTbar; 4-QCD; 5 - HTau								
+#process.GlobalTag.globaltag = 'MCRUN2_74_V9A'  #spring15 50n |	outfile = "HTauTau.root";								
+#process.GlobalTag.globaltag = 'MCRUN2_74_V9'  #spring15 25ns |	vbf=False								
+#process.GlobalTag = GlobalTag(process.GlobalTag, 'auto:run2_ |	grid=False								
+							      |	aod = True								
+mc=True; #if MC then true; if data then  false		      |	minioadv2 = True								
+sample = 1; #0 -data; 1-DY; 2-WJets; 3-TTbar; 4-QCD	      |	#############################################################								
+outfile = "DYv3.root";					      |									
+vbf=False						      |	#############################################################								
+grid=False						      |									
+aod = True						      |									
+minioadv2 = True					      |	#Directory with input file(s). Do not put ".root" files there								
+############################################################# |	directory = '/afs/cern.ch/work/m/molszews/CMSSW/Data/EmAOD/'								
+							      |	files = ['DYJetsToLLv3.root'];								
+############################################################# |									
+							      |	def getfiles(directory, files = []):								
+							      |	    infiles =[];								
+#Directory with input file(s). Do not put ".root" files there |	    for dirname, dirnames, filenames in os.walk(directory):								
+directory = '/afs/cern.ch/work/m/molszews/CMSSW/Data/EmAOD/'  |	        if not files:								
+files = ['DYJetsToLLv3.root'];				      |	            for filename in filenames:								
+							      |	                if '.root' in filename:								
+							      |	                    infiles.append("file:"+directory+filename								
+#Directory with outputfile(s). Can be of course the same as t |	        else:								
+outputdir = '/afs/cern.ch/work/m/molszews/CMSSW/Data/ntuple_V |	            for filename in filenames:								
+							      |	                if any(filename in s for s in files):								
+def getfiles(directory, files = []):			      |	                    infiles.append("file:"+directory+filename								
+    infiles =[];					      |	    print infiles;								
+    for dirname, dirnames, filenames in os.walk(directory):   |	    return infiles;           								
+        if not files:					      |									
+            for filename in filenames:			      |									
+                if '.root' in filename:			      |									
+                    infiles.append("file:"+directory+filename |	process.load("Configuration.StandardSequences.GeometryDB_cff"								
+        else:						      |	process.load("TrackingTools.TransientTrack.TransientTrackBuil								
+            for filename in filenames:			      |	process.options = cms.untracked.PSet( wantSummary = cms.untra								
+                if any(filename in s for s in files):	      |									
+                    infiles.append("file:"+directory+filename |	process.maxEvents = cms.untracked.PSet( input = cms.untracked								
+    print infiles;					      |	#################################### FILES ##################								
+    return infiles;           				      |	process.source = cms.Source("PoolSource",								
+							      |	                            # replace 'myfile.root' with the 								
+							      |	                            fileNames = cms.untracked.vstring								
+							      |	                                getfiles(directory, files)   								
+process.load("Configuration.StandardSequences.GeometryDB_cff" |	                                #        'file:/afs/cern.ch/w								
+process.load("TrackingTools.TransientTrack.TransientTrackBuil |	                            )								
+process.options = cms.untracked.PSet( wantSummary = cms.untra |	)								
+							      |	process.TFileService = cms.Service("TFileService", fileName =								
+process.maxEvents = cms.untracked.PSet( input = cms.untracked |									
+#################################### FILES ################## |	#############################################################								
+#dopisuje na koniec pliku				      |	process.ininfo = cms.EDAnalyzer("ininfo",								
+def pisanie(plik, tekst):				      |	    mc = cms.bool(mc),								
+    with open(plik,"a") as f:				      |	#    pairs = cms.InputTag("SVllCand"),								
+        f.write(tekst)					      |	    pairs = cms.InputTag("SVbypass"),								
+							      |	)								
+def nadpisanie(plik, tekst):				      |									
+    f = open(plik,"w")					      |	############### ELECTRON MVA ID ###################								
+    f.write(tekst)					      |	from PhysicsTools.SelectorUtils.tools.vid_id_tools import *								
+    f.close()						      |	switchOnVIDElectronIdProducer(process, DataFormat.MiniAOD)								
+							      |	my_id_modules = ['RecoEgamma.ElectronIdentification.Identific								
+							      |	for idmod in my_id_modules:								
+#dir = '/afs/cern.ch/work/m/molszews/CMSSW/Data/EmAOD_VBF/'   |	    setupAllVIDIdsInModule(process,idmod,setupVIDElectronSele								
+#inputFile = "Enriched_miniAOD_100";			      |									
+#outputFile = "ntuples.root";				      |									
+#myfilelist = cms.untracked.vstring()			      |	############### JETS ##############################								
+#myfilelist.extend(sys.argv[3:]);			      |	process.jetsSelected = cms.EDFilter("PATJetSelector",								
+							      |	        src = cms.InputTag("slimmedJets"),								
+#print myfilelist;					      |	        cut = cms.string('abs(eta) < 4.7  & pt > 20.'								
+#Number_of_events = 464755;				      |	           #     'et > 30.'								
+#xSection = 3.748;					      |	            ),								
+							      |	        filter = cms.bool(False)								
+#nadpisanie(dir+inputFile+'.json', "Number_of_events = "+ str |	        )								
+#pisanie(dir+inputFile+'.json', "xSection = "+ str(xSection)+ |									
+if grid:						      |	process.jetsIDSelected = cms.EDProducer("JetsSelector",								
+    process.source = cms.Source("PoolSource", fileNames = cms |	    jets = cms.InputTag("jetsSelected"),								
+else:							      |	        )								
+    process.source = cms.Source("PoolSource",		      |									
+        # replace 'myfile.root' with the source file you want |	############### PAIRS #############################								
+        fileNames = cms.untracked.vstring(		      |	##								
+            getfiles(directory, files)        		      |	## Build ll candidates (here OS)								
+    #        'file:/afs/cern.ch/work/m/molszews/CMSSW/Data/mb |	##								
+        )						      |	process.pairmaker = cms.EDProducer("CandViewShallowCloneCombi								
+    )							      |	    decay = cms.string("slimmedMuons slimmedTaus"),								
+							      |	    cut = cms.string("mass>0"),								
+'''							      |	    checkCharge = cms.bool(False)								
+process.out = cms.OutputModule("PoolOutputModule",	      |	)								
+    fileName = cms.untracked.string('miniAODMVAMET.root'),    |									
+)							      |									
+'''							      |	###################################################								
+if grid:						      |	MVAPairMET = ();								
+    process.TFileService = cms.Service("TFileService", fileNa |	for index in range(100):								
+else:							      |	  MVAMETName = "pfMETMVA%i" % index								
+    process.TFileService = cms.Service("TFileService", fileNa |	  MVAPairMET += (cms.InputTag(MVAMETName),)								
+							      |									
+############################################################# |	process.pairswithmet = cms.EDProducer("AddMVAMET",								
+process.eventnumberfilter = cms.EDFilter("EventNumberFilter", |	    mets = cms.InputTag("slimmedMETs"),								
+)							      |	    pairsmets = cms.VInputTag(MVAPairMET),								
+							      |	    mvamet = cms.InputTag("pfMETMVA0"),								
+process.ininfo = cms.EDAnalyzer("ininfo",		      |	    useMVAMET  = cms.untracked.bool(False),								
+    mc = cms.bool(mc),					      |	    usePairMET = cms.untracked.bool(False),								
+#    pairs = cms.InputTag("SVllCand"),			      |	)								
+    pairs = cms.InputTag("SVbypass"),			      |	if aod:								
+)							      |	    process.pairswithmet.pairs =  cms.InputTag("pairmaker") #								
+							      |	else:								
+############### ELECTRON MVA ID ###################	      |	    process.pairswithmet.pairs =  cms.InputTag("SVllCand") #p								
+from PhysicsTools.SelectorUtils.tools.vid_id_tools import *   |	    #pairs = cms.InputTag("SVbypass"), 								
+switchOnVIDElectronIdProducer(process, DataFormat.MiniAOD)    |									
+my_id_modules = ['RecoEgamma.ElectronIdentification.Identific |	process.channel = cms.EDProducer("ChannelSelector",								
+for idmod in my_id_modules:				      |	    pairs = cms.InputTag("pairswithmet"),								
+    setupAllVIDIdsInModule(process,idmod,setupVIDElectronSele |	    channel = cms.string("mutau"), #mutau, etau, tautau...								
+							      |	)								
+							      |									
+							      |	process.pairchecka = cms.EDFilter("PatPairExistenceFilter",								
+############### JETS ##############################	      |	    pairs = cms.InputTag("channel"),								
+process.jetsSelected = cms.EDFilter("PATJetSelector",	      |	)								
+        src = cms.InputTag("slimmedJets"),		      |									
+        cut = cms.string('abs(eta) < 4.7  & pt > 20.'	      |	process.clean = cms.EDProducer('PATPairSelector',								
+           #     'et > 30.'				      |	    pairs = cms.InputTag("channel"), 								
+            ),						      |	    muCut = cms.string(''								
+        filter = cms.bool(False)			      |	#        'pt > 18. & abs(eta) < 2.1'								
+        )						      |	        ),								
+							      |	    elCut = cms.string(''),								
+process.jetsIDSelected = cms.EDProducer("JetsSelector",	      |	    tauCut = cms.string(''								
+    jets = cms.InputTag("jetsSelected"),		      |	#        "tauID('byCombinedIsolationDeltaBetaCorrRaw3Hits') <								
+        )						      |	#        "tauID('againstMuonTight3')"								
+							      |	        ),								
+############### PAIRS #############################	      |	    deltaR_ = cms.double(0.5),								
+							      |	)								
+							      |									
+##							      |	process.load("RecoEgamma.ElectronIdentification.ElectronMVAVa								
+## Build ll candidates (here OS)			      |									
+##							      |	#BASELINE SELECTION								
+process.pairmaker = cms.EDProducer("CandViewShallowCloneCombi |	process.selected = cms.EDProducer("PairBaselineSelection",								
+    decay = cms.string("slimmedMuons slimmedTaus"),	      |	    pairs = cms.InputTag("clean"),								
+    cut = cms.string("mass>0"),				      |	    vertices = cms.InputTag("offlineSlimmedPrimaryVertices"),								
+    checkCharge = cms.bool(False)			      |	    muons = cms.InputTag("slimmedMuons"),								
+)							      |	    electrons = cms.InputTag("slimmedElectrons"),								
+							      |	    mc = cms.bool(mc),								
+							      |	    eleTightIdMap = cms.InputTag("egmGsfElectronIDs:mvaEleID-								
+###################################################	      |	    sample = cms.string('spring15')  #options: "phys14", "spr								
+MVAPairMET = ();					      |	)								
+for index in range(100):				      |									
+  MVAMETName = "pfMETMVA%i" % index			      |	process.hlt= cms.EDProducer("HLTforPair",								
+  MVAPairMET += (cms.InputTag(MVAMETName),)		      |	    pairs = cms.InputTag("selected"),								
+							      |	    bits = cms.InputTag("TriggerResults","","HLT"),								
+							      |	    prescales = cms.InputTag("patTrigger"),								
+process.pairswithmet = cms.EDProducer("AddMVAMET",	      |	    objects = cms.InputTag("selectedPatTrigger"),								
+#    pairs = cms.InputTag("SVllCand"),			      |	)								
+#    pairs = cms.InputTag("SVbypass"),			      |									
+    pairs = cms.InputTag("pairmaker"),			      |	#VETO SELECTION								
+    mets = cms.InputTag("slimmedMETs"),			      |	process.vetoed = cms.EDProducer("PostSynchSelection",								
+    pairsmets = cms.VInputTag(MVAPairMET),		      |	    pairs = cms.InputTag("hlt"),								
+    mvamet = cms.InputTag("pfMETMVA0"),			      |	    vertices = cms.InputTag("offlineSlimmedPrimaryVertices"),								
+    useMVAMET  = cms.untracked.bool(False),		      |	    muons = cms.InputTag("slimmedMuons"),								
+    usePairMET = cms.untracked.bool(False),		      |	    electrons = cms.InputTag("slimmedElectrons"),								
+)							      |	    bits = cms.InputTag("TriggerResults","","HLT"),								
+							      |	    prescales = cms.InputTag("patTrigger"),								
+process.channel = cms.EDProducer("ChannelSelector",	      |	    objects = cms.InputTag("selectedPatTrigger"),								
+    pairs = cms.InputTag("pairswithmet"),		      |	    mc = cms.bool(mc),								
+    channel = cms.string("mutau"), #mutau, etau, tautau...    |	    eleTightIdMap = cms.InputTag("egmGsfElectronIDs:mvaEleID-								
+)							      |	    sample = cms.string('spring15')  #options: "phys14", "spr								
+							      |	)								
+process.pairchecka = cms.EDFilter("PatPairExistenceFilter",   |									
+    pairs = cms.InputTag("channel"),			      |	process.paircheckb = cms.EDFilter("PatPairExistenceFilter",								
+)							      |	#    pairs = cms.InputTag("selected"),								
+							      |	    pairs = cms.InputTag("vetoed"),								
+process.clean = cms.EDProducer('PATPairSelector',	      |	)								
+    pairs = cms.InputTag("channel"), 			      |									
+    muCut = cms.string(''				      |	process.eventskimmer = cms.EDProducer("EventsSkimmer",								
+#        'pt > 18. & abs(eta) < 2.1'			      |	    mc = cms.bool(mc),								
+        ),						      |	    pairs = cms.InputTag("vetoed"),								
+    elCut = cms.string(''),				      |	)								
+    tauCut = cms.string(''				      |									
+#        "tauID('byCombinedIsolationDeltaBetaCorrRaw3Hits') < |	process.bestpair = cms.EDProducer("BestPairSelector",								
+#        "tauID('againstMuonTight3')"			      |	    pairs = cms.InputTag("eventskimmer"),								
+        ),						      |	)								
+    deltaR_ = cms.double(0.5),				      |									
+)							      |	process.load('L1Trigger.Skimmer.l1Filter_cfi')								
+							      |	process.l1Filter.algorithms = cms.vstring('L1_Mu16er_TauJet20								
+process.load("RecoEgamma.ElectronIdentification.ElectronMVAVa |									
+							      |	process.load('HLTrigger.HLTfilters.hltLevel1GTSeed_cfi')								
+#BASELINE SELECTION					      |	process.hltLevel1GTSeed.L1TechTriggerSeeding = cms.bool(False								
+process.selected = cms.EDProducer("PairBaselineSelection",    |	process.hltLevel1GTSeed.L1SeedsLogicalExpression = cms.string								
+    pairs = cms.InputTag("clean"),			      |									
+    vertices = cms.InputTag("offlineSlimmedPrimaryVertices"), |	process.m2n = cms.EDAnalyzer('ntuple',								
+    muons = cms.InputTag("slimmedMuons"),		      |									
+    electrons = cms.InputTag("slimmedElectrons"),	      |	    vertices = cms.InputTag("offlineSlimmedPrimaryVertices"),								
+    mc = cms.bool(mc),					      |	    muons = cms.InputTag("slimmedMuons"),								
+    eleTightIdMap = cms.InputTag("egmGsfElectronIDs:mvaEleID- |	    electrons = cms.InputTag("slimmedElectrons"),								
+    sample = cms.string('spring15')  #options: "phys14", "spr |	    taus = cms.InputTag("slimmedTaus"),								
+)							      |	    photons = cms.InputTag("slimmedPhotons"),								
+							      |	    jets = cms.InputTag("jetsIDSelected"),								
+process.hlt= cms.EDProducer("HLTforPair",		      |	    fatjets = cms.InputTag("slimmedJetsAK8"),								
+    pairs = cms.InputTag("selected"),			      |	    mets = cms.InputTag("slimmedMETs"),								
+    bits = cms.InputTag("TriggerResults","","HLT"),	      |	    pairs = cms.InputTag("bestpair"),								
+    prescales = cms.InputTag("patTrigger"),		      |	    bits = cms.InputTag("TriggerResults","","HLT"),								
+    objects = cms.InputTag("selectedPatTrigger"),	      |	    prescales = cms.InputTag("patTrigger"),								
+)							      |	    objects = cms.InputTag("selectedPatTrigger"),								
+							      |	    prunedGenParticles = cms.InputTag("prunedGenParticles"),								
+							      |	    packedGenParticles = cms.InputTag("packedGenParticles"),								
+							      |	    pileupinfo = cms.InputTag("addPileupInfo"),								
+#VETO SELECTION						      |	    vertexScores = cms.InputTag("offlineSlimmedPrimaryVertice								
+process.vetoed = cms.EDProducer("PostSynchSelection",	      |	    src = cms.InputTag("packedPFCandidates"),								
+    pairs = cms.InputTag("hlt"),			      |	    beamSpot = cms.InputTag("offlineBeamSpot"),								
+    vertices = cms.InputTag("offlineSlimmedPrimaryVertices"), |	    mc = cms.bool(mc),								
+    muons = cms.InputTag("slimmedMuons"),		      |	    sample = cms.int32(sample)								
+    electrons = cms.InputTag("slimmedElectrons"),	      |	)								
+    bits = cms.InputTag("TriggerResults","","HLT"),	      |									
+    prescales = cms.InputTag("patTrigger"),		      |	process.synchtree = cms.EDAnalyzer('synchronization',								
+    objects = cms.InputTag("selectedPatTrigger"),	      |									
+    mc = cms.bool(mc),					      |	    vertices = cms.InputTag("offlineSlimmedPrimaryVertices"),								
+    eleTightIdMap = cms.InputTag("egmGsfElectronIDs:mvaEleID- |	    muons = cms.InputTag("slimmedMuons"),								
+    sample = cms.string('spring15')  #options: "phys14", "spr |	    electrons = cms.InputTag("slimmedElectrons"),								
+)							      |	    taus = cms.InputTag("slimmedTaus"),								
+							      |	    photons = cms.InputTag("slimmedPhotons"),								
+							      |	    jets = cms.InputTag("jetsIDSelected"),								
+							      |	    fatjets = cms.InputTag("slimmedJetsAK8"),								
+process.paircheckb = cms.EDFilter("PatPairExistenceFilter",   |	    mets = cms.InputTag("slimmedMETs"),								
+#    pairs = cms.InputTag("selected"),			      |	    pairs = cms.InputTag("bestpair"),								
+    pairs = cms.InputTag("vetoed"),			      |	    bits = cms.InputTag("TriggerResults","","HLT"),								
+)							      |	    prescales = cms.InputTag("patTrigger"),								
+							      |	    objects = cms.InputTag("selectedPatTrigger"),								
+process.eventskimmer = cms.EDProducer("EventsSkimmer",	      |	    prunedGenParticles = cms.InputTag("prunedGenParticles"),								
+    mc = cms.bool(mc),					      |	    packedGenParticles = cms.InputTag("packedGenParticles"),								
+    pairs = cms.InputTag("vetoed"),			      |	    mc = cms.bool(mc),								
+)							      |	)								
+							      |									
+							      |	if minioadv2:								
+							      |	    process.m2n.pileupinfo = cms.InputTag("slimmedAddPileupIn								
+process.bestpair = cms.EDProducer("BestPairSelector",	      |	else:								
+    pairs = cms.InputTag("eventskimmer"),		      |	    process.m2n.pileupinfo = cms.InputTag("addPileupInfo")								
+)							      |									
+							      |	if mc and not vbf:								
+process.load('L1Trigger.Skimmer.l1Filter_cfi')		      |	    process.m2n.lheprod =  cms.InputTag("externalLHEProducer"								
+process.l1Filter.algorithms = cms.vstring('L1_Mu16er_TauJet20 |	    process.synchtree.lheprod =  cms.InputTag("externalLHEPro								
+							      |	else:								
+process.load('HLTrigger.HLTfilters.hltLevel1GTSeed_cfi')      |	    process.m2n.lheprod =  cms.InputTag("source");								
+process.hltLevel1GTSeed.L1TechTriggerSeeding = cms.bool(False |	    process.synchtree.lheprod =  cms.InputTag("source");								
+process.hltLevel1GTSeed.L1SeedsLogicalExpression = cms.string |									
+							      |	process.maxi2ntuples = cms.EDAnalyzer('maxi2ntuples',								
+#process.m2n = cms.EDAnalyzer('maxi2ntuples',		      |									
+#process.m2n = cms.EDAnalyzer('tautau',			      |	    vertices = cms.InputTag("offlineSlimmedPrimaryVertices"),								
+process.m2n = cms.EDAnalyzer('ntuple',			      |	    muons = cms.InputTag("slimmedMuons"),								
+							      |	    electrons = cms.InputTag("slimmedElectrons"),								
+    vertices = cms.InputTag("offlineSlimmedPrimaryVertices"), |	    taus = cms.InputTag("slimmedTaus"),								
+    muons = cms.InputTag("slimmedMuons"),		      |	    photons = cms.InputTag("slimmedPhotons"),								
+    electrons = cms.InputTag("slimmedElectrons"),	      |	    jets = cms.InputTag("jetsSelected"),								
+    taus = cms.InputTag("slimmedTaus"),			      |	    fatjets = cms.InputTag("slimmedJetsAK8"),								
+    photons = cms.InputTag("slimmedPhotons"),		      |	    mets = cms.InputTag("slimmedMETs"),								
+    jets = cms.InputTag("jetsIDSelected"),		      |	    pairs = cms.InputTag("channel"),								
+    fatjets = cms.InputTag("slimmedJetsAK8"),		      |	    bits = cms.InputTag("TriggerResults","","HLT"),								
+    mets = cms.InputTag("slimmedMETs"),			      |	    prescales = cms.InputTag("patTrigger"),								
+    pairs = cms.InputTag("bestpair"),			      |	    objects = cms.InputTag("selectedPatTrigger"),								
+    bits = cms.InputTag("TriggerResults","","HLT"),	      |	)								
+    prescales = cms.InputTag("patTrigger"),		      |									
+    objects = cms.InputTag("selectedPatTrigger"),	      |	process.p = cms.Path(								
+    prunedGenParticles = cms.InputTag("prunedGenParticles"),  |	        process.ininfo								
+    packedGenParticles = cms.InputTag("packedGenParticles"),  |	        *process.pairmaker								
+    pileupinfo = cms.InputTag("addPileupInfo"),		      |	        *process.egmGsfElectronIDSequence								
+    mc = cms.bool(mc),					      |	        *process.jetsSelected								
+    sample = cms.int32(sample)				      |	        *process.jetsIDSelected								
+)							      |	        *process.pairswithmet								
+							      |	        *process.channel								
+process.synchtree = cms.EDAnalyzer('synchronization',	      |	        *process.clean								
+							      |	        *process.electronMVAValueMapProducer								
+    vertices = cms.InputTag("offlineSlimmedPrimaryVertices"), |	        *process.selected								
+    muons = cms.InputTag("slimmedMuons"),		      |	        *process.hlt								
+    electrons = cms.InputTag("slimmedElectrons"),	      |	        *process.vetoed								
+    taus = cms.InputTag("slimmedTaus"),			      |	        *process.eventskimmer								
+    photons = cms.InputTag("slimmedPhotons"),		      |	        *process.bestpair								
+    jets = cms.InputTag("jetsIDSelected"),		      |	        *process.m2n								
+    fatjets = cms.InputTag("slimmedJetsAK8"),		      |	)								
+    mets = cms.InputTag("slimmedMETs"),			      |									
+    pairs = cms.InputTag("bestpair"),			      |									
+    bits = cms.InputTag("TriggerResults","","HLT"),	      |	process.schedule = cms.Schedule(process.p)								
+    prescales = cms.InputTag("patTrigger"),		      |									
+    objects = cms.InputTag("selectedPatTrigger"),	      |									
+    prunedGenParticles = cms.InputTag("prunedGenParticles"),  |									
+    packedGenParticles = cms.InputTag("packedGenParticles"),  <
+    mc = cms.bool(mc),					      <
+)							      <
+							      <
+if minioadv2:						      <
+    process.m2n.pileupinfo = cms.InputTag("slimmedAddPileupIn <
+else:							      <
+    process.m2n.pileupinfo = cms.InputTag("addPileupInfo")    <
+							      <
+if mc and not vbf:					      <
+    process.m2n.lheprod =  cms.InputTag("externalLHEProducer" <
+    process.synchtree.lheprod =  cms.InputTag("externalLHEPro <
+else:							      <
+    process.m2n.lheprod =  cms.InputTag("source");	      <
+    process.synchtree.lheprod =  cms.InputTag("source");      <
+							      <
+process.maxi2ntuples = cms.EDAnalyzer('maxi2ntuples',	      <
+							      <
+    vertices = cms.InputTag("offlineSlimmedPrimaryVertices"), <
+    muons = cms.InputTag("slimmedMuons"),		      <
+    electrons = cms.InputTag("slimmedElectrons"),	      <
+    taus = cms.InputTag("slimmedTaus"),			      <
+    photons = cms.InputTag("slimmedPhotons"),		      <
+    jets = cms.InputTag("jetsSelected"),		      <
+    fatjets = cms.InputTag("slimmedJetsAK8"),		      <
+    mets = cms.InputTag("slimmedMETs"),			      <
+    pairs = cms.InputTag("channel"),			      <
+    bits = cms.InputTag("TriggerResults","","HLT"),	      <
+    prescales = cms.InputTag("patTrigger"),		      <
+    objects = cms.InputTag("selectedPatTrigger"),	      <
+)							      <
+							      <
+process.p = cms.Path(					      <
+        process.ininfo					      <
+        *process.pairmaker				      <
+        *process.egmGsfElectronIDSequence		      <
+        *process.jetsSelected				      <
+        *process.jetsIDSelected				      <
+        *process.pairswithmet				      <
+        *process.channel				      <
+#        *process.pairchecka				      <
+#        *process.hltLevel1GTSeed			      <
+#        *process.l1Filter				      <
+        *process.clean					      <
+        *process.electronMVAValueMapProducer		      <
+        *process.selected				      <
+        *process.hlt					      <
+        *process.vetoed					      <
+        *process.eventskimmer				      <
+#        *process.paircheckb				      <
+        *process.bestpair				      <
+        *process.m2n					      <
+#        *process.synchtree				      <
+)							      <
+'''							      <
+process.p = cms.Path(					      <
+        process.eventnumberfilter			      <
+        *process.pairswithmet				      <
+        *process.pairchecka				      <
+        *process.channel				      <
+        *process.maxi2ntuples				      <
+)							      <
+'''							      <
+#process.e = cms.EndPath(process.out)			      <
+process.o = cms.Path(process.pairmaker)			      <
+							      <
+process.schedule = cms.Schedule(process.p)		      <
+							      <

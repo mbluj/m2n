@@ -638,6 +638,7 @@ ntuple::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
             wtau.phi(taon->phi());
             wtau.mass(taon->mass());
             wtau.charge(taon->charge());
+            wtau.decayMode(taon->decayMode());
 
 	    TLorentzVector a4v(taon->leadChargedHadrCand()->p4().px(),
 			       taon->leadChargedHadrCand()->p4().py(),

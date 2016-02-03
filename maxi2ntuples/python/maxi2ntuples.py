@@ -37,10 +37,10 @@ process.GlobalTag.globaltag = '74X_mcRun2_asymptotic_v2'
 #process.GlobalTag = GlobalTag(process.GlobalTag, 'auto:run2_mc', '')
 
 mc=True; #if MC then true; if data then  false
-sample = 4; #0 -data; 1-DY; 2-WJets; 3-TTbar; 4-QCD
-outfile = "qcd.root";
+sample = 1; #0 -data; 1-DY; 2-WJets; 3-TTbar; 4-QCD
+outfile = "DYv3.root";
 vbf=False
-grid=True
+grid=False
 aod = True
 minioadv2 = True
 #####################################################################################
@@ -50,7 +50,7 @@ minioadv2 = True
 
 #Directory with input file(s). Do not put ".root" files there that are not maent to be processed.
 directory = '/afs/cern.ch/work/m/molszews/CMSSW/Data/EmAOD/'
-files = [];
+files = ['DYJetsToLLv3.root'];
 
 
 #Directory with outputfile(s). Can be of course the same as the above one, but remember to remove ouput files before another run.
@@ -76,7 +76,7 @@ process.load("Configuration.StandardSequences.GeometryDB_cff")
 process.load("TrackingTools.TransientTrack.TransientTrackBuilder_cfi")
 process.options = cms.untracked.PSet( wantSummary = cms.untracked.bool(True) )
 
-process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1) )
+process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(5000) )
 #################################### FILES #####################################################
 #dopisuje na koniec pliku
 def pisanie(plik, tekst):
@@ -177,13 +177,17 @@ for index in range(100):
 process.pairswithmet = cms.EDProducer("AddMVAMET",
 #    pairs = cms.InputTag("SVllCand"),
 #    pairs = cms.InputTag("SVbypass"),
-    pairs = cms.InputTag("pairmaker"),
     mets = cms.InputTag("slimmedMETs"),
     pairsmets = cms.VInputTag(MVAPairMET),
     mvamet = cms.InputTag("pfMETMVA0"),
     useMVAMET  = cms.untracked.bool(False),
     usePairMET = cms.untracked.bool(False),
 )
+if aod:
+    process.pairswithmet.pairs =  cms.InputTag("pairmaker") #reco::CompositeCandidateCollection
+else:
+    process.pairswithmet.pairs =  cms.InputTag("SVllCand") #pat::CompositeCandidateCollection
+    #pairs = cms.InputTag("SVbypass"),
 
 process.channel = cms.EDProducer("ChannelSelector",
     pairs = cms.InputTag("pairswithmet"),
@@ -287,6 +291,9 @@ process.m2n = cms.EDAnalyzer('ntuple',
     prunedGenParticles = cms.InputTag("prunedGenParticles"),
     packedGenParticles = cms.InputTag("packedGenParticles"),
     pileupinfo = cms.InputTag("addPileupInfo"),
+    vertexScores = cms.InputTag("offlineSlimmedPrimaryVertices"),
+    src = cms.InputTag("packedPFCandidates"),
+    beamSpot = cms.InputTag("offlineBeamSpot"),
     mc = cms.bool(mc),
     sample = cms.int32(sample)
 )
@@ -360,6 +367,27 @@ process.p = cms.Path(
         *process.m2n
 #        *process.synchtree
 )
+process.o = cms.Path(
+        process.ininfo
+        *process.egmGsfElectronIDSequence
+        *process.jetsSelected
+        *process.jetsIDSelected
+        *process.pairswithmet
+        *process.channel
+#        *process.pairchecka
+#        *process.hltLevel1GTSeed
+#        *process.l1Filter
+        *process.clean
+        *process.electronMVAValueMapProducer
+        *process.selected
+        *process.hlt
+        *process.vetoed
+        *process.eventskimmer
+#        *process.paircheckb
+        *process.bestpair
+        *process.m2n
+#        *process.synchtree
+)
 '''
 process.p = cms.Path(
         process.eventnumberfilter
@@ -370,7 +398,11 @@ process.p = cms.Path(
 )
 '''
 #process.e = cms.EndPath(process.out)
-process.o = cms.Path(process.pairmaker)
+#process.o = cms.Path(process.pairmaker)
+if aod:
+    process.schedule = cms.Schedule(process.p)
+else:
+    process.schedule = cms.Schedule(process.o)
 
-process.schedule = cms.Schedule(process.p)
+#process.schedule = cms.Schedule(process.p)
 
