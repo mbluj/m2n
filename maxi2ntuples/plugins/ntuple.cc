@@ -43,6 +43,7 @@ void ntuple::beginJob(){
 
    eventTree->Branch("wevent", &wevent);
    eventTree->Branch("wtau", &wtaucollection);
+   eventTree->Branch("wtauGen", &wtauGencollection);
    eventTree->Branch("wmu", &wmucollection);
    eventTree->Branch("welectron", &welectroncollection);
    eventTree->Branch("wpair", &wpaircollection);
@@ -77,7 +78,7 @@ void ntuple::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
     fillGenData();
   }
 
-  ///Stop processing of not tau pair is found in the event.
+  ///Stop processing if no tau pair is found in the event.
   if(!pairs.isValid() || pairs->size()==0){
     eventTree->Fill();
     return;
@@ -92,6 +93,7 @@ void ntuple::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
 /////////////////////////////////////////////////////////////////
 void ntuple::clearNtuple(){
 
+  wtauGencollection.clear();
   wtaucollection.clear();
   wmucollection.clear();
   wpaircollection.clear();
@@ -203,6 +205,31 @@ void ntuple::fillGenTausAndDecayMode(){
   wevent->bosonId(theBoson->pdgId());
   wevent->decModeMinus(WawGenInfoHelper::getTausDecays(taus[0],tauProdsMinus,true,false));
   wevent->decModePlus(WawGenInfoHelper::getTausDecays(taus[1],tauProdsPlus,true,false));
+  
+}
+/////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////
+void ntuple::fillGenTauData(const reco::GenParticleRef & taon, const reco::GenParticleRefVector & tauDecayProducts){
+
+  Wtau wtau;
+
+  TLorentzVector p4Tau = WawGenInfoHelper::getCombinedP4(tauDecayProducts);
+  
+  wtau.pt(p4Tau.Pt());
+  wtau.eta(p4Tau.Eta());
+  wtau.phi(p4Tau.Phi());
+  wtau.mass(p4Tau.M());
+  wtau.charge(taon->charge());
+  wtau.decayMode(WawGenInfoHelper::getTauDecayMode(tauDecayProducts));
+  
+  reco::GenParticleRef leadChParticleRef = WawGenInfoHelper::getLeadChParticle(tauDecayProducts);
+  TLorentzVector p4LeadingChParticle =  WawGenInfoHelper::getP4(leadChParticleRef);  
+  wtau.leadingTk(p4LeadingChParticle);
+
+  TVector3 tauDecayVertex =  WawGenInfoHelper::getVertex(taon);
+  wtau.nPCA(WawGenInfoHelper::impactParameter(wevent->genPV(), tauDecayVertex, p4LeadingChParticle));
+
+  wtauGencollection.push_back(wtau);
   
 }
 /////////////////////////////////////////////////////////////////
