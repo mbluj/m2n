@@ -9,8 +9,6 @@ process.MessageLogger.cerr.FwkReport.reportEvery = 5000
 
 process.load('Configuration.StandardSequences.Services_cff')                                                                                                   
 process.load('JetMETCorrections.Configuration.JetCorrectionProducers_cff')
-#process.load('RecoMET.METPUSubtraction.mvaPFMET_cff')
-
 process.load('SimGeneral.HepPDTESSource.pythiapdt_cfi')
 process.load('Configuration.EventContent.EventContent_cff')
 process.load('SimGeneral.MixingModule.mixNoPU_cfi')
@@ -66,32 +64,25 @@ process.load("Configuration.StandardSequences.GeometryDB_cff")
 process.load("TrackingTools.TransientTrack.TransientTrackBuilder_cfi")
 process.options = cms.untracked.PSet( wantSummary = cms.untracked.bool(True) )
 
-process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(10000) )
+process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(100) )
 #################################### FILES #####################################################
 process.source = cms.Source("PoolSource",
                             # replace 'myfile.root' with the source file you want to use
                             fileNames = cms.untracked.vstring(
-                                getfiles(directory, files)        
-                                #        'file:/afs/cern.ch/work/m/molszews/CMSSW/Data/mbluj/Enriched_miniAOD_100_1_qrj.root'
+                                #getfiles(directory, files)        
+                                #'file:/scratch_local/akalinow/CMS/HiggsCP/Data/GluGluHToTauTau_M125_13TeV_powheg_pythia8/MINIAODSIM/Asympt25ns_MCRUN2_74_V9-v1/043989C6-942E-E511-99B7-20CF30561701.root'
+                                'file:/home/akalinow/scratch/CMS/HiggsCP/Data/Run2015D/SingleMuon/MINIAOD/PromptReco-v4/6CA1C627-246C-E511-8A6A-02163E014147.root'
                             )
 )
 process.TFileService = cms.Service("TFileService", fileName = cms.string(outfile))
 
 ######################################################################################################
-process.ininfo = cms.EDAnalyzer("ininfo",
-    mc = cms.bool(mc),
-#    pairs = cms.InputTag("SVllCand"),
-    pairs = cms.InputTag("SVbypass"),
-)
-
 ############### ELECTRON MVA ID ###################
 from PhysicsTools.SelectorUtils.tools.vid_id_tools import *
 switchOnVIDElectronIdProducer(process, DataFormat.MiniAOD)
 my_id_modules = ['RecoEgamma.ElectronIdentification.Identification.mvaElectronID_Spring15_25ns_nonTrig_V1_cff']
 for idmod in my_id_modules:
     setupAllVIDIdsInModule(process,idmod,setupVIDElectronSelection)
-
-
 ############### JETS ##############################
 process.jetsSelected = cms.EDFilter("PATJetSelector",
         src = cms.InputTag("slimmedJets"),
@@ -284,15 +275,14 @@ process.maxi2ntuples = cms.EDAnalyzer('maxi2ntuples',
 )
 
 process.p = cms.Path(
-        process.ininfo
-        *process.pairmaker
+        process.pairmaker
         *process.egmGsfElectronIDSequence
         *process.jetsSelected
         *process.jetsIDSelected
         *process.pairswithmet
         *process.channel
         *process.clean
-        *process.electronMVAValueMapProducer
+        #TEST *process.electronMVAValueMapProducer
         *process.selected
         *process.hlt
         *process.vetoed
