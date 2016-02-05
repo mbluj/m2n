@@ -205,7 +205,9 @@ void ntuple::fillGenTausAndDecayMode(){
   wevent->bosonId(theBoson->pdgId());
   wevent->decModeMinus(WawGenInfoHelper::getTausDecays(taus[0],tauProdsMinus,true,false));
   wevent->decModePlus(WawGenInfoHelper::getTausDecays(taus[1],tauProdsPlus,true,false));
-  
+
+  fillGenTauData(taus[0], tauProdsMinus);
+  fillGenTauData(taus[1], tauProdsPlus);
 }
 /////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////
@@ -227,6 +229,8 @@ void ntuple::fillGenTauData(const reco::GenParticleRef & taon, const reco::GenPa
   wtau.leadingTk(p4LeadingChParticle);
 
   TVector3 tauDecayVertex =  WawGenInfoHelper::getVertex(taon);
+
+  wtau.sv(tauDecayVertex);
   wtau.nPCA(WawGenInfoHelper::impactParameter(wevent->genPV(), tauDecayVertex, p4LeadingChParticle));
 
   wtauGencollection.push_back(wtau);

@@ -191,6 +191,7 @@ class Wtau{
     void tauID(tauidenum y, float x){tauID_[y] = x;}
     void d0(float x){d0_ = x;}
     void dz(float x){dz_ = x;}
+    void sv(const TVector3 & x){sv_ = x;}
 
     ///Set tau leading charged track.
     void leadingTk(const TLorentzVector & a4v) {leadingTk_ = a4v;};
@@ -217,6 +218,7 @@ class Wtau{
     float mt(){return mt_;}
     float d0(){return d0_;}
     float dz(){return dz_;}
+    TVector3 sv(){return sv_;}
 
     float tauID(tauidenum y){return tauID_[y];}
 
