@@ -1,4 +1,5 @@
 #include "m2n/maxi2ntuples/plugins/ntuple.h"
+#include "m2n/HTT/interface/GenInfoHelper.h"
 
 ///////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////
@@ -172,21 +173,38 @@ void ntuple::fillGenData(){
 /////////////////////////////////////////////////////////////////
 void ntuple::fillGenTausAndDecayMode(){
 
-  std::vector<reco::GenParticle> gentaus; 
-  std::vector<reco::GenParticle> gentauleps; 
-  std::vector<reco::GenParticle> genleps;
-  
-  for (const reco::GenParticle &aParticle : *genParticlesPruned){
-            
-    if(abs(aParticle.pdgId()) == 15){
-      gentaus.push_back(aParticle);
+  reco::GenParticleRef theBoson;
+  reco::GenParticleRefVector taus;
+  reco::GenParticleRefVector tauProdsPlus, tauProdsMinus;
 
-      std::cout<<"aParticle.mother(): "<<aParticle.mother()<<std::endl;
-      std::cout<<"aParticle.mother().pdgid(): "<<aParticle.mother()<<std::endl;
-      
+  for(size_t iParticle=0; iParticle<genParticlesPruned->size(); ++iParticle){
+    if( theBoson.isNonnull() ) break;
+    reco::GenParticleRef genref(genParticlesPruned, iParticle);
+    if(theBoson.isNull() && WawGenInfoHelper::isBoson(genref,false,true) ){
+      theBoson = WawGenInfoHelper::getFinalClone(genref,true);
     }
-    ///FIX me: write correct code for tau tau decay mode
+  }  
+  if(theBoson.isNull() ) return; 
+
+  reco::GenParticleRefVector taus_all;
+  WawGenInfoHelper::findParticles(*genParticlesPruned, taus_all, 15, -1);
+  for(WawGenInfoHelper::IGR idr = taus_all.begin(); idr != taus_all.end(); ++idr ){
+    if(WawGenInfoHelper::isFinalClone((*idr),true) && WawGenInfoHelper::isAncestor(theBoson.get(),(*idr).get()) )
+      taus.push_back(*idr);
   }
+
+  if(taus.size() != 2) return;
+  if(taus[0]->charge()*taus[1]->charge()>0) return;
+
+  if(taus[0]->charge()>0){
+    reco::GenParticleRefVector taus_tmp;
+    taus_tmp.push_back(taus[1]);
+    taus_tmp.push_back(taus[0]);
+    taus.swap(taus_tmp);
+  }
+  wevent->bosonId(theBoson->pdgId());
+  wevent->decModeMinus(WawGenInfoHelper::getTausDecays(taus[0],tauProdsMinus,true,false));
+  wevent->decModePlus(WawGenInfoHelper::getTausDecays(taus[1],tauProdsPlus,true,false));
   
 }
 /////////////////////////////////////////////////////////////////

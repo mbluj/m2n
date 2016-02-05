@@ -30,6 +30,7 @@
 <use name="RecoVertex/VertexPrimitives"/>
 <use name="RecoVertex/AdaptiveVertexFit"/>  
 <use name="m2n/HTTDataFormats"/>
+<use name="m2n/HTT"/>
 <use name="root"/>
 <use name="rootcint"/>
 <use name="rootsys"/>

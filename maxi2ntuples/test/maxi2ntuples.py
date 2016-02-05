@@ -64,14 +64,14 @@ process.load("Configuration.StandardSequences.GeometryDB_cff")
 process.load("TrackingTools.TransientTrack.TransientTrackBuilder_cfi")
 process.options = cms.untracked.PSet( wantSummary = cms.untracked.bool(True) )
 
-process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(100) )
+process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(10) )
 #################################### FILES #####################################################
 process.source = cms.Source("PoolSource",
                             # replace 'myfile.root' with the source file you want to use
                             fileNames = cms.untracked.vstring(
                                 #getfiles(directory, files)        
-                                #'file:/scratch_local/akalinow/CMS/HiggsCP/Data/GluGluHToTauTau_M125_13TeV_powheg_pythia8/MINIAODSIM/Asympt25ns_MCRUN2_74_V9-v1/043989C6-942E-E511-99B7-20CF30561701.root'
-                                'file:/home/akalinow/scratch/CMS/HiggsCP/Data/Run2015D/SingleMuon/MINIAOD/PromptReco-v4/6CA1C627-246C-E511-8A6A-02163E014147.root'
+                                'file:/scratch_local/akalinow/CMS/HiggsCP/Data/GluGluHToTauTau_M125_13TeV_powheg_pythia8/MINIAODSIM/Asympt25ns_MCRUN2_74_V9-v1/043989C6-942E-E511-99B7-20CF30561701.root'
+                                #'file:/home/akalinow/scratch/CMS/HiggsCP/Data/Run2015D/SingleMuon/MINIAOD/PromptReco-v4/6CA1C627-246C-E511-8A6A-02163E014147.root'
                             )
 )
 process.TFileService = cms.Service("TFileService", fileName = cms.string(outfile))

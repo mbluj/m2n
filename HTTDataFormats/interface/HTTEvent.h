@@ -19,7 +19,8 @@ class Wevent{
     int paircount_ = -1;
     float genevtweight_ = 1;
     int sample_ = -1;
-
+    int bosonId_ = 0;
+    
     ///Tau decay modes (if available)
     int decModeMinus_, decModePlus_;
 
@@ -60,6 +61,9 @@ class Wevent{
     void paircount(int x){paircount_ = x;}
     void genevtweight(float x){genevtweight_ = x;}
     void sample(int x){sample_ = x;}
+    void bosonId(int x){bosonId_ = x;}
+    void decModeMinus(int x){decModeMinus_ = x;}
+    void decModePlus(int x){decModePlus_ = x;}
 
     ///Set generated PV
     void genPV(const TVector3 & aPV) {genPV_ = aPV;}
@@ -95,6 +99,9 @@ class Wevent{
     int paircount(){return paircount_;}
     float genevtweight(){return genevtweight_;}
     int sample(){return sample_;}
+    int bosonId(){return bosonId_;}
+    int decModeMinus(){return decModeMinus_;}
+    int decModePlus(){return decModePlus_;}
 
     ///Get generated PV 
     const TVector3 & genPV() const {return genPV_;}
