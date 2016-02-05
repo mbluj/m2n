@@ -65,7 +65,7 @@ void ntuple::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
   
   clearNtuple();  
   getCollections(iEvent,iSetup);
-  
+
   if (vertices->empty()) return; // skip the event if no PV found
   
   fillEventHeaderData(iEvent, iSetup);
@@ -77,10 +77,11 @@ void ntuple::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
     fillGenData();
   }
 
-  eventTree->Fill();
-  
   ///Stop processing of not tau pair is found in the event.
-  if(!pairs.isValid() || pairs->size()==0) return;
+  if(!pairs.isValid() || pairs->size()==0){
+    eventTree->Fill();
+    return;
+  }
   
   fillTauPairData(iEvent, iSetup);
   fillJetsData();
@@ -158,7 +159,7 @@ void ntuple::fillGenData(){
   if(genPileUpInfos.isValid()){
     for(const PileupSummaryInfo &pusi : *genPileUpInfos){
       if(pusi.getBunchCrossing() == 0){
-	wevent->npu(pusi.getPU_NumInteractions());
+	wevent->npu(pusi.getTrueNumInteractions());
 	break;
       }
     }
@@ -192,9 +193,6 @@ void ntuple::fillGenTausAndDecayMode(){
     if(WawGenInfoHelper::isFinalClone((*idr),true) && WawGenInfoHelper::isAncestor(theBoson.get(),(*idr).get()) )
       taus.push_back(*idr);
   }
-
-  if(taus.size() != 2) return;
-  if(taus[0]->charge()*taus[1]->charge()>0) return;
 
   if(taus[0]->charge()>0){
     reco::GenParticleRefVector taus_tmp;
@@ -316,6 +314,10 @@ void ntuple::fillTauLeg(const reco::Candidate *aCandidate, const reco::Candidate
 		     taon->leadChargedHadrCand()->p4().e());
   wtau.leadingTk(a4v);
   setPCAVectors<Wtau>(wtau, taon->leadChargedHadrCand()->bestTrack(), iEvent, iSetup);
+
+  wtau.d0(taon->leadChargedHadrCand()->bestTrack()->dxy((*vertices)[0].position()));
+  wtau.dz(taon->leadChargedHadrCand()->bestTrack()->dz((*vertices)[0].position()));
+    
   wtau.mt(sqrt(pow((taon->p4()).pt() + (aMETCandidate->p4()).pt(),2) - pow((taon->p4() + aMETCandidate->p4()).pt(),2)));
   wtau.tauID(decayModeFinding, taon->tauID("decayModeFinding"));
   wtau.tauID(decayModeFindingNewDMs, taon->tauID("decayModeFindingNewDMs"));
@@ -366,7 +368,7 @@ void ntuple::fillJetsData(){
     wjet.phi(aJet.phi());
     wjet.id(aJet.userFloat("pileupJetId:fullDiscriminant"));
     wjet.bptag(aJet.bDiscriminator("jetBProbabilityBJetTags"));
-    wjet.csvtag(aJet.bDiscriminator("combinedInclusiveSecondaryVertexV2BJetTags"));
+    wjet.csvtag(aJet.bDiscriminator("pfCombinedInclusiveSecondaryVertexV2BJetTags"));
     wjet.bjet(utilities::isbJet(aJet));
     wjet.jecfactor(aJet.jecFactor("Uncorrected"));
     wjet.jetlooseID(utilities::jetID(aJet));

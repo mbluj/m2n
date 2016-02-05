@@ -401,7 +401,7 @@ float PairBaselineSelection::mutau(const reco::Vertex &PV, const reco::Candidate
         if(
             //mu
             mu->isMediumMuon()
-            && mu->pt() > 18.
+            && mu->pt() > 19.
             && fabs(mu->eta()) < 2.1 
             && fabs(mu->muonBestTrack()->dxy( PV.position()) )  < 0.045 
             && fabs(mu->muonBestTrack()->dz(PV.position())) < 0.2  

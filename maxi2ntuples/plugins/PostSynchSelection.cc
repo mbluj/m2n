@@ -100,112 +100,88 @@
 //
 
 class PostSynchSelection : public edm::EDProducer {
-   public:
-      explicit PostSynchSelection(const edm::ParameterSet&);
-      ~PostSynchSelection();
-
-      static void fillDescriptions(edm::ConfigurationDescriptions& descriptions);
-
-   private:
-      virtual void beginJob() override;
-      virtual void produce(edm::Event&, const edm::EventSetup&) override;
-      virtual void endJob() override;
-
-      float tautau(const reco::Vertex &,  const pat::Tau*, const pat::Tau*);
-      float mutau(const reco::Vertex &,  const pat::Muon*, const pat::Tau*);
-      float etau(const reco::Vertex &, const pat::Electron*, const pat::Tau*);
-      float mumu(const pat::Muon*, const pat::Muon*);
-      float ee(const pat::Electron*, const pat::Electron*);
-      float emu(const reco::Vertex &, const pat::Electron*,const pat::Muon* );
-
-      //virtual void beginRun(edm::Run const&, edm::EventSetup const&) override;
-      //virtual void endRun(edm::Run const&, edm::EventSetup const&) override;
-      //virtual void beginLuminosityBlock(edm::LuminosityBlock const&, edm::EventSetup const&) override;
-      //virtual void endLuminosityBlock(edm::LuminosityBlock const&, edm::EventSetup const&) override;
-
-      // ----------member data ---------------------------
-      edm::EDGetTokenT<pat::CompositeCandidateCollection> PairToken_;
-      edm::EDGetTokenT<reco::VertexCollection> vtxToken_;
-      edm::EDGetTokenT<pat::MuonCollection> muonToken_;
-      //edm::EDGetTokenT<pat::ElectronCollection> electronToken_;
-      edm::EDGetTokenT<edm::TriggerResults> triggerBits_;
-      edm::EDGetTokenT<pat::TriggerObjectStandAloneCollection> triggerObjects_;
-      edm::EDGetTokenT<pat::PackedTriggerPrescales> triggerPrescales_;
-      const bool mc;
-      const std::string sample;
-      edm::EDGetToken electronToken_;
-      edm::EDGetTokenT<edm::ValueMap<bool> > eleTightIdMapToken_;
+public:
+  explicit PostSynchSelection(const edm::ParameterSet&);
+  ~PostSynchSelection(){;}
+  
+private:
+  virtual void beginJob(){;}
+  virtual void produce(edm::Event&, const edm::EventSetup&) override;
+  virtual void endJob(){;}
+  
+  bool checkDiMuonVeto(const pat::MuonCollection &);
+  bool checkThirdLeptonVeto(const pat::MuonCollection &, const pat::ElectronCollection &);
+  
+  float tautau(const reco::Vertex &,  const pat::Tau*, const pat::Tau*);
+  float mutau(const reco::Vertex &,  const pat::Muon*, const pat::Tau*);
+  float etau(const reco::Vertex &, const pat::Electron*, const pat::Tau*);
+  float mumu(const pat::Muon*, const pat::Muon*);
+  float ee(const pat::Electron*, const pat::Electron*);
+  float emu(const reco::Vertex &, const pat::Electron*,const pat::Muon* );
+  
+  // ----------member data ---------------------------
+  edm::EDGetTokenT<pat::CompositeCandidateCollection> PairToken_;
+  edm::EDGetTokenT<reco::VertexCollection> vtxToken_;
+  edm::EDGetTokenT<pat::MuonCollection> muonToken_;
+  edm::EDGetTokenT<edm::TriggerResults> triggerBits_;
+  edm::EDGetTokenT<pat::TriggerObjectStandAloneCollection> triggerObjects_;
+  edm::EDGetTokenT<pat::PackedTriggerPrescales> triggerPrescales_;
+  const bool mc;
+  const std::string sample;
+  edm::EDGetToken electronToken_;
+  edm::EDGetTokenT<edm::ValueMap<bool> > eleTightIdMapToken_;
 };
-
-//
-// constants, enums and typedefs
-//
-
-
-//
-// static data member definitions
-//
-
-//
-// constructors and destructor
-//
+/////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////
 PostSynchSelection::PostSynchSelection(const edm::ParameterSet& iConfig):
     PairToken_(consumes<pat::CompositeCandidateCollection>(iConfig.getParameter<edm::InputTag>("pairs"))),
     vtxToken_(consumes<reco::VertexCollection>(iConfig.getParameter<edm::InputTag>("vertices"))),
     muonToken_(consumes<pat::MuonCollection>(iConfig.getParameter<edm::InputTag>("muons"))),
-//    electronToken_(consumes<pat::ElectronCollection>(iConfig.getParameter<edm::InputTag>("electrons"))),
     triggerBits_(consumes<edm::TriggerResults>(iConfig.getParameter<edm::InputTag>("bits"))),
     triggerObjects_(consumes<pat::TriggerObjectStandAloneCollection>(iConfig.getParameter<edm::InputTag>("objects"))),
     triggerPrescales_(consumes<pat::PackedTriggerPrescales>(iConfig.getParameter<edm::InputTag>("prescales"))),
     mc(iConfig.getParameter<bool>("mc")),
     sample(iConfig.getParameter<std::string>("sample")),
-    eleTightIdMapToken_(consumes<edm::ValueMap<bool> >(iConfig.getParameter<edm::InputTag>("eleTightIdMap")))
-    
-{
-    electronToken_ = mayConsume<edm::View<reco::GsfElectron> >
-        (iConfig.getParameter<edm::InputTag>
-         ("electrons"));
-   //register your products
-/* Examples
-   produces<ExampleData2>();
+    electronToken_(mayConsume<edm::View<reco::GsfElectron> > (iConfig.getParameter<edm::InputTag>("electrons"))),
+    eleTightIdMapToken_(consumes<edm::ValueMap<bool> >(iConfig.getParameter<edm::InputTag>("eleTightIdMap"))){
 
-   //if do put with a label
-   produces<ExampleData2>("label");
- 
-   //if you want to put into the Run
-   produces<ExampleData2,InRun>();
-*/
-   //now do what ever other initialization is needed
    produces<pat::CompositeCandidateCollection>();
   
 }
+/////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////// 
+bool PostSynchSelection::checkDiMuonVeto(const pat::MuonCollection &muons){
 
-
-PostSynchSelection::~PostSynchSelection()
-{
- 
-   // do anything here that needs to be done at desctruction time
-   // (e.g. close files, deallocate resources etc.)
-
+  if(muons.size()>1){
+    for(auto aMuon1: muons){
+      bool passDiMuonSelection1 = aMuon1.pt()>15 && aMuon1.isGlobalMuon() && aMuon1.isTrackerMuon() && aMuon1.isPFMuon();
+      if(passDiMuonSelection1){
+	for(auto aMuon2: muons){
+	  bool passDiMuonSelection2 = aMuon2.pt()>15 && aMuon2.isGlobalMuon() && aMuon2.isTrackerMuon() && aMuon2.isPFMuon();
+	  if(passDiMuonSelection2 && deltaR(aMuon1.p4(), aMuon2.p4())>0.15) return false; 
+	}
+      }
+    }    
+  }
+  return true;
 }
+/////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////// 
+bool PostSynchSelection::checkThirdLeptonVeto(const pat::MuonCollection &muons, const pat::ElectronCollection &electrons){
 
+  unsigned int nMuons = 0;
+  for(auto aMuon: muons){
+    if(aMuon.isMediumMuon()) ++nMuons;
+  }
+  unsigned int nElectrons = electrons.size();
 
-//
-// member functions
-//
+  return !(nMuons>1 && nElectrons>0);
+  
+}
+/////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////// 
+void PostSynchSelection::produce(edm::Event& iEvent, const edm::EventSetup& iSetup){
 
-// ------------ method called to produce the data  ------------
-void
-PostSynchSelection::produce(edm::Event& iEvent, const edm::EventSetup& iSetup)
-{
-
-/* this is an EventSetup example
-   //Read SetupData from the SetupRecord in the EventSetup
-   ESHandle<SetupData> pSetup;
-   iSetup.get<SetupRecord>().get(pSetup);
-*/
- 
- //   bool goodvertex = false;
     edm::Handle<reco::VertexCollection> vertices;
     iEvent.getByToken(vtxToken_, vertices);
     const reco::Vertex &PV = vertices->front();
@@ -221,10 +197,6 @@ PostSynchSelection::produce(edm::Event& iEvent, const edm::EventSetup& iSetup)
     edm::Handle<pat::MuonCollection> muons;
     iEvent.getByToken(muonToken_, muons);
 
-/*
-    edm::Handle<pat::ElectronCollection> electrons;
-    iEvent.getByToken(electronToken_, electrons);
-*/
     edm::Handle<edm::View<reco::GsfElectron> > electrons;
     iEvent.getByToken(electronToken_,electrons);
 
@@ -242,8 +214,8 @@ PostSynchSelection::produce(edm::Event& iEvent, const edm::EventSetup& iSetup)
         return;
     }
 
-
     bool veto = true;
+    
     pat::MuonCollection vetomuons;
     for (const pat::Muon &mu : *muons) {
         float iso = (mu.pfIsolationR03().sumChargedHadronPt + 
@@ -251,17 +223,13 @@ PostSynchSelection::produce(edm::Event& iEvent, const edm::EventSetup& iSetup)
         if(
             mu.pt() >10
             && fabs(mu.eta()) < 2.4
-           // && mu.isGlobalMuon()
-           // && mu.isTrackerMuon()
-           // && mu.isPFMuon()
-            && mu.isMediumMuon()
             && fabs(mu.muonBestTrack()->dz(PV.position())) < 0.2
             && fabs(mu.muonBestTrack()->dxy( PV.position()) ) < 0.045
             && iso < 0.3
         ) vetomuons.push_back(mu);
     }
     
-    pat::ElectronCollection vetoelectron;
+    pat::ElectronCollection vetoelectrons;
     for (size_t i = 0; i < electrons->size(); ++i){
          const auto el = electrons->ptrAt(i);
          pat::Electron elec(el);
@@ -277,29 +245,17 @@ PostSynchSelection::produce(edm::Event& iEvent, const edm::EventSetup& iSetup)
              && el->gsfTrack()->hitPattern().numberOfHits(reco::HitPattern::MISSING_INNER_HITS)  <=1
              && iso < 0.3
              && (*tight_id_decisions)[el]
-         ) vetoelectron.push_back(*el);
+         ) vetoelectrons.push_back(*el);
     }
 
-    if(vetomuons.size()>1 || vetoelectron.size()>0)
-        veto = false;
-/*
- *
- * n.pt()        > 10                            and
- * fabs(muon.eta)   < 2.4                           and
- * fabs(dxy)        < 0.045                         and
- * fabs(dz)         < 0.2                           and
- * "Medium" ID                                      and
- * iso              < 0.3
- *
- *
-*/
 
-
+    veto &= checkDiMuonVeto(vetomuons);
+    veto &= checkThirdLeptonVeto(vetomuons, vetoelectrons);
+    
     for (const pat::CompositeCandidate &lP : *leptonPair){
 
         const reco::Candidate * l1, *l2; 
         l1 = lP.daughter(0); l2 = lP.daughter(1);
-//        short unsigned int channelcase; 
 
         float pass = false; 
 
@@ -367,107 +323,30 @@ PostSynchSelection::produce(edm::Event& iEvent, const edm::EventSetup& iSetup)
         pat::CompositeCandidate pair(lP);
         pair.addUserFloat("PostSynchSelection", (float)passed);
         selectedPair->push_back(pair);
-    //        std::cout << "Passeddddddddddddddddd!\n"; 
     }
 
     iEvent.put(std::move(selectedPair));
 }
-
-// ------------ method called once each job just before starting event loop  ------------
-void 
-PostSynchSelection::beginJob()
-{
-}
-
-// ------------ method called once each job just after ending the event loop  ------------
-void 
-PostSynchSelection::endJob() {
-}
-
-
-float PostSynchSelection::tautau(const reco::Vertex &PV, const pat::Tau* tau, const pat::Tau* tau_){
-
-
-//    pat::PackedCandidate const* packedLeadTauCand = dynamic_cast<pat::PackedCandidate const*>(tau->leadChargedHadrCand().get());
-//    pat::PackedCandidate const* packedTrailTauCand = dynamic_cast<pat::PackedCandidate const*>(tau_->leadChargedHadrCand().get());
-
-
-    return true;
-}
-
-
+/////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////// 
 float PostSynchSelection::mutau(const reco::Vertex &PV,  const pat::Muon* mu, const pat::Tau* tau){
 
- //   pat::PackedCandidate const* packedLeadTauCand = dynamic_cast<pat::PackedCandidate const*>(tau->leadChargedHadrCand().get());
     if(
         tau->tauID("againstElectronVLooseMVA5") <= 0.5
         || tau->tauID("againstMuonTight3") <= 0.5
-        || tau->tauID("byCombinedIsolationDeltaBetaCorrRaw3Hits") >= 1.5
+        || tau->tauID("byMediumCombinedIsolationDeltaBetaCorr3Hits") >= 0.5
     ) return false;
 
     return true;
 
 }
-float PostSynchSelection::etau(const reco::Vertex &PV,  const pat::Electron* e, const pat::Tau* tau){
-
-//    pat::PackedCandidate const* packedLeadTauCand = dynamic_cast<pat::PackedCandidate const*>(tau->leadChargedHadrCand().get());
-
-    return false;   
-
-}
-float PostSynchSelection::mumu(const pat::Muon* mu, const pat::Muon* mu_){
-    return false;   
-}
-float PostSynchSelection::ee(const pat::Electron* e, const pat::Electron* e_){
-    return false;
-}
-float PostSynchSelection::emu(const reco::Vertex &PV,  const pat::Electron* e,const pat::Muon* mu){
-
-    return false;
-}
-
-
-// ------------ method called when starting to processes a run  ------------
-/*
-void
-PostSynchSelection::beginRun(edm::Run const&, edm::EventSetup const&)
-{
-}
-*/
- 
-// ------------ method called when ending the processing of a run  ------------
-/*
-void
-PostSynchSelection::endRun(edm::Run const&, edm::EventSetup const&)
-{
-}
-*/
- 
-// ------------ method called when starting to processes a luminosity block  ------------
-/*
-void
-PostSynchSelection::beginLuminosityBlock(edm::LuminosityBlock const&, edm::EventSetup const&)
-{
-}
-*/
- 
-// ------------ method called when ending the processing of a luminosity block  ------------
-/*
-void
-PostSynchSelection::endLuminosityBlock(edm::LuminosityBlock const&, edm::EventSetup const&)
-{
-}
-*/
- 
-// ------------ method fills 'descriptions' with the allowed parameters for the module  ------------
-void
-PostSynchSelection::fillDescriptions(edm::ConfigurationDescriptions& descriptions) {
-  //The following says we do not know what parameters are allowed so do no validation
-  // Please change this to state exactly what you do use, even if it is no parameters
-  edm::ParameterSetDescription desc;
-  desc.setUnknown();
-  descriptions.addDefault(desc);
-}
+/////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////// 
+float PostSynchSelection::tautau(const reco::Vertex &PV, const pat::Tau* tau, const pat::Tau* tau_){ return true; }
+float PostSynchSelection::etau(const reco::Vertex &PV,  const pat::Electron* e, const pat::Tau* tau){ return false; }
+float PostSynchSelection::mumu(const pat::Muon* mu, const pat::Muon* mu_){ return false;}
+float PostSynchSelection::ee(const pat::Electron* e, const pat::Electron* e_){return false;}
+float PostSynchSelection::emu(const reco::Vertex &PV,  const pat::Electron* e,const pat::Muon* mu){return false;}
 
 //define this as a plug-in
 DEFINE_FWK_MODULE(PostSynchSelection);

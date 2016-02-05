@@ -68,7 +68,8 @@ namespace utilities{
 
     inline bool isbJet(const pat::Jet& j){
     
-        return j.bDiscriminator("combinedInclusiveSecondaryVertexV2BJetTags") > 0.814;
+        return j.bDiscriminator("pfCombinedInclusiveSecondaryVertexV2BJetTags") > 0.8;
+	
     }
 
     inline bool jetID(const pat::Jet& j){

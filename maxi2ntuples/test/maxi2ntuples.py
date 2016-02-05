@@ -64,7 +64,7 @@ process.load("Configuration.StandardSequences.GeometryDB_cff")
 process.load("TrackingTools.TransientTrack.TransientTrackBuilder_cfi")
 process.options = cms.untracked.PSet( wantSummary = cms.untracked.bool(True) )
 
-process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(10) )
+process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(1000) )
 #################################### FILES #####################################################
 process.source = cms.Source("PoolSource",
                             # replace 'myfile.root' with the source file you want to use
@@ -86,9 +86,7 @@ for idmod in my_id_modules:
 ############### JETS ##############################
 process.jetsSelected = cms.EDFilter("PATJetSelector",
         src = cms.InputTag("slimmedJets"),
-        cut = cms.string('abs(eta) < 4.7  & pt > 20.'
-           #     'et > 30.'
-            ),
+        cut = cms.string('abs(eta) < 4.7  & pt > 20.'),
         filter = cms.bool(False)
         )
 
@@ -98,15 +96,13 @@ process.jetsIDSelected = cms.EDProducer("JetsSelector",
 
 ############### PAIRS #############################
 ##
-## Build ll candidates (here OS)
+## Build ll candidates
 ##
 process.pairmaker = cms.EDProducer("CandViewShallowCloneCombiner",
     decay = cms.string("slimmedMuons slimmedTaus"),
     cut = cms.string("mass>0"),
     checkCharge = cms.bool(False)
 )
-
-
 ###################################################
 MVAPairMET = ();
 for index in range(100):
@@ -131,20 +127,11 @@ process.channel = cms.EDProducer("ChannelSelector",
     channel = cms.string("mutau"), #mutau, etau, tautau...
 )
 
-process.pairchecka = cms.EDFilter("PatPairExistenceFilter",
-    pairs = cms.InputTag("channel"),
-)
-
 process.clean = cms.EDProducer('PATPairSelector',
     pairs = cms.InputTag("channel"), 
-    muCut = cms.string(''
-#        'pt > 18. & abs(eta) < 2.1'
-        ),
+    muCut = cms.string(''),
     elCut = cms.string(''),
-    tauCut = cms.string(''
-#        "tauID('byCombinedIsolationDeltaBetaCorrRaw3Hits') < 1.5 & "
-#        "tauID('againstMuonTight3')"
-        ),
+    tauCut = cms.string(''),
     deltaR_ = cms.double(0.5),
 )
 
@@ -158,7 +145,7 @@ process.selected = cms.EDProducer("PairBaselineSelection",
     electrons = cms.InputTag("slimmedElectrons"),
     mc = cms.bool(mc),
     eleTightIdMap = cms.InputTag("egmGsfElectronIDs:mvaEleID-Spring15-25ns-nonTrig-V1-wp80"),
-    sample = cms.string('spring15')  #options: "phys14", "spring15"
+    sample = cms.string('spring15')
 )
 
 process.hlt= cms.EDProducer("HLTforPair",
@@ -180,11 +167,6 @@ process.vetoed = cms.EDProducer("PostSynchSelection",
     mc = cms.bool(mc),
     eleTightIdMap = cms.InputTag("egmGsfElectronIDs:mvaEleID-Spring15-25ns-nonTrig-V1-wp90"),
     sample = cms.string('spring15')  #options: "phys14", "spring15"
-)
-
-process.paircheckb = cms.EDFilter("PatPairExistenceFilter",
-#    pairs = cms.InputTag("selected"),
-    pairs = cms.InputTag("vetoed"),
 )
 
 process.eventskimmer = cms.EDProducer("EventsSkimmer",
@@ -282,7 +264,7 @@ process.p = cms.Path(
         *process.pairswithmet
         *process.channel
         *process.clean
-        #TEST *process.electronMVAValueMapProducer
+        *process.electronMVAValueMapProducer
         *process.selected
         *process.hlt
         *process.vetoed

@@ -159,6 +159,8 @@ class Wtau{
     int charge_ = -999;
     int decayMode_ = -999;
     float mt_ = -999;
+    float d0_ = -999;
+    float dz_ = -999;
 
     ///Leading tau track four momemntum.
     TLorentzVector leadingTk_;
@@ -187,6 +189,8 @@ class Wtau{
     void decayMode(int x){decayMode_ = x;}
     void mt(float x){mt_ = x;}
     void tauID(tauidenum y, float x){tauID_[y] = x;}
+    void d0(float x){d0_ = x;}
+    void dz(float x){dz_ = x;}
 
     ///Set tau leading charged track.
     void leadingTk(const TLorentzVector & a4v) {leadingTk_ = a4v;};
@@ -211,6 +215,8 @@ class Wtau{
     float charge(){return charge_;}
     int decayMode(){return decayMode_;}
     float mt(){return mt_;}
+    float d0(){return d0_;}
+    float dz(){return dz_;}
 
     float tauID(tauidenum y){return tauID_[y];}
 
