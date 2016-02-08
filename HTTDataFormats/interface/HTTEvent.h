@@ -223,7 +223,7 @@ class Wtau{
     float tauID(tauidenum y){return tauID_[y];}
 
     ///Get leading charged track
-    const TLorentzVector & leadingTk(const TLorentzVector & a4v) const {return leadingTk_;};
+    const TLorentzVector & leadingTk() const {return leadingTk_;};
 
     ///Get PCA vector calculated using PV stored in AOD
     const TVector3 & nPCA() {return nPCA_;};
@@ -316,6 +316,10 @@ class Wmu{
     float isTightnovtxMuon(){return isTightnovtxMuon_;}
     float iso(){return iso_;}
 
+    ///
+    ///Get leading charged track
+    TLorentzVector leadingTk() const {TLorentzVector a4v; a4v.SetPtEtaPhiM(pt_, eta_, phi_, 0.105658); return a4v;};
+    
     ///Get PCA vector calculated using PV stored in AOD
     const TVector3 & nPCA() {return nPCA_;};
 

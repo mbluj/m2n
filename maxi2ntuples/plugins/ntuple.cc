@@ -136,11 +136,8 @@ void ntuple::getMCCollections(const edm::Event& iEvent, const edm::EventSetup& i
     }
     catch (...) {;}
 
-    ///FIX ME: check is reading MC
-    
     iEvent.getByToken(prunedGenToken, genParticlesPruned);
     iEvent.getByToken(packedGenToken, genParticlesPacked);
-    
 }
 /////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////
@@ -170,11 +167,12 @@ void ntuple::fillGenData(){
   if(lheInfo.isValid()) wevent->nup(lheInfo->hepeup().NUP);
   if(genInfo.isValid()) wevent->genevtweight(genInfo->weight());
 
-  fillGenTausAndDecayMode();  
+  fillGenTausAndPV();
+
 }
 /////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////
-void ntuple::fillGenTausAndDecayMode(){
+void ntuple::fillGenTausAndPV(){
 
   reco::GenParticleRef theBoson;
   reco::GenParticleRefVector taus;
@@ -187,7 +185,7 @@ void ntuple::fillGenTausAndDecayMode(){
       theBoson = WawGenInfoHelper::getFinalClone(genref,true);
     }
   }  
-  if(theBoson.isNull() ) return; 
+  if(theBoson.isNull() ) return;
 
   reco::GenParticleRefVector taus_all;
   WawGenInfoHelper::findParticles(*genParticlesPruned, taus_all, 15, -1);
@@ -203,6 +201,7 @@ void ntuple::fillGenTausAndDecayMode(){
     taus.swap(taus_tmp);
   }
   wevent->bosonId(theBoson->pdgId());
+  wevent->genPV(WawGenInfoHelper::getVertex(theBoson));  
   wevent->decModeMinus(WawGenInfoHelper::getTausDecays(taus[0],tauProdsMinus,true,false));
   wevent->decModePlus(WawGenInfoHelper::getTausDecays(taus[1],tauProdsPlus,true,false));
 
@@ -228,13 +227,11 @@ void ntuple::fillGenTauData(const reco::GenParticleRef & taon, const reco::GenPa
   TLorentzVector p4LeadingChParticle =  WawGenInfoHelper::getP4(leadChParticleRef);  
   wtau.leadingTk(p4LeadingChParticle);
 
-  TVector3 tauDecayVertex =  WawGenInfoHelper::getVertex(taon);
+  TVector3 tauDecayVertex =  WawGenInfoHelper::getVertex(leadChParticleRef);
 
   wtau.sv(tauDecayVertex);
   wtau.nPCA(WawGenInfoHelper::impactParameter(wevent->genPV(), tauDecayVertex, p4LeadingChParticle));
-
   wtauGencollection.push_back(wtau);
-  
 }
 /////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////
@@ -346,9 +343,15 @@ void ntuple::fillTauLeg(const reco::Candidate *aCandidate, const reco::Candidate
   wtau.leadingTk(a4v);
   setPCAVectors<Wtau>(wtau, taon->leadChargedHadrCand()->bestTrack(), iEvent, iSetup);
 
-  wtau.d0(taon->leadChargedHadrCand()->bestTrack()->dxy((*vertices)[0].position()));
-  wtau.dz(taon->leadChargedHadrCand()->bestTrack()->dz((*vertices)[0].position()));
-    
+  if(taon->leadChargedHadrCand()->bestTrack()){
+    wtau.d0(taon->leadChargedHadrCand()->bestTrack()->dxy((*vertices)[0].position()));
+    wtau.dz(taon->leadChargedHadrCand()->bestTrack()->dz((*vertices)[0].position()));
+  }
+  else{
+    wtau.d0(999);
+    wtau.dz(999);
+  }
+  
   wtau.mt(sqrt(pow((taon->p4()).pt() + (aMETCandidate->p4()).pt(),2) - pow((taon->p4() + aMETCandidate->p4()).pt(),2)));
   wtau.tauID(decayModeFinding, taon->tauID("decayModeFinding"));
   wtau.tauID(decayModeFindingNewDMs, taon->tauID("decayModeFindingNewDMs"));
@@ -504,11 +507,9 @@ bool ntuple::refitPV(const edm::Event & iEvent, const edm::EventSetup & iSetup){
   }
   
   if(fitOk && transVtx.isValid() && transVtxNoBS.isValid()) { 
-    ///Here we put z position of original vertex, as it gave the best results.
-    ///This has to be understood.
-    TVector3 aPV(transVtx.position().x(),transVtx.position().y(),(*vertices)[0].z());
+    TVector3 aPV(transVtx.position().x(),transVtx.position().y(),transVtx.position().z());
     wevent->refitPfPV(aPV);
-    aPV.SetXYZ(transVtxNoBS.position().x(),transVtxNoBS.position().y(),(*vertices)[0].z());
+    aPV.SetXYZ(transVtxNoBS.position().x(),transVtxNoBS.position().y(),transVtxNoBS.position().z());
     wevent->refitPfPVNoBS(aPV);
     wevent->isRefit(true);
   }
