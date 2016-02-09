@@ -50,6 +50,9 @@ class Wevent{
     int nTracksInRefit_;
 
   public:
+
+    enum processenum {DATA = 0, DY = 1, WJets=2, TTbar=3, h=3, H=4, A=5, QCD=6};
+    
     Wevent();
     ~Wevent();
     void run(int x){run_ = x;}

@@ -29,7 +29,7 @@ from Configuration.AlCa.GlobalTag_condDBv2 import GlobalTag
 process.GlobalTag.globaltag = '74X_mcRun2_asymptotic_v2'
 
 mc=True; #if MC then true; if data then  false
-sample = 5; #0 -data; 1-DY; 2-WJets; 3-TTbar; 4-QCD; 5 - HTauTau
+sample = 5; #0 -data; 1-DY; 2-WJets; 3-TTbar; 4-QCD; 5 - HTauTau; 6 - ATauTau
 outfile = "HTauTau.root";
 vbf=False
 grid=False
@@ -66,9 +66,12 @@ process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(1000) )
 process.source = cms.Source("PoolSource",
                             # replace 'myfile.root' with the source file you want to use
                             fileNames = cms.untracked.vstring(
-                                #getfiles(directory, files)        
-                                'file:/scratch_local/akalinow/CMS/HiggsCP/Data/GluGluHToTauTau_M125_13TeV_powheg_pythia8/MINIAODSIM/Asympt25ns_MCRUN2_74_V9-v1/043989C6-942E-E511-99B7-20CF30561701.root',
-                                'file:/scratch_local/akalinow/CMS/HiggsCP/Data/GluGluHToTauTau_M125_13TeV_powheg_pythia8/MINIAODSIM/Asympt25ns_MCRUN2_74_V9-v1/147382D0-C32F-E511-B1C3-002590D9D984.root',
+                                #getfiles(directory, files)
+
+                                'file:/scratch_local/akalinow/CMS/HiggsCP/Data/DYJetsToLL_M-50_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8/RunIISpring15DR74-Asympt25ns_MCRUN2_74_V9-v3/MINIAODSIM/009D49A5-7314-E511-84EF-0025905A605E.root',
+                                
+                                #'file:/scratch_local/akalinow/CMS/HiggsCP/Data/GluGluHToTauTau_M125_13TeV_powheg_pythia8/MINIAODSIM/Asympt25ns_MCRUN2_74_V9-v1/043989C6-942E-E511-99B7-20CF30561701.root',
+                                #'file:/scratch_local/akalinow/CMS/HiggsCP/Data/GluGluHToTauTau_M125_13TeV_powheg_pythia8/MINIAODSIM/Asympt25ns_MCRUN2_74_V9-v1/147382D0-C32F-E511-B1C3-002590D9D984.root',
                                 
 
                                 
@@ -210,7 +213,6 @@ process.m2n = cms.EDAnalyzer('ntuple',
     vertexScores = cms.InputTag("offlineSlimmedPrimaryVertices"),
     src = cms.InputTag("packedPFCandidates"),
     beamSpot = cms.InputTag("offlineBeamSpot"),
-    mc = cms.bool(mc),
     sample = cms.int32(sample)
 )
 

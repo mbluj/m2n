@@ -67,6 +67,15 @@ void Wevent::clear(){
   isRefit_ = false;
   nTracksInRefit_ = 0;
 
+  run_ = 0;
+  lumi_ = 0;
+  event_ = 0;
+  nup_ = -999, npu_ = -999, npv_ = -999; 
+  paircount_ = -1;
+  genevtweight_ = 1;
+  sample_ = -1;
+  bosonId_ = -1;
+
 }
 
 Wpair::Wpair(){;}

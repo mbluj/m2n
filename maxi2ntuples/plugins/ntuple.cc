@@ -50,24 +50,17 @@ void ntuple::beginJob(){
    eventTree->Branch("wmet", &wmetcollection);
    eventTree->Branch("wjet", &wjetcollection);
 
-   events = theFileService->make<TH1F>("hvar","hvar title",10,0,10);
+   events = theFileService->make<TH1F>("hStats","Bookkeeping histogram",11,-0.5,10.5);
 
 }
 ///////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////
 void ntuple::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
-
-  //const edm::TriggerNames &names = iEvent.triggerNames(*triggerBits);
-  //events->Fill(1.,1.);
-  //double weightevt=genEvt->weight(); 
-  //events->Fill(2., weightevt);
-  
+ 
   using namespace edm;
   
   clearNtuple();  
   getCollections(iEvent,iSetup);
-
-  if (vertices->empty()) return; // skip the event if no PV found
   
   fillEventHeaderData(iEvent, iSetup);
   findPrimaryVertices(iEvent, iSetup);
@@ -78,15 +71,17 @@ void ntuple::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
     fillGenData();
   }
 
+  events->Fill(0);//Number of events analyzed
+  events->Fill(1,wevent->genevtweight());//Sum of weights
+
   ///Stop processing if no tau pair is found in the event.
-  if(!pairs.isValid() || pairs->size()==0){
-    eventTree->Fill();
-    return;
-  }
-  
+  if(!pairs.isValid() || pairs->size()==0) return;
+
   fillTauPairData(iEvent, iSetup);
   fillJetsData();
 
+  events->Fill(2);//Number of events saved to ntuple
+  events->Fill(3,wevent->genevtweight());//Sum of weights saved to ntuple
   eventTree->Fill();
 }
 /////////////////////////////////////////////////////////////////
@@ -99,6 +94,7 @@ void ntuple::clearNtuple(){
   wpaircollection.clear();
   wmetcollection.clear();
   wjetcollection.clear();
+  wevent->clear();
   
 }
 /////////////////////////////////////////////////////////////////
@@ -506,8 +502,10 @@ bool ntuple::refitPV(const edm::Event & iEvent, const edm::EventSetup & iSetup){
     }
   }
   
-  if(fitOk && transVtx.isValid() && transVtxNoBS.isValid()) { 
-    TVector3 aPV(transVtx.position().x(),transVtx.position().y(),transVtx.position().z());
+  if(fitOk && transVtx.isValid() && transVtxNoBS.isValid()) {
+    ///NOTE: we take original vertex z position, as this gives the best reults on CP
+    ///variables. To be understood.
+    TVector3 aPV(transVtx.position().x(),transVtx.position().y(),(*vertices)[0].z());
     wevent->refitPfPV(aPV);
     aPV.SetXYZ(transVtxNoBS.position().x(),transVtxNoBS.position().y(),transVtxNoBS.position().z());
     wevent->refitPfPVNoBS(aPV);

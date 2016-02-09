@@ -13,6 +13,7 @@ namespace WawGenInfoHelper {
 	       bool checkLastCopy, bool tauDec){
 
     std::set<int> bosonIds;
+    bosonIds.insert(24);//W+
     bosonIds.insert(23);//Z
     bosonIds.insert(25);//h
     bosonIds.insert(35);//H
