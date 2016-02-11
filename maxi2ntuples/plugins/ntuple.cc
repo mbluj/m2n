@@ -58,7 +58,7 @@ void ntuple::beginJob(){
 void ntuple::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
  
   using namespace edm;
-  
+
   clearNtuple();  
   getCollections(iEvent,iSetup);
   
@@ -165,6 +165,36 @@ void ntuple::fillGenData(){
 
   fillGenTausAndPV();
 
+  fillBosonDecayMode();
+
+}
+/////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////
+void ntuple::fillBosonDecayMode(){
+
+  reco::GenParticleRef theBoson;
+  for(size_t iParticle=0; iParticle<genParticlesPruned->size(); ++iParticle){
+    reco::GenParticleRef genref(genParticlesPruned, iParticle);
+    if(theBoson.isNull() && WawGenInfoHelper::isBoson(genref,false,false) ){
+      theBoson = WawGenInfoHelper::getFinalClone(genref,true);
+      break;
+    }
+  }  
+  if(theBoson.isNull()){
+    wevent->decayModeBoson(WawGenInfoHelper::getLeptonPairDecayMode(*genParticlesPruned));
+    return;
+  }
+  
+  wevent->decayModeBoson(WawGenInfoHelper::getBosonDecayMode(theBoson));
+
+  if(wevent->decayModeBoson()==-1){
+    for(size_t iParticle=0; iParticle<genParticlesPruned->size(); ++iParticle){
+      std::cout<<"pdgid: "<<genParticlesPruned->at(iParticle).pdgId()
+	       <<" status: "<<genParticlesPruned->at(iParticle).status();
+      if(genParticlesPruned->at(iParticle).mother(0)) std::cout<<" mother: "<<genParticlesPruned->at(iParticle).mother(0)->pdgId();
+	  std::cout<<std::endl;
+  }
+  }  
 }
 /////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////
@@ -177,32 +207,36 @@ void ntuple::fillGenTausAndPV(){
   for(size_t iParticle=0; iParticle<genParticlesPruned->size(); ++iParticle){
     if( theBoson.isNonnull() ) break;
     reco::GenParticleRef genref(genParticlesPruned, iParticle);
-    if(theBoson.isNull() && WawGenInfoHelper::isBoson(genref,false,true) ){
+    if(theBoson.isNull() && WawGenInfoHelper::isBoson(genref,false,false) ){
       theBoson = WawGenInfoHelper::getFinalClone(genref,true);
     }
   }  
   if(theBoson.isNull() ) return;
-
+  
   reco::GenParticleRefVector taus_all;
   WawGenInfoHelper::findParticles(*genParticlesPruned, taus_all, 15, -1);
   for(WawGenInfoHelper::IGR idr = taus_all.begin(); idr != taus_all.end(); ++idr ){
     if(WawGenInfoHelper::isFinalClone((*idr),true) && WawGenInfoHelper::isAncestor(theBoson.get(),(*idr).get()) )
       taus.push_back(*idr);
   }
-
-  if(taus[0]->charge()>0){
-    reco::GenParticleRefVector taus_tmp;
-    taus_tmp.push_back(taus[1]);
-    taus_tmp.push_back(taus[0]);
-    taus.swap(taus_tmp);
-  }
+  
   wevent->bosonId(theBoson->pdgId());
-  wevent->genPV(WawGenInfoHelper::getVertex(theBoson));  
-  wevent->decModeMinus(WawGenInfoHelper::getTausDecays(taus[0],tauProdsMinus,true,false));
-  wevent->decModePlus(WawGenInfoHelper::getTausDecays(taus[1],tauProdsPlus,true,false));
+  wevent->genPV(WawGenInfoHelper::getVertex(theBoson));
 
-  fillGenTauData(taus[0], tauProdsMinus);
-  fillGenTauData(taus[1], tauProdsPlus);
+  if(taus.size()==2){
+    if(taus[0]->charge()>0){
+      reco::GenParticleRefVector taus_tmp;
+      taus_tmp.push_back(taus[1]);
+      taus_tmp.push_back(taus[0]);
+      taus.swap(taus_tmp);
+    }
+    
+    wevent->decModeMinus(WawGenInfoHelper::getTausDecays(taus[0],tauProdsMinus,true,false));
+    wevent->decModePlus(WawGenInfoHelper::getTausDecays(taus[1],tauProdsPlus,true,false));
+    
+    fillGenTauData(taus[0], tauProdsMinus);
+    fillGenTauData(taus[1], tauProdsPlus);
+  }
 }
 /////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////
@@ -397,7 +431,7 @@ void ntuple::fillJetsData(){
     wjet.eta(aJet.eta());
     wjet.phi(aJet.phi());
     wjet.id(aJet.userFloat("pileupJetId:fullDiscriminant"));
-    wjet.bptag(aJet.bDiscriminator("jetBProbabilityBJetTags"));
+    wjet.bptag(aJet.bDiscriminator("pfJetBProbabilityBJetTags"));
     wjet.csvtag(aJet.bDiscriminator("pfCombinedInclusiveSecondaryVertexV2BJetTags"));
     wjet.bjet(utilities::isbJet(aJet));
     wjet.jecfactor(aJet.jecFactor("Uncorrected"));

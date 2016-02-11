@@ -15,20 +15,14 @@
 #include "TVector3.h"
 
 namespace WawGenInfoHelper {
-  /*
-  enum tauDecayModes {kElectron, kMuon, 
-		      kOneProng0pi0, kOneProng1pi0, kOneProng2pi0, kOneProng3pi0,
-		      kThreeProng0pi0, kThreeProng1pi0,
-		      kOther, kUndefined};
-  */
-
+  
   typedef reco::PFTauDecayMode::hadronicTauDecayModes tauDecayModes;
 
   
-  enum hZDecayModes {kMuTau,kETau,kTauTau,kMuMu,kEE,kEMu,
-		     kEEPrompt, kMMPrompt,
-		     kHZOther, kHZUndefined,  kTauTauPrompt};
-
+  enum bosonDecayModes {kUndefined = -1,
+			 kMuTau,kETau,kTauTau,kMuMu,kEE,kEMu,
+			 kEEPrompt, kMuMuPrompt, kTauTauPrompt};
+  
   typedef reco::GenParticleCollection::const_iterator IG;
   typedef reco::GenParticleRefVector::const_iterator IGR;
 
@@ -38,6 +32,9 @@ namespace WawGenInfoHelper {
   bool isFinalClone(const reco::GenParticleRef& particle, bool isUnstable=true);
   const reco::GenParticleRef getInitialClone(const reco::GenParticleRef& initialClone);
   bool isInitialClone(const reco::GenParticleRef& particle);
+  int getBosonDecayMode(const reco::GenParticleRef& particle);
+  int getLeptonPairDecayMode(const reco::GenParticleCollection& sourceParticles);
+  int getDiTauDecayMode(int tau1DecayMode, int tau2DecayMode);
   int getTauDecayMode(const reco::GenParticleRefVector& products);
   int getTauDirDecayMode(const reco::GenParticleRefVector& products);
   int getTausDecays(const reco::GenParticleRef& tau,
@@ -76,7 +73,8 @@ namespace WawGenInfoHelper {
   /// copy from PhysicsTools/HepMCCandAlgos/interface/GenParticlesHelper.h" which allows ignore status(<0)
   void findDescendents(const reco::GenParticleRef& base, 
 		       reco::GenParticleRefVector& descendents, 
-		       int status, int pdgId=0);
+		       int status, int pdgId=0,
+		       bool skipPhotonsPi0AndFSR=false);
 
   void findAncestors(const reco::GenParticleRef& base, 
 		     reco::GenParticleRefVector& ancestors, 

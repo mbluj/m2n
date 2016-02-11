@@ -75,6 +75,11 @@ void Wevent::clear(){
   genevtweight_ = 1;
   sample_ = -1;
   bosonId_ = -1;
+#ifdef PROJECT_NAME
+  decayModeBoson_ = WawGenInfoHelper::bosonDecayModes::kUndefined;
+#else
+  decayModeBoson_ = -1;
+#endif
 
 }
 

@@ -13,8 +13,8 @@ namespace WawGenInfoHelper {
 	       bool checkLastCopy, bool tauDec){
 
     std::set<int> bosonIds;
-    bosonIds.insert(24);//W+
     bosonIds.insert(23);//Z
+    bosonIds.insert(24);//W	
     bosonIds.insert(25);//h
     bosonIds.insert(35);//H
     bosonIds.insert(36);//A
@@ -73,6 +73,105 @@ namespace WawGenInfoHelper {
   }
 
   //////////////
+  int getBosonDecayMode(const reco::GenParticleRef& particle){
+
+    reco::GenParticleRefVector electrons, muons, taus;
+    findDescendents(particle, taus, -1, 15, true);
+
+    int decayMode = kUndefined;
+    if(taus.size()==2){
+      reco::GenParticleRefVector tauProds;
+      int tau1DecayMode = WawGenInfoHelper::getTausDecays(taus[0],tauProds,true,false);
+      int tau2DecayMode = WawGenInfoHelper::getTausDecays(taus[1],tauProds,true,false);
+      decayMode = getDiTauDecayMode(tau1DecayMode, tau2DecayMode);
+    }
+    else{
+      findDescendents(particle, electrons, 1, 11, true);
+      findDescendents(particle, muons, 1, 13, true);
+
+      ///Can not set electrons.size()==2 as there are some events with
+      ///chains of e->e->e, hard to filter oout. The same for muons.
+      if(taus.size()==0 && electrons.size()>1 && muons.size()==0) decayMode = kEEPrompt;
+      if(taus.size()==0 && electrons.size()==0 && muons.size()>1) decayMode = kMuMuPrompt;
+      
+      ///W decays
+      if(taus.size()==0 && electrons.size()==1 && muons.size()==0) decayMode = kEEPrompt;
+      if(taus.size()==0 && electrons.size()==0 && muons.size()==1) decayMode = kMuMuPrompt;
+      if(taus.size()==1 && muons.size()==1 && electrons.size()==0) decayMode = kMuTau;
+      if(taus.size()==1 && muons.size()==0 && electrons.size()==1) decayMode = kETau;
+      if(taus.size()==1 && muons.size()==0 && electrons.size()==0) decayMode = kTauTau;    
+    }
+    return decayMode;
+  }  
+  //////////////
+ int getLeptonPairDecayMode(const reco::GenParticleCollection& sourceParticles){
+
+    reco::GenParticleRefVector electrons, muons, taus;
+    int nElectrons = 0;
+    int nMuons = 0;
+    int decayMode = kUndefined;
+    
+    WawGenInfoHelper::findParticles(sourceParticles, electrons, 11, 23);
+    for(WawGenInfoHelper::IGR idr = electrons.begin(); idr != electrons.end(); ++idr ){
+      if((*idr)->isHardProcess()){
+	nElectrons++;
+      }
+    }
+
+    
+    WawGenInfoHelper::findParticles(sourceParticles, muons, 13, 23);
+    for(WawGenInfoHelper::IGR idr = muons.begin(); idr != muons.end(); ++idr ){
+      if((*idr)->isHardProcess()){
+	nMuons++;
+      }
+    }
+    
+    WawGenInfoHelper::findParticles(sourceParticles, taus, 15, 23);
+
+    int tau1DecayMode = kUndefined;
+    int tau2DecayMode = kUndefined;
+    reco::GenParticleRefVector tauProds;
+    for(WawGenInfoHelper::IGR idr = taus.begin(); idr != taus.end(); ++idr ){
+      if((*idr)->isHardProcess()){
+	if((*idr)->isHardProcess() && tau1DecayMode == kUndefined) tau1DecayMode = WawGenInfoHelper::getTausDecays(*idr,tauProds,true,false);
+	else if((*idr)->isHardProcess()) tau2DecayMode = WawGenInfoHelper::getTausDecays(*idr,tauProds,true,false);	
+      }
+    }
+
+    if(tau1DecayMode!=kUndefined && tau2DecayMode!=kUndefined) decayMode = getDiTauDecayMode(tau1DecayMode, tau2DecayMode);
+    else if(nElectrons==2) decayMode = kEEPrompt;
+    else if(nMuons==2) decayMode = kMuMuPrompt;   
+    return decayMode;
+ }
+  //////////////
+  int getDiTauDecayMode(int tau1DecayMode, int tau2DecayMode){
+
+    int decayMode = kUndefined;
+    
+    if(tau1DecayMode == tauDecayModes::tauDecaysElectron && tau2DecayMode==tauDecayModes::tauDecayMuon) decayMode = kEMu;
+    if(tau2DecayMode == tauDecayModes::tauDecaysElectron && tau1DecayMode==tauDecayModes::tauDecayMuon) decayMode = kEMu;
+
+    if(tau1DecayMode == tauDecayModes::tauDecayMuon && tau2DecayMode!=tauDecayModes::tauDecayMuon
+       && tau2DecayMode!=tauDecayModes::tauDecaysElectron) decayMode = kMuTau;
+    
+    if(tau2DecayMode == tauDecayModes::tauDecayMuon && tau1DecayMode!=tauDecayModes::tauDecayMuon
+       && tau1DecayMode!=tauDecayModes::tauDecaysElectron) decayMode = kMuTau;
+
+     if(tau1DecayMode == tauDecayModes::tauDecaysElectron && tau2DecayMode!=tauDecayModes::tauDecayMuon
+       && tau2DecayMode!=tauDecayModes::tauDecaysElectron) decayMode = kETau;
+    
+     if(tau2DecayMode == tauDecayModes::tauDecaysElectron && tau1DecayMode!=tauDecayModes::tauDecayMuon
+	&& tau1DecayMode!=tauDecayModes::tauDecaysElectron) decayMode = kETau;
+
+    if(tau1DecayMode == tauDecayModes::tauDecaysElectron && tau2DecayMode==tauDecayModes::tauDecaysElectron) decayMode = kEE;
+    if(tau2DecayMode == tauDecayModes::tauDecayMuon && tau1DecayMode==tauDecayModes::tauDecayMuon) decayMode = kMuMu;
+
+    if(tau1DecayMode != tauDecayModes::tauDecayMuon && tau1DecayMode!=tauDecayModes::tauDecayMuon &&
+       tau1DecayMode != tauDecayModes::tauDecaysElectron && tau1DecayMode!=tauDecayModes::tauDecaysElectron) decayMode = kTauTau;
+
+    return decayMode;
+  }
+  //////////////  
   int getTauDecayMode(const reco::GenParticleRefVector& products){
 
     int tauDecayMode = tauDecayModes::tauDecayOther;
@@ -507,7 +606,8 @@ namespace WawGenInfoHelper {
   //copy of function from PhysicsTools/HepMCCandAlgos/interface/GenParticlesHelper.h" which allows ignore status
   void findDescendents(const reco::GenParticleRef& base, 
 		       reco::GenParticleRefVector& descendents, 
-		       int status, int pdgId ) {
+		       int status, int pdgId,
+		       bool skipPhotonsPi0AndFSR) {
 
     //one form status or pdgId has to be specifed!
     if(status<0 && pdgId==0) return;
@@ -515,20 +615,27 @@ namespace WawGenInfoHelper {
     const reco::GenParticleRefVector& daughterRefs = base->daughterRefVector();
   
     for(IGR idr = daughterRefs.begin(); idr != daughterRefs.end(); ++idr ) {
+ 
+      ///Skip leptons from pi0 decays
+      if(skipPhotonsPi0AndFSR && (*idr)->mother(0) && (abs((*idr)->mother(0)->pdgId())==22 || abs((*idr)->mother(0)->pdgId())==111)) continue;
+      ///Skip electrons from FSR from muons
+      if(skipPhotonsPi0AndFSR && (*idr)->mother(0) && abs((*idr)->mother(0)->pdgId())==13 && abs((*idr)->pdgId())==11) continue;
+      ///Skip muons and electrons from FSR
+      if(skipPhotonsPi0AndFSR && (*idr)->mother(0) && abs((*idr)->mother(0)->pdgId())==13 && abs((*idr)->pdgId())==11) continue;
+      if(skipPhotonsPi0AndFSR && (*idr)->mother(0) && abs((*idr)->mother(0)->pdgId())==11 && abs((*idr)->pdgId())==13) continue;
       
+
       if( (status<0 || (*idr)->status() == status ) && 
-          (!pdgId || std::abs((*idr)->pdgId()) == std::abs(pdgId) ) ) {
-	
+          (!pdgId || std::abs((*idr)->pdgId()) == std::abs(pdgId) )) {
         descendents.push_back(*idr);
       }
-      else 
-        findDescendents( *idr, descendents, status, pdgId );
+      else findDescendents( *idr, descendents, status, pdgId, skipPhotonsPi0AndFSR);
     }
   }
-  //////////////
+//////////////
   void findAncestors(const reco::GenParticleRef& base, 
 		     reco::GenParticleRefVector& ancestors, 
-		     int status, int pdgId ) {
+		     int status, int pdgId) {
 
     //one form status or pdgId has to be specifed!
     if(status<0 && pdgId==0) return;
@@ -542,9 +649,9 @@ namespace WawGenInfoHelper {
 	
         ancestors.push_back(*idr);
       }
-      else 
-        findAncestors( *idr, ancestors, status, pdgId );
+      else findAncestors( *idr, ancestors, status, pdgId );
     }
   }
   
 }
+//////////////
