@@ -62,20 +62,19 @@ void ntuple::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
   clearNtuple();  
   getCollections(iEvent,iSetup);
   
-  fillEventHeaderData(iEvent, iSetup);
-  findPrimaryVertices(iEvent, iSetup);
-  refitPV(iEvent, iSetup);
-
-  if(!iEvent.isRealData()){
-    getMCCollections(iEvent,iSetup);
-    fillGenData();
-  }
-
   events->Fill(0);//Number of events analyzed
   events->Fill(1,wevent->genevtweight());//Sum of weights
 
   ///Stop processing if no tau pair is found in the event.
   if(!pairs.isValid() || pairs->size()==0) return;
+
+  fillEventHeaderData(iEvent, iSetup);
+  findPrimaryVertices(iEvent, iSetup);
+
+  if(!iEvent.isRealData()){
+    getMCCollections(iEvent,iSetup);
+    fillGenData();
+  }
 
   fillTauPairData(iEvent, iSetup);
   fillJetsData();
@@ -295,16 +294,43 @@ void ntuple::fillTauPairData(const edm::Event& iEvent, const edm::EventSetup& iS
 
     wpaircollection.push_back(wpair);
 
-    if(leg1->isMuon()) fillMuonLeg(leg1, metCand, iEvent, iSetup);
+
+    TLorentzVector leadingTkTau1, leadingTkTau2;
+    if(leg1->isMuon() || leg1->isElectron()){
+	leadingTkTau1 = TLorentzVector(leg1->px(), leg1->py(),				       
+				       leg1->pz(), leg1->energy());
+      				       
+      const pat::Tau *taon  = dynamic_cast<const pat::Tau*>(leg2->masterClone().get());
+      leadingTkTau2 = TLorentzVector(taon->leadChargedHadrCand()->p4().px(),
+				     taon->leadChargedHadrCand()->p4().py(),
+				     taon->leadChargedHadrCand()->p4().pz(),
+				     taon->leadChargedHadrCand()->p4().e());
+      }
+    if(leg2->isMuon() || leg2->isElectron()){
+	leadingTkTau1 = TLorentzVector(leg2->px(), leg2->py(),				       
+				       leg2->pz(), leg2->energy());
+      				       
+      const pat::Tau *taon  = dynamic_cast<const pat::Tau*>(leg1->masterClone().get());
+      leadingTkTau2 = TLorentzVector(taon->leadChargedHadrCand()->p4().px(),
+				     taon->leadChargedHadrCand()->p4().py(),
+				     taon->leadChargedHadrCand()->p4().pz(),
+				     taon->leadChargedHadrCand()->p4().e());
+      }
+
+    
+      refitPV(iEvent, iSetup, leadingTkTau1, leadingTkTau2);    
+
+    if(leg1->isMuon()) fillMuonLeg(leg1, metCand, iEvent, iSetup);    
     else if(leg1->isElectron()) fillElectronLeg(leg1, metCand, iEvent, iSetup);
     else fillTauLeg(leg1, metCand, iEvent, iSetup);
+    
 
     if(leg2->isMuon()) fillMuonLeg(leg2, metCand, iEvent, iSetup);
     else if(leg2->isElectron()) fillElectronLeg(leg2, metCand, iEvent, iSetup);
     else fillTauLeg(leg2, metCand, iEvent, iSetup);
-    
+        
     fillMET(metCand, aPair);        
-  }   
+  }  
 }
 /////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////  
@@ -319,7 +345,6 @@ void ntuple::fillMuonLeg(const reco::Candidate *aCandidate, const reco::Candidat
   wmu.phi(muon->phi());
   wmu.mass(muon->mass());
   wmu.charge(muon->charge());
-  setPCAVectors<Wmu>(wmu, muon->bestTrack(), iEvent, iSetup);
   wmu.mt(sqrt(pow((muon->p4()).pt() + (aMETCandidate->p4()).pt(),2) - pow((muon->p4() + aMETCandidate->p4()).pt(),2)));  
   wmu.d0(muon->innerTrack()->dxy((*vertices)[0].position()));
   wmu.dz(muon->innerTrack()->dz((*vertices)[0].position()));
@@ -330,7 +355,8 @@ void ntuple::fillMuonLeg(const reco::Candidate *aCandidate, const reco::Candidat
   wmu.isTightnovtxMuon(utilities::heppymuonID(*muon, "POG_ID_TightNoVtx"));
   wmu.iso(((muon->pfIsolationR03().sumChargedHadronPt
 	    + std::max( muon->pfIsolationR03().sumNeutralHadronEt + muon->pfIsolationR03().sumPhotonEt - 0.5 * muon->pfIsolationR03().sumPUPt, 0.0)
-	    ) / muon->pt())); 
+	    ) / muon->pt()));
+  setPCAVectorsOnObject<Wmu>(wmu, muon->bestTrack(), iEvent, iSetup);
   
   wmucollection.push_back(wmu);
   
@@ -347,8 +373,8 @@ void ntuple::fillElectronLeg(const reco::Candidate *aCandidate, const reco::Cand
   welectron.phi(electron->phi());
   welectron.mass(electron->mass());
   welectron.charge(electron->charge());
+  setPCAVectorsOnObject<Welectron>(welectron, electron->bestTrack(), iEvent, iSetup);
   welectroncollection.push_back(welectron);
-  setPCAVectors<Welectron>(welectron, electron->bestTrack(), iEvent, iSetup);
 
 }
 /////////////////////////////////////////////////////////////////
@@ -370,9 +396,7 @@ void ntuple::fillTauLeg(const reco::Candidate *aCandidate, const reco::Candidate
 		     taon->leadChargedHadrCand()->p4().py(),
 		     taon->leadChargedHadrCand()->p4().pz(),
 		     taon->leadChargedHadrCand()->p4().e());
-  wtau.leadingTk(a4v);
-  setPCAVectors<Wtau>(wtau, taon->leadChargedHadrCand()->bestTrack(), iEvent, iSetup);
-
+  wtau.leadingTk(a4v);  
   if(taon->leadChargedHadrCand()->bestTrack()){
     wtau.d0(taon->leadChargedHadrCand()->bestTrack()->dxy((*vertices)[0].position()));
     wtau.dz(taon->leadChargedHadrCand()->bestTrack()->dz((*vertices)[0].position()));
@@ -387,7 +411,7 @@ void ntuple::fillTauLeg(const reco::Candidate *aCandidate, const reco::Candidate
   wtau.tauID(decayModeFindingNewDMs, taon->tauID("decayModeFindingNewDMs"));
   wtau.tauID(byCombinedIsolationDeltaBetaCorrRaw3Hits, taon->tauID("byCombinedIsolationDeltaBetaCorrRaw3Hits"));
   wtau.tauID(byLooseCombinedIsolationDeltaBetaCorr3Hits, taon->tauID("byLooseCombinedIsolationDeltaBetaCorr3Hits"));
-  wtau.tauID(byMediumCombinedIsolationDeltaBetaCorr3Hits, taon->tauID("byMediumCombinedIsolationDeltaBetaCorr3Hits"));
+  wtau.tauID(byMediumCombinedIsolationDeltaBetaCorr3Hits, taon->tauID("byMediumCombinedIsolationDeltaBetaCorr3Hits"));  
   wtau.tauID(byTightCombinedIsolationDeltaBetaCorr3Hits, taon->tauID("byTightCombinedIsolationDeltaBetaCorr3Hits"));
   wtau.tauID(chargedIsoPtSum, taon->tauID("chargedIsoPtSum"));
   wtau.tauID(neutralIsoPtSum, taon->tauID("neutralIsoPtSum"));
@@ -401,7 +425,7 @@ void ntuple::fillTauLeg(const reco::Candidate *aCandidate, const reco::Candidate
   wtau.tauID(againstElectronVTightMVA5, taon->tauID("againstElectronVTightMVA5"));
   wtau.tauID(byIsolationMVA3newDMwLTraw, taon->tauID("byIsolationMVA3newDMwLTraw"));
   wtau.tauID(byIsolationMVA3oldDMwLTraw, taon->tauID("byIsolationMVA3oldDMwLTraw"));
-  
+  setPCAVectorsOnObject<Wtau>(wtau, taon->leadChargedHadrCand()->bestTrack(), iEvent, iSetup);  
   wtaucollection.push_back(wtau);
   
 }
@@ -442,9 +466,9 @@ void ntuple::fillJetsData(){
 }
 /////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////
-template<typename T> void ntuple::setPCAVectors(T & aObject, 			   
-						const reco::Track *aTrack,
-						const edm::Event & iEvent, const edm::EventSetup & iSetup){
+template<typename T> void ntuple::setPCAVectorsOnObject(T & aObject, 			   
+							const reco::Track *aTrack,
+							const edm::Event & iEvent, const edm::EventSetup & iSetup){
   GlobalPoint aPoint(wevent->refitPfPV().X(),
 		     wevent->refitPfPV().Y(),
 		     wevent->refitPfPV().Z());
@@ -490,7 +514,9 @@ bool ntuple::findPrimaryVertices(const edm::Event & iEvent, const edm::EventSetu
 }
 /////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////
-bool ntuple::refitPV(const edm::Event & iEvent, const edm::EventSetup & iSetup){
+bool ntuple::refitPV(const edm::Event & iEvent, const edm::EventSetup & iSetup,
+		     const TLorentzVector & leadingTkTau1,
+		     const TLorentzVector & leadingTkTau2){
 
   edm::ESHandle<TransientTrackBuilder> transTrackBuilder;
   iSetup.get<TransientTrackRecord>().get("TransientTrackBuilder",transTrackBuilder);
@@ -503,14 +529,15 @@ bool ntuple::refitPV(const edm::Event & iEvent, const edm::EventSetup & iSetup){
   for(size_t i=0; i<cands->size(); ++i){
     if((*cands)[i].charge()==0 || (*cands)[i].vertexRef().isNull()) continue;
     if(!(*cands)[i].bestTrack()) continue;
-    ///Skip tracks comming from tau decay.
-    /*
+    ///Skip tracks comming from tau decay.    
     aTrack.SetPxPyPzE((*cands)[i].px(),(*cands)[i].py(),(*cands)[i].pz(),(*cands)[i].energy());
-    if(myEvent->recoEvent.piMinus.DeltaR(aTrack)<0.01 ||
-       myEvent->recoEvent.piPlus.DeltaR(aTrack)<0.01) continue;       
-    */
+
+    if(leadingTkTau1.DeltaR(aTrack)<0.01) continue;
+    if(leadingTkTau2.DeltaR(aTrack)<0.01) continue;
+    
     unsigned int key = (*cands)[i].vertexRef().key();
     int quality = (*cands)[i].pvAssociationQuality();
+
     if(key!=pfPVIndex ||
        (quality!=pat::PackedCandidate::UsedInFitTight &&
 	quality!=pat::PackedCandidate::UsedInFitLoose)) continue;

@@ -331,10 +331,10 @@ void PostSynchSelection::produce(edm::Event& iEvent, const edm::EventSetup& iSet
 ///////////////////////////////////////////////////////////////// 
 float PostSynchSelection::mutau(const reco::Vertex &PV,  const pat::Muon* mu, const pat::Tau* tau){
 
-    if(
-        tau->tauID("againstElectronVLooseMVA5") <= 0.5
-        || tau->tauID("againstMuonTight3") <= 0.5
-        || tau->tauID("byMediumCombinedIsolationDeltaBetaCorr3Hits") >= 0.5
+    if(tau->tauID("againstElectronVLooseMVA5") <= 0.5
+       || tau->tauID("againstMuonTight3") <= 0.5
+       || tau->tauID("byCombinedIsolationDeltaBetaCorrRaw3Hits") >= 1.5
+       //Not present in miniAOD_v2?|| tau->tauID("byMediumCombinedIsolationDeltaBetaCorr3Hits") <= 0.5
     ) return false;
 
     return true;
