@@ -185,15 +185,7 @@ void ntuple::fillBosonDecayMode(){
   }
   
   wevent->decayModeBoson(WawGenInfoHelper::getBosonDecayMode(theBoson));
-
-  if(wevent->decayModeBoson()==-1){
-    for(size_t iParticle=0; iParticle<genParticlesPruned->size(); ++iParticle){
-      std::cout<<"pdgid: "<<genParticlesPruned->at(iParticle).pdgId()
-	       <<" status: "<<genParticlesPruned->at(iParticle).status();
-      if(genParticlesPruned->at(iParticle).mother(0)) std::cout<<" mother: "<<genParticlesPruned->at(iParticle).mother(0)->pdgId();
-	  std::cout<<std::endl;
-  }
-  }  
+  
 }
 /////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////
@@ -357,9 +349,8 @@ void ntuple::fillMuonLeg(const reco::Candidate *aCandidate, const reco::Candidat
 	    + std::max( muon->pfIsolationR03().sumNeutralHadronEt + muon->pfIsolationR03().sumPhotonEt - 0.5 * muon->pfIsolationR03().sumPUPt, 0.0)
 	    ) / muon->pt()));
   setPCAVectorsOnObject<Wmu>(wmu, muon->bestTrack(), iEvent, iSetup);
-  
+
   wmucollection.push_back(wmu);
-  
 }
 /////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////  
@@ -483,6 +474,7 @@ template<typename T> void ntuple::setPCAVectorsOnObject(T & aObject,
   		       wevent->genPV().Y(),
   		       wevent->genPV().Z());
   aObject.nPCAGenvx(getPCA(iEvent, iSetup, aTrack, aPoint));
+  
 }
 /////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////

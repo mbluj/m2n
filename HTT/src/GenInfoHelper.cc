@@ -149,25 +149,19 @@ namespace WawGenInfoHelper {
     int decayMode = kUndefined;
     
     if(tau1DecayMode == tauDecayModes::tauDecaysElectron && tau2DecayMode==tauDecayModes::tauDecayMuon) decayMode = kEMu;
-    if(tau2DecayMode == tauDecayModes::tauDecaysElectron && tau1DecayMode==tauDecayModes::tauDecayMuon) decayMode = kEMu;
-
-    if(tau1DecayMode == tauDecayModes::tauDecayMuon && tau2DecayMode!=tauDecayModes::tauDecayMuon
-       && tau2DecayMode!=tauDecayModes::tauDecaysElectron) decayMode = kMuTau;
-    
-    if(tau2DecayMode == tauDecayModes::tauDecayMuon && tau1DecayMode!=tauDecayModes::tauDecayMuon
-       && tau1DecayMode!=tauDecayModes::tauDecaysElectron) decayMode = kMuTau;
-
-     if(tau1DecayMode == tauDecayModes::tauDecaysElectron && tau2DecayMode!=tauDecayModes::tauDecayMuon
-       && tau2DecayMode!=tauDecayModes::tauDecaysElectron) decayMode = kETau;
-    
-     if(tau2DecayMode == tauDecayModes::tauDecaysElectron && tau1DecayMode!=tauDecayModes::tauDecayMuon
-	&& tau1DecayMode!=tauDecayModes::tauDecaysElectron) decayMode = kETau;
-
-    if(tau1DecayMode == tauDecayModes::tauDecaysElectron && tau2DecayMode==tauDecayModes::tauDecaysElectron) decayMode = kEE;
-    if(tau2DecayMode == tauDecayModes::tauDecayMuon && tau1DecayMode==tauDecayModes::tauDecayMuon) decayMode = kMuMu;
-
-    if(tau1DecayMode != tauDecayModes::tauDecayMuon && tau1DecayMode!=tauDecayModes::tauDecayMuon &&
-       tau1DecayMode != tauDecayModes::tauDecaysElectron && tau1DecayMode!=tauDecayModes::tauDecaysElectron) decayMode = kTauTau;
+    else if(tau2DecayMode == tauDecayModes::tauDecaysElectron && tau1DecayMode==tauDecayModes::tauDecayMuon) decayMode = kEMu;
+    else if(tau1DecayMode == tauDecayModes::tauDecayMuon && tau2DecayMode!=tauDecayModes::tauDecayMuon
+	    && tau2DecayMode!=tauDecayModes::tauDecaysElectron) decayMode = kMuTau;    
+    else if(tau2DecayMode == tauDecayModes::tauDecayMuon && tau1DecayMode!=tauDecayModes::tauDecayMuon
+	    && tau1DecayMode!=tauDecayModes::tauDecaysElectron) decayMode = kMuTau;
+    else if(tau1DecayMode == tauDecayModes::tauDecaysElectron && tau2DecayMode!=tauDecayModes::tauDecayMuon
+	    && tau2DecayMode!=tauDecayModes::tauDecaysElectron) decayMode = kETau;    
+    else if(tau2DecayMode == tauDecayModes::tauDecaysElectron && tau1DecayMode!=tauDecayModes::tauDecayMuon
+	    && tau1DecayMode!=tauDecayModes::tauDecaysElectron) decayMode = kETau;
+    else if(tau1DecayMode == tauDecayModes::tauDecaysElectron && tau2DecayMode==tauDecayModes::tauDecaysElectron) decayMode = kEE;
+    else if(tau2DecayMode == tauDecayModes::tauDecayMuon && tau1DecayMode==tauDecayModes::tauDecayMuon) decayMode = kMuMu;
+    else if(tau1DecayMode != tauDecayModes::tauDecayMuon && tau2DecayMode!=tauDecayModes::tauDecayMuon &&
+	    tau1DecayMode != tauDecayModes::tauDecaysElectron && tau2DecayMode!=tauDecayModes::tauDecaysElectron) decayMode = kTauTau;
 
     return decayMode;
   }

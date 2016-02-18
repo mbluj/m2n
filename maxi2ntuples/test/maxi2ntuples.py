@@ -29,7 +29,7 @@ from Configuration.AlCa.GlobalTag_condDBv2 import GlobalTag
 process.GlobalTag.globaltag = '74X_mcRun2_asymptotic_v2'
 
 mc=True; #if MC then true; if data then  false
-sample = 5; #0 -data; 1-DY; 2-WJets; 3-TTbar; 4-QCD; 5 - HTauTau; 6 - ATauTau
+sample = 1; #0 -data; 1-DY; 2-WJets; 3-TTbar; 4-QCD; 5 - HTauTau; 6 - ATauTau
 outfile = "HTauTau.root";
 vbf=False
 grid=False
@@ -61,18 +61,18 @@ process.load("Configuration.StandardSequences.GeometryDB_cff")
 process.load("TrackingTools.TransientTrack.TransientTrackBuilder_cfi")
 process.options = cms.untracked.PSet( wantSummary = cms.untracked.bool(True) )
 
-process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(50000) )
+process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(1000) )
 #################################### FILES #####################################################
 process.source = cms.Source("PoolSource",
                             # replace 'myfile.root' with the source file you want to use
                             fileNames = cms.untracked.vstring(
                                 #getfiles(directory, files)
 
-                                'file:/scratch_local/akalinow/CMS/HiggsCP/Data/WJetsToLNu_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/MINIAODSIM/RunIISpring15MiniAODv2-74X_mcRun2_asymptotic_v2-v1/000EB5C7-6D70-E511-8EF1-BCAEC51FDEED.root',
+                                #'file:/scratch_local/akalinow/CMS/HiggsCP/Data/WJetsToLNu_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/MINIAODSIM/RunIISpring15MiniAODv2-74X_mcRun2_asymptotic_v2-v1/000EB5C7-6D70-E511-8EF1-BCAEC51FDEED.root',
                                 #'file:/scratch_local/akalinow/CMS/HiggsCP/Data/DYJetsToLL_M-50_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8/RunIISpring15DR74-Asympt25ns_MCRUN2_74_V9-v3/MINIAODSIM/009D49A5-7314-E511-84EF-0025905A605E.root',
                                 #'file:/scratch_local/akalinow/CMS/HiggsCP/Data/DYJetsToLL_M-50_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8/RunIISpring15MiniAODv2-74X_mcRun2_asymptotic_v2-v1/MINIAODSIM/3ED428C2-5D6D-E511-973B-549F35AD8BD6.root',
                                 
-                                #'file:/scratch_local/akalinow/CMS/HiggsCP/Data/GluGluHToTauTau_M125_13TeV_powheg_pythia8/MINIAODSIM/Asympt25ns_MCRUN2_74_V9-v1/043989C6-942E-E511-99B7-20CF30561701.root',
+                                'file:/scratch_local/akalinow/CMS/HiggsCP/Data/GluGluHToTauTau_M125_13TeV_powheg_pythia8/MINIAODSIM/Asympt25ns_MCRUN2_74_V9-v1/043989C6-942E-E511-99B7-20CF30561701.root',
                                 #'file:/scratch_local/akalinow/CMS/HiggsCP/Data/GluGluHToTauTau_M125_13TeV_powheg_pythia8/MINIAODSIM/Asympt25ns_MCRUN2_74_V9-v1/147382D0-C32F-E511-B1C3-002590D9D984.root',
                                 
 
