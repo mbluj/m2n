@@ -169,6 +169,8 @@ class Wtau{
     float mt_ = -999;
     float d0_ = -999;
     float dz_ = -999;
+    float idSF_ = 1.0;
+    float triggerSF_ = 1.0;
 
     ///Leading tau track four momemntum.
     TLorentzVector leadingTk_;
@@ -200,6 +202,8 @@ class Wtau{
     void d0(float x){d0_ = x;}
     void dz(float x){dz_ = x;}
     void sv(const TVector3 & x){sv_ = x;}
+    void idSF(float x){idSF_ = x;}
+    void triggerSF(float x){triggerSF_ = x;}
 
     ///Set tau leading charged track.
     void leadingTk(const TLorentzVector & a4v) {leadingTk_ = a4v;};
@@ -227,6 +231,8 @@ class Wtau{
     float d0()const{return d0_;}
     float dz()const{return dz_;}
     TVector3 sv()const{return sv_;}
+    float idSF()const{return idSF_;}
+    float triggerSF()const{return triggerSF_;}
 
     float tauID(tauidenum y){return tauID_[y];}
 
@@ -266,6 +272,9 @@ class Wmu{
     float isMediumMuon_ = -999;
     float isTightnovtxMuon_ = -999;
     float iso_ = -999;
+    float idSF_ = 1.0;
+    float triggerSF_ = 1.0;
+     
 
     ///Secondary vertex position (from GEN)
     TVector3 sv_;
@@ -296,6 +305,9 @@ class Wmu{
     void isTightnovtxMuon(float x){isTightnovtxMuon_ = x;}
     void iso(float x){iso_ = x;}
 
+    void idSF(float x){idSF_ = x;}
+    void triggerSF(float x){triggerSF_ = x;}
+
     ///Set PCA vector calculated using PV stored in AOD
     void nPCA(const TVector3 & a3v) {nPCA_ = a3v;};
 
@@ -323,6 +335,8 @@ class Wmu{
     float isMediumMuon()const{return isMediumMuon_;}
     float isTightnovtxMuon()const{return isTightnovtxMuon_;}
     float iso()const{return iso_;}
+    float idSF()const{return idSF_;}
+    float triggerSF()const{return triggerSF_;}
 
     ///
     ///Get leading charged track

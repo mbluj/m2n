@@ -79,6 +79,8 @@
 #include "TrackingTools/GeomPropagators/interface/AnalyticalTrajectoryExtrapolatorToLine.h"
 #include "TrackingTools/GeomPropagators/interface/AnalyticalImpactPointExtrapolator.h"
 
+#include "HTT-utilities/LepEffInterface/interface/ScaleFactor.h"
+
 #include "m2n/maxi2ntuples/interface/utilities.h"
 #include "m2n/HTTDataFormats/interface/HTTEvent.h"
 
@@ -191,6 +193,9 @@ class ntuple : public edm::EDAnalyzer {
 
   ///Helper variables used for VX refitting.
   unsigned int pfPVIndex;
+
+  ScaleFactor muonIDSF;
+  ScaleFactor muonTriggerSF;
 
     TTree * eventTree; 
     TH1F* events;

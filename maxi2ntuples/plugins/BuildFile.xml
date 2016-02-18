@@ -29,6 +29,8 @@
 <use name="TrackingTools/IPTools"/>
 <use name="RecoVertex/VertexPrimitives"/>
 <use name="RecoVertex/AdaptiveVertexFit"/>  
+<use name="HTT-utilities/LepEffInterface"/>  
+
 <use name="m2n/HTTDataFormats"/>
 <use name="m2n/HTT"/>
 <use name="root"/>

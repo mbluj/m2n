@@ -24,7 +24,11 @@ ntuple::ntuple(const edm::ParameterSet& iConfig):
   PileupSummaryInfoToken(consumes<PileupSummaryInfoCollection>(iConfig.getParameter<edm::InputTag>("pileupinfo"))),
   candsToken(consumes<edm::View<pat::PackedCandidate> >(iConfig.getParameter<edm::InputTag>("src"))),  
   sample(iConfig.getParameter<int>("sample")){
-  ;
+
+
+  muonIDSF.init_ScaleFactor("HTT-utilities/LepEffInterface/data/Muon/Muon_IdIso0p10_eff.root");
+  muonTriggerSF.init_ScaleFactor("HTT-utilities/LepEffInterface/data/Muon/Muon_SingleMu_eff.root");
+
 }
 ///////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////
@@ -307,9 +311,7 @@ void ntuple::fillTauPairData(const edm::Event& iEvent, const edm::EventSetup& iS
 				     taon->leadChargedHadrCand()->p4().py(),
 				     taon->leadChargedHadrCand()->p4().pz(),
 				     taon->leadChargedHadrCand()->p4().e());
-      }
-
-    
+      }    
       refitPV(iEvent, iSetup, leadingTkTau1, leadingTkTau2);    
 
     if(leg1->isMuon()) fillMuonLeg(leg1, metCand, iEvent, iSetup);    
@@ -349,6 +351,8 @@ void ntuple::fillMuonLeg(const reco::Candidate *aCandidate, const reco::Candidat
 	    + std::max( muon->pfIsolationR03().sumNeutralHadronEt + muon->pfIsolationR03().sumPhotonEt - 0.5 * muon->pfIsolationR03().sumPUPt, 0.0)
 	    ) / muon->pt()));
   setPCAVectorsOnObject<Wmu>(wmu, muon->bestTrack(), iEvent, iSetup);
+  wmu.idSF(muonIDSF.get_ScaleFactor(muon->pt(),muon->eta()));
+  wmu.triggerSF(muonTriggerSF.get_ScaleFactor(muon->pt(),muon->eta()));
 
   wmucollection.push_back(wmu);
 }
@@ -416,9 +420,8 @@ void ntuple::fillTauLeg(const reco::Candidate *aCandidate, const reco::Candidate
   wtau.tauID(againstElectronVTightMVA5, taon->tauID("againstElectronVTightMVA5"));
   wtau.tauID(byIsolationMVA3newDMwLTraw, taon->tauID("byIsolationMVA3newDMwLTraw"));
   wtau.tauID(byIsolationMVA3oldDMwLTraw, taon->tauID("byIsolationMVA3oldDMwLTraw"));
-  setPCAVectorsOnObject<Wtau>(wtau, taon->leadChargedHadrCand()->bestTrack(), iEvent, iSetup);  
-  wtaucollection.push_back(wtau);
-  
+  setPCAVectorsOnObject<Wtau>(wtau, taon->leadChargedHadrCand()->bestTrack(), iEvent, iSetup);
+  wtaucollection.push_back(wtau); 
 }
 /////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////
@@ -468,12 +471,15 @@ template<typename T> void ntuple::setPCAVectorsOnObject(T & aObject,
   aPoint = GlobalPoint(wevent->thePV().X(),
 		       wevent->thePV().Y(),
 		       wevent->thePV().Z());
+
+ 
+  
   aObject.nPCA(getPCA(iEvent, iSetup, aTrack, aPoint));
   
   aPoint = GlobalPoint(wevent->genPV().X(),
   		       wevent->genPV().Y(),
   		       wevent->genPV().Z());
-  aObject.nPCAGenvx(getPCA(iEvent, iSetup, aTrack, aPoint));
+aObject.nPCAGenvx(getPCA(iEvent, iSetup, aTrack, aPoint));
   
 }
 /////////////////////////////////////////////////////////////////
@@ -589,7 +595,7 @@ TVector3 ntuple::getPCA(const edm::Event & iEvent, const edm::EventSetup & iSetu
   //TransverseImpactPointExtrapolator extrapolator(transTrk.field());
   AnalyticalImpactPointExtrapolator extrapolator(transTrk.field());
   GlobalPoint pos  = extrapolator.extrapolate(transTrk.impactPointState(),aPoint).globalPosition();
-
+ 
   aPCA.SetX(pos.x() - aPoint.x());
   aPCA.SetY(pos.y() - aPoint.y());
   aPCA.SetZ(pos.z() - aPoint.z());
