@@ -3,8 +3,8 @@
 <use name="PhysicsTools/UtilAlgos"/>
 <use name="FWCore/ServiceRegistry"/> 
 <use name="FWCore/ParameterSet"/>
-<use name="DataFormats/ParticleFlowCandidate">
-<use name="DataFormats/ParticleFlowReco">
+<use name="DataFormats/ParticleFlowCandidate"/>
+<use name="DataFormats/ParticleFlowReco"/>
 <use name="FWCore/MessageLogger"/>
 <use name="FWCore/Utilities"/>
 <use name="CommonTools/Utils"/>
@@ -17,7 +17,6 @@
 <use name="DataFormats/TauReco"/>
 <use name="DataFormats/VertexReco"/>
 <use name="DataFormats/Math"/>
-<use name="DataFormats/MuonReco"/>
 <use name="DataFormats/RecoCandidate"/>
 <use name="CommonTools/CandUtils"/>
 <use name="L1Trigger/Skimmer"/>

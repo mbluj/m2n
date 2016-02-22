@@ -3,8 +3,8 @@
 <use name="FWCore/Framework"/>
 <use name="FWCore/ServiceRegistry"/> 
 <use name="FWCore/ParameterSet"/>
-<use name="DataFormats/ParticleFlowCandidate">
-<use name="DataFormats/ParticleFlowReco">
+<use name="DataFormats/ParticleFlowCandidate"/>
+<use name="DataFormats/ParticleFlowReco"/>
 <use name="FWCore/MessageLogger"/>
 <use name="FWCore/Utilities"/>
 <use name="CommonTools/Utils"/>
