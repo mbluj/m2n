@@ -215,7 +215,7 @@ class Wtau{
     void chargedP4(const TLorentzVector & a4v) {chargedP4_ = a4v;};
 
     ///Set neutral p4
-    void neutralP4(const TLorentzVector & a4v) {chargedP4_ = a4v;};
+    void neutralP4(const TLorentzVector & a4v) {neutralP4_ = a4v;};
 
     ///Set PCA vector calculated using PV stored in AOD
     void nPCA(const TVector3 & a3v) {nPCA_ = a3v;};
