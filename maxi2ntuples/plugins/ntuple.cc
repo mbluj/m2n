@@ -256,6 +256,17 @@ void ntuple::fillGenTauData(const reco::GenParticleRef & taon, const reco::GenPa
 
   wtau.sv(tauDecayVertex);
   wtau.nPCA(WawGenInfoHelper::impactParameter(wevent->genPV(), tauDecayVertex, p4LeadingChParticle));
+
+  TLorentzVector chP4, neP4;
+  for(WawGenInfoHelper::IGR id=tauDecayProducts.begin(); id!=tauDecayProducts.end(); ++id){
+    if(std::abs( (*id)->charge() ) > 0)
+      chP4 += WawGenInfoHelper::getP4( *id );
+    else
+      neP4 += WawGenInfoHelper::getP4( *id );
+  }
+  wtau.chargedP4(chP4);
+  wtau.neutralP4(neP4);
+
   wtauGencollection.push_back(wtau);
 }
 /////////////////////////////////////////////////////////////////
@@ -400,7 +411,27 @@ void ntuple::fillTauLeg(const reco::Candidate *aCandidate, const reco::Candidate
     wtau.d0(999);
     wtau.dz(999);
   }
-  
+
+  TLorentzVector chP4, neP4;
+  reco::CandidatePtrVector chCands = taon->signalChargedHadrCands();
+  reco::CandidatePtrVector neCands = taon->signalGammaCands();
+  for(reco::CandidatePtrVector::const_iterator id=chCands.begin(); 
+      id!=chCands.end(); ++id){
+    chP4 += TLorentzVector( (*id)->px(),
+			    (*id)->py(),
+			    (*id)->pz(),
+			    (*id)->energy() );
+  }
+  for(reco::CandidatePtrVector::const_iterator id=neCands.begin(); 
+      id!=neCands.end(); ++id){
+    neP4 += TLorentzVector( (*id)->px(),
+			    (*id)->py(),
+			    (*id)->pz(),
+			    (*id)->energy() );
+  }
+  wtau.chargedP4(chP4);
+  wtau.neutralP4(neP4);
+
   wtau.mt(sqrt(pow((taon->p4()).pt() + (aMETCandidate->p4()).pt(),2) - pow((taon->p4() + aMETCandidate->p4()).pt(),2)));
   wtau.tauID(decayModeFinding, taon->tauID("decayModeFinding"));
   wtau.tauID(decayModeFindingNewDMs, taon->tauID("decayModeFindingNewDMs"));

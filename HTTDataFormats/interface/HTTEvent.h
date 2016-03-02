@@ -175,6 +175,9 @@ class Wtau{
     ///Leading tau track four momemntum.
     TLorentzVector leadingTk_;
 
+    ///Charged and neutral p4
+    TLorentzVector chargedP4_, neutralP4_;
+
     ///Secondary vertex position (from GEN)
     TVector3 sv_;
 
@@ -208,6 +211,12 @@ class Wtau{
     ///Set tau leading charged track.
     void leadingTk(const TLorentzVector & a4v) {leadingTk_ = a4v;};
 
+    ///Set charged p4
+    void chargedP4(const TLorentzVector & a4v) {chargedP4_ = a4v;};
+
+    ///Set neutral p4
+    void neutralP4(const TLorentzVector & a4v) {chargedP4_ = a4v;};
+
     ///Set PCA vector calculated using PV stored in AOD
     void nPCA(const TVector3 & a3v) {nPCA_ = a3v;};
 
@@ -238,6 +247,19 @@ class Wtau{
 
     ///Get leading charged track
     const TLorentzVector & leadingTk() const {return leadingTk_;};
+
+    ///Get tau p4
+    const TLorentzVector p4() const {
+      TLorentzVector a4v; 
+      a4v.SetPtEtaPhiM(pt_,phi_,eta_,mass_); 
+      return a4v;
+    };
+
+    ///Get charged p4
+    const TLorentzVector & chargedP4() const {return chargedP4_;};
+
+    ///Get neutral p4
+    const TLorentzVector & neutralP4() const {return neutralP4_;};
 
     ///Get PCA vector calculated using PV stored in AOD
     const TVector3 & nPCA() {return nPCA_;};
@@ -342,6 +364,20 @@ class Wmu{
     ///Get leading charged track
     TLorentzVector leadingTk() const {TLorentzVector a4v; a4v.SetPtEtaPhiM(pt_, eta_, phi_, 0.105658); return a4v;};
     
+    ///Get p4 
+    //FIXME: should it be a proxy for leadingTk()? 
+    const TLorentzVector p4() const {
+      TLorentzVector a4v; 
+      a4v.SetPtEtaPhiM(pt_,phi_,eta_,mass_); 
+      return a4v;
+    };
+
+    ///Get charged p4
+    const TLorentzVector chargedP4() const {return Wmu::leadingTk();};
+
+    ///Get neutral p4
+    const TLorentzVector neutralP4() const {return TLorentzVector();};
+
     ///Get PCA vector calculated using PV stored in AOD
     const TVector3 & nPCA() {return nPCA_;};
 
@@ -406,7 +442,23 @@ class Welectron{
     float mass()const{return mass_;}
     float charge()const{return charge_;}
 
+    ///
+    ///Get leading charged track
+    TLorentzVector leadingTk() const {TLorentzVector a4v; a4v.SetPtEtaPhiM(pt_, eta_, phi_, 511e-6); return a4v;};
+    
+    ///Get p4 
+    //FIXME: should it be a proxy for leadingTk()? 
+    const TLorentzVector p4() const {
+      TLorentzVector a4v; 
+      a4v.SetPtEtaPhiM(pt_,phi_,eta_,mass_); 
+      return a4v;
+    };
 
+    ///Get charged p4
+    const TLorentzVector chargedP4() const {return Welectron::leadingTk();};
+
+    ///Get neutral p4
+    const TLorentzVector neutralP4() const {return TLorentzVector();};
 
     ///Get PCA vector calculated using PV stored in AOD
     const TVector3 & nPCA() {return nPCA_;};
